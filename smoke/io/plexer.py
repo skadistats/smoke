@@ -41,16 +41,23 @@ OPERATIONS = {
 }
 
 
+TOP_WHITELIST = set([pb_d.DEM_FileHeader, pb_d.DEM_ClassInfo,
+    pb_d.DEM_SignonPacket, pb_d.DEM_SyncTick, pb_d.DEM_Packet, pb_d.DEM_Stop,
+    pb_d.DEM_FileInfo])
+
+
 class Plexer(object):
     def __init__(self, demo_io, top_blacklist=None, embed_blacklist=None):
-        top_blacklist = top_blacklist or []
-        top_blacklist = \
-            list(set(top_blacklist) - set([pb_d.DEM_SyncTick, pb_d.DEM_Stop]))
+        tb = top_blacklist or set()
+        tb = set(tb) - TOP_WHITELIST
+
+        eb = embed_blacklist or set()
+        eb = set(eb) | set([pb_n.svc_ClassInfo])
 
         self.demo_io = demo_io
         self.queue = collections.deque()
-        self.top_blacklist = top_blacklist
-        self.embed_blacklist = embed_blacklist or []
+        self.top_blacklist = tb
+        self.embed_blacklist = eb
         self.stopped = False
 
     def read(self):
