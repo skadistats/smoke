@@ -1,9 +1,9 @@
 from smoke.replay import handler
+from smoke.io import plexer as io_plxr
 
 
-HANDLERS = {
-    pb_d.CDemoFileHeader: handler.handle_dem_fileheader,
-}
+def mk(plexer, match):
+    return Ticker(plexer, match)
 
 
 class Ticker(object):
@@ -12,11 +12,13 @@ class Ticker(object):
         self.match = match
 
     def __iter__(self):
-        tick, collection = self.plexer.read_tick()
+        while True:
+            try:
+                collection = self.plexer.read_tick()
 
-        match.tick = tick
+                for _, pb in collection:
+                    handler.handle(pb, self.match)
 
-        for _, pb in collection:
-            HANDLERS[type(pb)](pb, self.match)
-
-        yield self.match
+                yield self.match
+            except io_plxr.DEMStopEncountered:
+                raise StopIteration()

@@ -2,8 +2,9 @@ from protobuf.impl import netmessages_pb2 as pb_n
 from protobuf.impl import demo_pb2 as pb_d
 from smoke.io import factory as io_fctr
 from smoke.io import plexer as io_plxr
-from smoke.replay import handler as rpl_hndlr
-from smoke.replay import match as rpl_mtch
+from smoke.replay import handler as rply_hndlr
+from smoke.replay import match as rply_mtch
+from smoke.replay import ticker as rply_tckr
 from smoke.util import enum
 
 
@@ -31,20 +32,6 @@ EMBED_WHITELIST = set([pb_n.net_Tick, pb_n.net_SetConVar, pb_n.svc_SendTable,
     pb_n.net_SignonState, pb_n.svc_ServerInfo, pb_n.svc_ClassInfo,
     pb_n.svc_CreateStringTable, pb_n.svc_SetView, pb_n.svc_VoiceInit,
     pb_n.svc_GameEventList])
-
-
-class Ticker(object):
-    def __init__(self, plexer, match):
-        self.plexer = plexer
-        self.match = match
-
-    def __iter__(self):
-        collection = self.plexer.read_tick()
-
-        for _, pb in collection:
-            rpl_hndlr.handle(pb, self.match)
-
-        yield self.match
 
 
 class Demo(object):
@@ -77,28 +64,23 @@ class Demo(object):
 
         self.parse = parse
         self.plexer = io_plxr.mk(d_io, top_blacklist=tb, embed_blacklist=eb)
-        self.match = match or rpl_mtch.mk()
+        self.match = match or rply_mtch.mk()
 
     def bootstrap(self):
         while True:
             try:
                 _, pb = self.plexer.read()
-                rpl_hndlr.handle(pb, self.match)
+                rply_hndlr.handle(pb, self.match)
             except io_plxr.DEMSyncTickEncountered:
                 break
 
-    def stream(self):
-        while True:
-            try:
-                for _, pb in self.plexer.read_tick():
-                    rpl_hndlr.handle(pb, self.match)
-            except io_plxr.DEMStopEncountered:
-                break
+    def play(self):
+        return rply_tckr.mk(self.plexer, self.match)
 
     def finish(self):
         while True:
             try:
                 _, pb = self.plexer.read()
-                rpl_hndlr.handle(pb, self.match)
+                rply_hndlr.handle(pb, self.match)
             except EOFError:
                 break

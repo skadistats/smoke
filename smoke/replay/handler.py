@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from protobuf.impl import demo_pb2 as pb_d
 from protobuf.impl import netmessages_pb2 as pb_n
+from protobuf.impl import networkbasetypes_pb2 as pb_nbt
 from smoke.model.collection import string_tables as mdl_cllctn_strngtbl
 from smoke.model.collection import game_event_descriptors as \
     mdl_cllctn_gmvntdscrptrs
@@ -153,6 +154,38 @@ def handle_svc_setview(pb, match):
     match.view = { 'entity_index': pb.entity_index }
 
 
+def handle_svc_packetentities(pb, match):
+    pass
+
+
+def handle_svc_gameevent(pb, match):
+    pass
+
+
+def handle_svc_usermessage(pb, match):
+    pass
+
+
+def handle_svc_updatestringtable(pb, match):
+    pass
+
+
+def handle_svc_tempentities(pb, match):
+    pass
+
+
+def handle_svc_sounds(pb, match):
+    pass
+
+
+def handle_svc_voicedata(pb, match):
+    pass
+
+
+def handle_dem_fileinfo(pb, match):
+    pass
+
+
 HANDLERS = {
     pb_d.CDemoFileHeader: handle_dem_fileheader,
     pb_n.CSVCMsg_ServerInfo: handle_svc_serverinfo,
@@ -164,5 +197,13 @@ HANDLERS = {
     pb_d.CDemoClassInfo: handle_dem_classinfo,
     pb_n.CSVCMsg_VoiceInit: handle_svc_voiceinit,
     pb_n.CSVCMsg_GameEventList: handle_svc_gameeventlist,
-    pb_n.CSVCMsg_SetView: handle_svc_setview
+    pb_n.CSVCMsg_SetView: handle_svc_setview,
+    pb_n.CSVCMsg_PacketEntities: handle_svc_packetentities,
+    pb_nbt.CSVCMsg_GameEvent: handle_svc_gameevent,
+    pb_nbt.CSVCMsg_UserMessage: handle_svc_usermessage,
+    pb_n.CSVCMsg_UpdateStringTable: handle_svc_updatestringtable,
+    pb_n.CSVCMsg_TempEntities: handle_svc_tempentities,
+    pb_n.CSVCMsg_Sounds: handle_svc_sounds,
+    pb_n.CSVCMsg_VoiceData: handle_svc_voicedata,
+    pb_d.CDemoFileInfo: handle_dem_fileinfo
 }
