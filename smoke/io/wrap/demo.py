@@ -1,10 +1,6 @@
-import importlib as il
-import os
 import snappy
 
-__impl__ = 'smoke_ext' if os.environ.get('SMOKE_EXT') else 'smoke'
-io_util = il.import_module(__impl__ + '.io.util')
-
+from smoke.io import util as io_utl
 from smoke.io.util import Peek
 
 
@@ -44,11 +40,11 @@ class DemoIO(object):
 
     def read(self):
         try:
-            kind = io_util.read_varint(self.handle)
+            kind = io_utl.read_varint(self.handle)
             comp = bool(kind & COMPRESSED_MASK)
             kind = (kind & ~COMPRESSED_MASK) if comp else kind
-            tick = io_util.read_varint(self.handle)
-            size = io_util.read_varint(self.handle)
+            tick = io_utl.read_varint(self.handle)
+            size = io_utl.read_varint(self.handle)
             message = self.handle.read(size)
 
             assert len(message) == size

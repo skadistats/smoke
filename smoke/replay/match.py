@@ -2,6 +2,7 @@ from itertools import chain
 from smoke.model.collection import recv_tables as mdl_cllctn_rcvtbls
 from smoke.model.dt import recv_table as mdl_dt_rcvtbl
 from smoke.model.dt.prop import Prop, Flag, Type
+from smoke.replay.decoder import packet_entities as rply_dcdr_pcktntts
 
 
 def mk():
@@ -22,6 +23,7 @@ class Match(object):
         self.voice_init = None
         self.game_event_descriptors = None
         self.view = None
+        self._packet_entities_decoder = None
 
         # game
         self.tick = None
@@ -35,6 +37,14 @@ class Match(object):
 
         # epilogue
         self.file_info = None
+
+    @property
+    def packet_entities_decoder(self):
+        if not self._packet_entities_decoder:
+            self._packet_entities_decoder = \
+                rply_dcdr_pcktntts.mk(self.recv_tables)
+
+        return self._packet_entities_decoder
 
     def flatten_send_tables(self):
         recv_tables = dict()

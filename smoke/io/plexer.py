@@ -3,9 +3,9 @@ import warnings
 
 from protobuf.impl import demo_pb2 as pb_d
 from protobuf.impl import netmessages_pb2 as pb_n
-from smoke import util
 from smoke.io import factory as io_fctr
 from smoke.io.wrap import embed as io_wrp_mbd
+from smoke.util import enum
 
 
 def mk(demo_io, **args):
@@ -20,7 +20,7 @@ class DEMStopEncountered(RuntimeError):
     pass
 
 
-Action = util.enum(Enqueue = 0, Inline = 1, Ignore = 2)
+Action = enum(Enqueue = 0, Inline = 1, Ignore = 2)
 
 
 OPERATIONS = {

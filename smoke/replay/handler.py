@@ -2,10 +2,12 @@ from collections import OrderedDict
 from protobuf.impl import demo_pb2 as pb_d
 from protobuf.impl import netmessages_pb2 as pb_n
 from protobuf.impl import networkbasetypes_pb2 as pb_nbt
-from smoke.model.collection import string_tables as mdl_cllctn_strngtbl
+from smoke.io.stream import entity as io_strm_ntt
+from smoke.model.collection import entities as mdl_cllctn_ntts
 from smoke.model.collection import game_event_descriptors as \
     mdl_cllctn_gmvntdscrptrs
 from smoke.model.collection.game_event_descriptors import GameEventDescriptor
+from smoke.model.collection import string_tables as mdl_cllctn_strngtbl
 from smoke.model.dt.prop import Prop, Type
 from smoke.model.dt.send_table import SendTable
 from smoke.model.string_table import String
@@ -155,7 +157,13 @@ def handle_svc_setview(pb, match):
 
 
 def handle_svc_packetentities(pb, match):
-    pass
+    match.entities = match.entities or mdl_cllctn_ntts.mk()
+
+    s = io_strm_ntt.mk(pb.entity_data)
+    d, n = pb.is_delta, pb.updated_entries
+    patch = match.packet_entities_decoder.decode(s, d, n, match.entities)
+
+    match.entities.apply(patch)
 
 
 def handle_svc_gameevent(pb, match):
