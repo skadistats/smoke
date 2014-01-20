@@ -1,8 +1,7 @@
 import collections
 import warnings
 
-from protobuf.impl import demo_pb2 as pb_d
-from protobuf.impl import netmessages_pb2 as pb_n
+from smoke.protobuf import dota2_palm as pbd2
 from smoke.io import factory as io_fctr
 from smoke.io.wrap import embed as io_wrp_mbd
 from smoke.util import enum
@@ -24,26 +23,26 @@ Action = enum(Enqueue = 0, Inline = 1, Ignore = 2)
 
 
 OPERATIONS = {
-    pb_d.DEM_ClassInfo:           Action.Enqueue,
-    pb_d.DEM_ConsoleCmd:          Action.Ignore,
-    pb_d.DEM_CustomData:          Action.Ignore,
-    pb_d.DEM_CustomDataCallbacks: Action.Ignore,
-    pb_d.DEM_FileHeader:          Action.Enqueue,
-    pb_d.DEM_FileInfo:            Action.Enqueue,
-    pb_d.DEM_FullPacket:          Action.Enqueue,
-    pb_d.DEM_Packet:              Action.Inline,
-    pb_d.DEM_SendTables:          Action.Inline,
-    pb_d.DEM_SignonPacket:        Action.Inline,
-    pb_d.DEM_StringTables:        Action.Ignore,
-    pb_d.DEM_Stop:                Action.Enqueue,
-    pb_d.DEM_SyncTick:            Action.Enqueue,
-    pb_d.DEM_UserCmd:             Action.Ignore
+    pbd2.DEM_ClassInfo:           Action.Enqueue,
+    pbd2.DEM_ConsoleCmd:          Action.Ignore,
+    pbd2.DEM_CustomData:          Action.Ignore,
+    pbd2.DEM_CustomDataCallbacks: Action.Ignore,
+    pbd2.DEM_FileHeader:          Action.Enqueue,
+    pbd2.DEM_FileInfo:            Action.Enqueue,
+    pbd2.DEM_FullPacket:          Action.Enqueue,
+    pbd2.DEM_Packet:              Action.Inline,
+    pbd2.DEM_SendTables:          Action.Inline,
+    pbd2.DEM_SignonPacket:        Action.Inline,
+    pbd2.DEM_StringTables:        Action.Ignore,
+    pbd2.DEM_Stop:                Action.Enqueue,
+    pbd2.DEM_SyncTick:            Action.Enqueue,
+    pbd2.DEM_UserCmd:             Action.Ignore
 }
 
 
-TOP_WHITELIST = set([pb_d.DEM_FileHeader, pb_d.DEM_ClassInfo,
-    pb_d.DEM_SignonPacket, pb_d.DEM_SyncTick, pb_d.DEM_Packet, pb_d.DEM_Stop,
-    pb_d.DEM_FileInfo])
+TOP_WHITELIST = set([pbd2.DEM_FileHeader, pbd2.DEM_ClassInfo,
+    pbd2.DEM_SignonPacket, pbd2.DEM_SyncTick, pbd2.DEM_Packet, pbd2.DEM_Stop,
+    pbd2.DEM_FileInfo])
 
 
 class Plexer(object):
@@ -52,7 +51,7 @@ class Plexer(object):
         tb = set(tb) - TOP_WHITELIST
 
         eb = embed_blacklist or set()
-        eb = set(eb) | set([pb_n.svc_ClassInfo])
+        eb = set(eb) | set([pbd2.svc_ClassInfo])
 
         self.demo_io = demo_io
         self.queue = collections.deque()
@@ -65,7 +64,7 @@ class Plexer(object):
 
         self.queue.popleft()
 
-        if peek.kind is pb_d.DEM_SyncTick:
+        if peek.kind is pbd2.DEM_SyncTick:
             raise DEMSyncTickEncountered()
 
         return peek, pb
@@ -75,14 +74,14 @@ class Plexer(object):
             raise DEMStopEncountered()
 
         tick_peek, tick_pb = self.read()
-        assert tick_peek.kind == pb_n.net_Tick, tick_peek.kind
+        assert tick_peek.kind == pbd2.net_Tick, tick_peek.kind
         collection = [(tick_peek, tick_pb)]
 
         next_peek, next_pb = self.lookahead()
-        while next_peek.kind is not pb_n.net_Tick:
+        while next_peek.kind is not pbd2.net_Tick:
             peek, pb = self.read()
 
-            if peek.kind is pb_d.DEM_Stop:
+            if peek.kind is pbd2.DEM_Stop:
                 self.stopped = True
                 break
 
