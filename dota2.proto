@@ -1,0 +1,2141 @@
+enum Activity {
+	ACT_INVALID = -1;
+	ACT_RESET = 0;
+	ACT_IDLE = 1;
+	ACT_TRANSITION = 2;
+	ACT_COVER = 3;
+	ACT_COVER_MED = 4;
+	ACT_COVER_LOW = 5;
+	ACT_WALK = 6;
+	ACT_WALK_AIM = 7;
+	ACT_WALK_CROUCH = 8;
+	ACT_WALK_CROUCH_AIM = 9;
+	ACT_RUN = 10;
+	ACT_RUN_AIM = 11;
+	ACT_RUN_CROUCH = 12;
+	ACT_RUN_CROUCH_AIM = 13;
+	ACT_RUN_PROTECTED = 14;
+	ACT_SCRIPT_CUSTOM_MOVE = 15;
+	ACT_RANGE_ATTACK1 = 16;
+	ACT_RANGE_ATTACK2 = 17;
+	ACT_RANGE_ATTACK1_LOW = 18;
+	ACT_RANGE_ATTACK2_LOW = 19;
+	ACT_DIESIMPLE = 20;
+	ACT_DIEBACKWARD = 21;
+	ACT_DIEFORWARD = 22;
+	ACT_DIEVIOLENT = 23;
+	ACT_DIERAGDOLL = 24;
+	ACT_FLY = 25;
+	ACT_HOVER = 26;
+	ACT_GLIDE = 27;
+	ACT_SWIM = 28;
+	ACT_JUMP = 29;
+	ACT_HOP = 30;
+	ACT_LEAP = 31;
+	ACT_LAND = 32;
+	ACT_CLIMB_UP = 33;
+	ACT_CLIMB_DOWN = 34;
+	ACT_CLIMB_DISMOUNT = 35;
+	ACT_SHIPLADDER_UP = 36;
+	ACT_SHIPLADDER_DOWN = 37;
+	ACT_STRAFE_LEFT = 38;
+	ACT_STRAFE_RIGHT = 39;
+	ACT_ROLL_LEFT = 40;
+	ACT_ROLL_RIGHT = 41;
+	ACT_TURN_LEFT = 42;
+	ACT_TURN_RIGHT = 43;
+	ACT_CROUCH = 44;
+	ACT_CROUCHIDLE = 45;
+	ACT_STAND = 46;
+	ACT_USE = 47;
+	ACT_ALIEN_BURROW_IDLE = 48;
+	ACT_ALIEN_BURROW_OUT = 49;
+	ACT_SIGNAL1 = 50;
+	ACT_SIGNAL2 = 51;
+	ACT_SIGNAL3 = 52;
+	ACT_SIGNAL_ADVANCE = 53;
+	ACT_SIGNAL_FORWARD = 54;
+	ACT_SIGNAL_GROUP = 55;
+	ACT_SIGNAL_HALT = 56;
+	ACT_SIGNAL_LEFT = 57;
+	ACT_SIGNAL_RIGHT = 58;
+	ACT_SIGNAL_TAKECOVER = 59;
+	ACT_LOOKBACK_RIGHT = 60;
+	ACT_LOOKBACK_LEFT = 61;
+	ACT_COWER = 62;
+	ACT_SMALL_FLINCH = 63;
+	ACT_BIG_FLINCH = 64;
+	ACT_MELEE_ATTACK1 = 65;
+	ACT_MELEE_ATTACK2 = 66;
+	ACT_RELOAD = 67;
+	ACT_RELOAD_START = 68;
+	ACT_RELOAD_FINISH = 69;
+	ACT_RELOAD_LOW = 70;
+	ACT_ARM = 71;
+	ACT_DISARM = 72;
+	ACT_DROP_WEAPON = 73;
+	ACT_DROP_WEAPON_SHOTGUN = 74;
+	ACT_PICKUP_GROUND = 75;
+	ACT_PICKUP_RACK = 76;
+	ACT_IDLE_ANGRY = 77;
+	ACT_IDLE_RELAXED = 78;
+	ACT_IDLE_STIMULATED = 79;
+	ACT_IDLE_AGITATED = 80;
+	ACT_IDLE_STEALTH = 81;
+	ACT_IDLE_HURT = 82;
+	ACT_WALK_RELAXED = 83;
+	ACT_WALK_STIMULATED = 84;
+	ACT_WALK_AGITATED = 85;
+	ACT_WALK_STEALTH = 86;
+	ACT_RUN_RELAXED = 87;
+	ACT_RUN_STIMULATED = 88;
+	ACT_RUN_AGITATED = 89;
+	ACT_RUN_STEALTH = 90;
+	ACT_IDLE_AIM_RELAXED = 91;
+	ACT_IDLE_AIM_STIMULATED = 92;
+	ACT_IDLE_AIM_AGITATED = 93;
+	ACT_IDLE_AIM_STEALTH = 94;
+	ACT_WALK_AIM_RELAXED = 95;
+	ACT_WALK_AIM_STIMULATED = 96;
+	ACT_WALK_AIM_AGITATED = 97;
+	ACT_WALK_AIM_STEALTH = 98;
+	ACT_RUN_AIM_RELAXED = 99;
+	ACT_RUN_AIM_STIMULATED = 100;
+	ACT_RUN_AIM_AGITATED = 101;
+	ACT_RUN_AIM_STEALTH = 102;
+	ACT_CROUCHIDLE_STIMULATED = 103;
+	ACT_CROUCHIDLE_AIM_STIMULATED = 104;
+	ACT_CROUCHIDLE_AGITATED = 105;
+	ACT_WALK_HURT = 106;
+	ACT_RUN_HURT = 107;
+	ACT_SPECIAL_ATTACK1 = 108;
+	ACT_SPECIAL_ATTACK2 = 109;
+	ACT_COMBAT_IDLE = 110;
+	ACT_WALK_SCARED = 111;
+	ACT_RUN_SCARED = 112;
+	ACT_VICTORY_DANCE = 113;
+	ACT_DIE_HEADSHOT = 114;
+	ACT_DIE_CHESTSHOT = 115;
+	ACT_DIE_GUTSHOT = 116;
+	ACT_DIE_BACKSHOT = 117;
+	ACT_FLINCH_HEAD = 118;
+	ACT_FLINCH_CHEST = 119;
+	ACT_FLINCH_STOMACH = 120;
+	ACT_FLINCH_LEFTARM = 121;
+	ACT_FLINCH_RIGHTARM = 122;
+	ACT_FLINCH_LEFTLEG = 123;
+	ACT_FLINCH_RIGHTLEG = 124;
+	ACT_FLINCH_PHYSICS = 125;
+	ACT_FLINCH_HEAD_BACK = 126;
+	ACT_FLINCH_CHEST_BACK = 127;
+	ACT_FLINCH_STOMACH_BACK = 128;
+	ACT_FLINCH_CROUCH_FRONT = 129;
+	ACT_FLINCH_CROUCH_BACK = 130;
+	ACT_FLINCH_CROUCH_LEFT = 131;
+	ACT_FLINCH_CROUCH_RIGHT = 132;
+	ACT_IDLE_ON_FIRE = 133;
+	ACT_WALK_ON_FIRE = 134;
+	ACT_RUN_ON_FIRE = 135;
+	ACT_RAPPEL_LOOP = 136;
+	ACT_180_LEFT = 137;
+	ACT_180_RIGHT = 138;
+	ACT_90_LEFT = 139;
+	ACT_90_RIGHT = 140;
+	ACT_STEP_LEFT = 141;
+	ACT_STEP_RIGHT = 142;
+	ACT_STEP_BACK = 143;
+	ACT_STEP_FORE = 144;
+	ACT_GESTURE_RANGE_ATTACK1 = 145;
+	ACT_GESTURE_RANGE_ATTACK2 = 146;
+	ACT_GESTURE_MELEE_ATTACK1 = 147;
+	ACT_GESTURE_MELEE_ATTACK2 = 148;
+	ACT_GESTURE_RANGE_ATTACK1_LOW = 149;
+	ACT_GESTURE_RANGE_ATTACK2_LOW = 150;
+	ACT_MELEE_ATTACK_SWING_GESTURE = 151;
+	ACT_GESTURE_SMALL_FLINCH = 152;
+	ACT_GESTURE_BIG_FLINCH = 153;
+	ACT_GESTURE_FLINCH_BLAST = 154;
+	ACT_GESTURE_FLINCH_BLAST_SHOTGUN = 155;
+	ACT_GESTURE_FLINCH_BLAST_DAMAGED = 156;
+	ACT_GESTURE_FLINCH_BLAST_DAMAGED_SHOTGUN = 157;
+	ACT_GESTURE_FLINCH_HEAD = 158;
+	ACT_GESTURE_FLINCH_CHEST = 159;
+	ACT_GESTURE_FLINCH_STOMACH = 160;
+	ACT_GESTURE_FLINCH_LEFTARM = 161;
+	ACT_GESTURE_FLINCH_RIGHTARM = 162;
+	ACT_GESTURE_FLINCH_LEFTLEG = 163;
+	ACT_GESTURE_FLINCH_RIGHTLEG = 164;
+	ACT_GESTURE_TURN_LEFT = 165;
+	ACT_GESTURE_TURN_RIGHT = 166;
+	ACT_GESTURE_TURN_LEFT45 = 167;
+	ACT_GESTURE_TURN_RIGHT45 = 168;
+	ACT_GESTURE_TURN_LEFT90 = 169;
+	ACT_GESTURE_TURN_RIGHT90 = 170;
+	ACT_GESTURE_TURN_LEFT45_FLAT = 171;
+	ACT_GESTURE_TURN_RIGHT45_FLAT = 172;
+	ACT_GESTURE_TURN_LEFT90_FLAT = 173;
+	ACT_GESTURE_TURN_RIGHT90_FLAT = 174;
+	ACT_BARNACLE_HIT = 175;
+	ACT_BARNACLE_PULL = 176;
+	ACT_BARNACLE_CHOMP = 177;
+	ACT_BARNACLE_CHEW = 178;
+	ACT_DO_NOT_DISTURB = 179;
+	ACT_SPECIFIC_SEQUENCE = 180;
+	ACT_VM_DRAW = 181;
+	ACT_VM_HOLSTER = 182;
+	ACT_VM_IDLE = 183;
+	ACT_VM_FIDGET = 184;
+	ACT_VM_PULLBACK = 185;
+	ACT_VM_PULLBACK_HIGH = 186;
+	ACT_VM_PULLBACK_LOW = 187;
+	ACT_VM_THROW = 188;
+	ACT_VM_PULLPIN = 189;
+	ACT_VM_PRIMARYATTACK = 190;
+	ACT_VM_SECONDARYATTACK = 191;
+	ACT_VM_RELOAD = 192;
+	ACT_VM_DRYFIRE = 193;
+	ACT_VM_HITLEFT = 194;
+	ACT_VM_HITLEFT2 = 195;
+	ACT_VM_HITRIGHT = 196;
+	ACT_VM_HITRIGHT2 = 197;
+	ACT_VM_HITCENTER = 198;
+	ACT_VM_HITCENTER2 = 199;
+	ACT_VM_MISSLEFT = 200;
+	ACT_VM_MISSLEFT2 = 201;
+	ACT_VM_MISSRIGHT = 202;
+	ACT_VM_MISSRIGHT2 = 203;
+	ACT_VM_MISSCENTER = 204;
+	ACT_VM_MISSCENTER2 = 205;
+	ACT_VM_HAULBACK = 206;
+	ACT_VM_SWINGHARD = 207;
+	ACT_VM_SWINGMISS = 208;
+	ACT_VM_SWINGHIT = 209;
+	ACT_VM_IDLE_TO_LOWERED = 210;
+	ACT_VM_IDLE_LOWERED = 211;
+	ACT_VM_LOWERED_TO_IDLE = 212;
+	ACT_VM_RECOIL1 = 213;
+	ACT_VM_RECOIL2 = 214;
+	ACT_VM_RECOIL3 = 215;
+	ACT_VM_PICKUP = 216;
+	ACT_VM_RELEASE = 217;
+	ACT_VM_ATTACH_SILENCER = 218;
+	ACT_VM_DETACH_SILENCER = 219;
+	ACT_SLAM_STICKWALL_IDLE = 220;
+	ACT_SLAM_STICKWALL_ND_IDLE = 221;
+	ACT_SLAM_STICKWALL_ATTACH = 222;
+	ACT_SLAM_STICKWALL_ATTACH2 = 223;
+	ACT_SLAM_STICKWALL_ND_ATTACH = 224;
+	ACT_SLAM_STICKWALL_ND_ATTACH2 = 225;
+	ACT_SLAM_STICKWALL_DETONATE = 226;
+	ACT_SLAM_STICKWALL_DETONATOR_HOLSTER = 227;
+	ACT_SLAM_STICKWALL_DRAW = 228;
+	ACT_SLAM_STICKWALL_ND_DRAW = 229;
+	ACT_SLAM_STICKWALL_TO_THROW = 230;
+	ACT_SLAM_STICKWALL_TO_THROW_ND = 231;
+	ACT_SLAM_STICKWALL_TO_TRIPMINE_ND = 232;
+	ACT_SLAM_THROW_IDLE = 233;
+	ACT_SLAM_THROW_ND_IDLE = 234;
+	ACT_SLAM_THROW_THROW = 235;
+	ACT_SLAM_THROW_THROW2 = 236;
+	ACT_SLAM_THROW_THROW_ND = 237;
+	ACT_SLAM_THROW_THROW_ND2 = 238;
+	ACT_SLAM_THROW_DRAW = 239;
+	ACT_SLAM_THROW_ND_DRAW = 240;
+	ACT_SLAM_THROW_TO_STICKWALL = 241;
+	ACT_SLAM_THROW_TO_STICKWALL_ND = 242;
+	ACT_SLAM_THROW_DETONATE = 243;
+	ACT_SLAM_THROW_DETONATOR_HOLSTER = 244;
+	ACT_SLAM_THROW_TO_TRIPMINE_ND = 245;
+	ACT_SLAM_TRIPMINE_IDLE = 246;
+	ACT_SLAM_TRIPMINE_DRAW = 247;
+	ACT_SLAM_TRIPMINE_ATTACH = 248;
+	ACT_SLAM_TRIPMINE_ATTACH2 = 249;
+	ACT_SLAM_TRIPMINE_TO_STICKWALL_ND = 250;
+	ACT_SLAM_TRIPMINE_TO_THROW_ND = 251;
+	ACT_SLAM_DETONATOR_IDLE = 252;
+	ACT_SLAM_DETONATOR_DRAW = 253;
+	ACT_SLAM_DETONATOR_DETONATE = 254;
+	ACT_SLAM_DETONATOR_HOLSTER = 255;
+	ACT_SLAM_DETONATOR_STICKWALL_DRAW = 256;
+	ACT_SLAM_DETONATOR_THROW_DRAW = 257;
+	ACT_SHOTGUN_RELOAD_START = 258;
+	ACT_SHOTGUN_RELOAD_FINISH = 259;
+	ACT_SHOTGUN_PUMP = 260;
+	ACT_SMG2_IDLE2 = 261;
+	ACT_SMG2_FIRE2 = 262;
+	ACT_SMG2_DRAW2 = 263;
+	ACT_SMG2_RELOAD2 = 264;
+	ACT_SMG2_DRYFIRE2 = 265;
+	ACT_SMG2_TOAUTO = 266;
+	ACT_SMG2_TOBURST = 267;
+	ACT_PHYSCANNON_UPGRADE = 268;
+	ACT_RANGE_ATTACK_AR1 = 269;
+	ACT_RANGE_ATTACK_AR2 = 270;
+	ACT_RANGE_ATTACK_AR2_LOW = 271;
+	ACT_RANGE_ATTACK_AR2_GRENADE = 272;
+	ACT_RANGE_ATTACK_HMG1 = 273;
+	ACT_RANGE_ATTACK_ML = 274;
+	ACT_RANGE_ATTACK_SMG1 = 275;
+	ACT_RANGE_ATTACK_SMG1_LOW = 276;
+	ACT_RANGE_ATTACK_SMG2 = 277;
+	ACT_RANGE_ATTACK_SHOTGUN = 278;
+	ACT_RANGE_ATTACK_SHOTGUN_LOW = 279;
+	ACT_RANGE_ATTACK_PISTOL = 280;
+	ACT_RANGE_ATTACK_PISTOL_LOW = 281;
+	ACT_RANGE_ATTACK_SLAM = 282;
+	ACT_RANGE_ATTACK_TRIPWIRE = 283;
+	ACT_RANGE_ATTACK_THROW = 284;
+	ACT_RANGE_ATTACK_SNIPER_RIFLE = 285;
+	ACT_RANGE_ATTACK_RPG = 286;
+	ACT_MELEE_ATTACK_SWING = 287;
+	ACT_RANGE_AIM_LOW = 288;
+	ACT_RANGE_AIM_SMG1_LOW = 289;
+	ACT_RANGE_AIM_PISTOL_LOW = 290;
+	ACT_RANGE_AIM_AR2_LOW = 291;
+	ACT_COVER_PISTOL_LOW = 292;
+	ACT_COVER_SMG1_LOW = 293;
+	ACT_GESTURE_RANGE_ATTACK_AR1 = 294;
+	ACT_GESTURE_RANGE_ATTACK_AR2 = 295;
+	ACT_GESTURE_RANGE_ATTACK_AR2_GRENADE = 296;
+	ACT_GESTURE_RANGE_ATTACK_HMG1 = 297;
+	ACT_GESTURE_RANGE_ATTACK_ML = 298;
+	ACT_GESTURE_RANGE_ATTACK_SMG1 = 299;
+	ACT_GESTURE_RANGE_ATTACK_SMG1_LOW = 300;
+	ACT_GESTURE_RANGE_ATTACK_SMG2 = 301;
+	ACT_GESTURE_RANGE_ATTACK_SHOTGUN = 302;
+	ACT_GESTURE_RANGE_ATTACK_PISTOL = 303;
+	ACT_GESTURE_RANGE_ATTACK_PISTOL_LOW = 304;
+	ACT_GESTURE_RANGE_ATTACK_SLAM = 305;
+	ACT_GESTURE_RANGE_ATTACK_TRIPWIRE = 306;
+	ACT_GESTURE_RANGE_ATTACK_THROW = 307;
+	ACT_GESTURE_RANGE_ATTACK_SNIPER_RIFLE = 308;
+	ACT_GESTURE_MELEE_ATTACK_SWING = 309;
+	ACT_IDLE_RIFLE = 310;
+	ACT_IDLE_SMG1 = 311;
+	ACT_IDLE_ANGRY_SMG1 = 312;
+	ACT_IDLE_PISTOL = 313;
+	ACT_IDLE_ANGRY_PISTOL = 314;
+	ACT_IDLE_ANGRY_SHOTGUN = 315;
+	ACT_IDLE_STEALTH_PISTOL = 316;
+	ACT_IDLE_PACKAGE = 317;
+	ACT_WALK_PACKAGE = 318;
+	ACT_IDLE_SUITCASE = 319;
+	ACT_WALK_SUITCASE = 320;
+	ACT_IDLE_SMG1_RELAXED = 321;
+	ACT_IDLE_SMG1_STIMULATED = 322;
+	ACT_WALK_RIFLE_RELAXED = 323;
+	ACT_RUN_RIFLE_RELAXED = 324;
+	ACT_WALK_RIFLE_STIMULATED = 325;
+	ACT_RUN_RIFLE_STIMULATED = 326;
+	ACT_IDLE_AIM_RIFLE_STIMULATED = 327;
+	ACT_WALK_AIM_RIFLE_STIMULATED = 328;
+	ACT_RUN_AIM_RIFLE_STIMULATED = 329;
+	ACT_IDLE_SHOTGUN_RELAXED = 330;
+	ACT_IDLE_SHOTGUN_STIMULATED = 331;
+	ACT_IDLE_SHOTGUN_AGITATED = 332;
+	ACT_WALK_ANGRY = 333;
+	ACT_POLICE_HARASS1 = 334;
+	ACT_POLICE_HARASS2 = 335;
+	ACT_IDLE_MANNEDGUN = 336;
+	ACT_IDLE_MELEE = 337;
+	ACT_IDLE_ANGRY_MELEE = 338;
+	ACT_IDLE_RPG_RELAXED = 339;
+	ACT_IDLE_RPG = 340;
+	ACT_IDLE_ANGRY_RPG = 341;
+	ACT_COVER_LOW_RPG = 342;
+	ACT_WALK_RPG = 343;
+	ACT_RUN_RPG = 344;
+	ACT_WALK_CROUCH_RPG = 345;
+	ACT_RUN_CROUCH_RPG = 346;
+	ACT_WALK_RPG_RELAXED = 347;
+	ACT_RUN_RPG_RELAXED = 348;
+	ACT_WALK_RIFLE = 349;
+	ACT_WALK_AIM_RIFLE = 350;
+	ACT_WALK_CROUCH_RIFLE = 351;
+	ACT_WALK_CROUCH_AIM_RIFLE = 352;
+	ACT_RUN_RIFLE = 353;
+	ACT_RUN_AIM_RIFLE = 354;
+	ACT_RUN_CROUCH_RIFLE = 355;
+	ACT_RUN_CROUCH_AIM_RIFLE = 356;
+	ACT_RUN_STEALTH_PISTOL = 357;
+	ACT_WALK_AIM_SHOTGUN = 358;
+	ACT_RUN_AIM_SHOTGUN = 359;
+	ACT_WALK_PISTOL = 360;
+	ACT_RUN_PISTOL = 361;
+	ACT_WALK_AIM_PISTOL = 362;
+	ACT_RUN_AIM_PISTOL = 363;
+	ACT_WALK_STEALTH_PISTOL = 364;
+	ACT_WALK_AIM_STEALTH_PISTOL = 365;
+	ACT_RUN_AIM_STEALTH_PISTOL = 366;
+	ACT_RELOAD_PISTOL = 367;
+	ACT_RELOAD_PISTOL_LOW = 368;
+	ACT_RELOAD_SMG1 = 369;
+	ACT_RELOAD_SMG1_LOW = 370;
+	ACT_RELOAD_SHOTGUN = 371;
+	ACT_RELOAD_SHOTGUN_LOW = 372;
+	ACT_GESTURE_RELOAD = 373;
+	ACT_GESTURE_RELOAD_PISTOL = 374;
+	ACT_GESTURE_RELOAD_SMG1 = 375;
+	ACT_GESTURE_RELOAD_SHOTGUN = 376;
+	ACT_BUSY_LEAN_LEFT = 377;
+	ACT_BUSY_LEAN_LEFT_ENTRY = 378;
+	ACT_BUSY_LEAN_LEFT_EXIT = 379;
+	ACT_BUSY_LEAN_BACK = 380;
+	ACT_BUSY_LEAN_BACK_ENTRY = 381;
+	ACT_BUSY_LEAN_BACK_EXIT = 382;
+	ACT_BUSY_SIT_GROUND = 383;
+	ACT_BUSY_SIT_GROUND_ENTRY = 384;
+	ACT_BUSY_SIT_GROUND_EXIT = 385;
+	ACT_BUSY_SIT_CHAIR = 386;
+	ACT_BUSY_SIT_CHAIR_ENTRY = 387;
+	ACT_BUSY_SIT_CHAIR_EXIT = 388;
+	ACT_BUSY_STAND = 389;
+	ACT_BUSY_QUEUE = 390;
+	ACT_DUCK_DODGE = 391;
+	ACT_DIE_BARNACLE_SWALLOW = 392;
+	ACT_GESTURE_BARNACLE_STRANGLE = 393;
+	ACT_PHYSCANNON_DETACH = 394;
+	ACT_PHYSCANNON_ANIMATE = 395;
+	ACT_PHYSCANNON_ANIMATE_PRE = 396;
+	ACT_PHYSCANNON_ANIMATE_POST = 397;
+	ACT_DIE_FRONTSIDE = 398;
+	ACT_DIE_RIGHTSIDE = 399;
+	ACT_DIE_BACKSIDE = 400;
+	ACT_DIE_LEFTSIDE = 401;
+	ACT_OPEN_DOOR = 402;
+	ACT_DI_ALYX_ZOMBIE_MELEE = 403;
+	ACT_DI_ALYX_ZOMBIE_TORSO_MELEE = 404;
+	ACT_DI_ALYX_HEADCRAB_MELEE = 405;
+	ACT_DI_ALYX_ANTLION = 406;
+	ACT_DI_ALYX_ZOMBIE_SHOTGUN64 = 407;
+	ACT_DI_ALYX_ZOMBIE_SHOTGUN26 = 408;
+	ACT_READINESS_RELAXED_TO_STIMULATED = 409;
+	ACT_READINESS_RELAXED_TO_STIMULATED_WALK = 410;
+	ACT_READINESS_AGITATED_TO_STIMULATED = 411;
+	ACT_READINESS_STIMULATED_TO_RELAXED = 412;
+	ACT_READINESS_PISTOL_RELAXED_TO_STIMULATED = 413;
+	ACT_READINESS_PISTOL_RELAXED_TO_STIMULATED_WALK = 414;
+	ACT_READINESS_PISTOL_AGITATED_TO_STIMULATED = 415;
+	ACT_READINESS_PISTOL_STIMULATED_TO_RELAXED = 416;
+	ACT_IDLE_CARRY = 417;
+	ACT_WALK_CARRY = 418;
+	ACT_DOTA_IDLE = 419;
+	ACT_DOTA_IDLE_RARE = 421;
+	ACT_DOTA_RUN = 422;
+	ACT_DOTA_ATTACK = 424;
+	ACT_DOTA_ATTACK2 = 425;
+	ACT_DOTA_ATTACK_EVENT = 426;
+	ACT_DOTA_DIE = 427;
+	ACT_DOTA_FLINCH = 428;
+	ACT_DOTA_FLAIL = 429;
+	ACT_DOTA_DISABLED = 430;
+	ACT_DOTA_CAST_ABILITY_1 = 431;
+	ACT_DOTA_CAST_ABILITY_2 = 432;
+	ACT_DOTA_CAST_ABILITY_3 = 433;
+	ACT_DOTA_CAST_ABILITY_4 = 434;
+	ACT_DOTA_CAST_ABILITY_5 = 435;
+	ACT_DOTA_CAST_ABILITY_6 = 436;
+	ACT_DOTA_OVERRIDE_ABILITY_1 = 437;
+	ACT_DOTA_OVERRIDE_ABILITY_2 = 438;
+	ACT_DOTA_OVERRIDE_ABILITY_3 = 439;
+	ACT_DOTA_OVERRIDE_ABILITY_4 = 440;
+	ACT_DOTA_CHANNEL_ABILITY_1 = 441;
+	ACT_DOTA_CHANNEL_ABILITY_2 = 442;
+	ACT_DOTA_CHANNEL_ABILITY_3 = 443;
+	ACT_DOTA_CHANNEL_ABILITY_4 = 444;
+	ACT_DOTA_CHANNEL_ABILITY_5 = 445;
+	ACT_DOTA_CHANNEL_ABILITY_6 = 446;
+	ACT_DOTA_CHANNEL_END_ABILITY_1 = 447;
+	ACT_DOTA_CHANNEL_END_ABILITY_2 = 448;
+	ACT_DOTA_CHANNEL_END_ABILITY_3 = 449;
+	ACT_DOTA_CHANNEL_END_ABILITY_4 = 450;
+	ACT_DOTA_CHANNEL_END_ABILITY_5 = 451;
+	ACT_DOTA_CHANNEL_END_ABILITY_6 = 452;
+	ACT_DOTA_CONSTANT_LAYER = 453;
+	ACT_DOTA_CAPTURE = 454;
+	ACT_DOTA_SPAWN = 455;
+	ACT_DOTA_KILLTAUNT = 456;
+	ACT_DOTA_TAUNT = 457;
+	ACT_DOTA_THIRST = 458;
+	ACT_DOTA_CAST_DRAGONBREATH = 459;
+	ACT_DOTA_ECHO_SLAM = 460;
+	ACT_DOTA_CAST_ABILITY_1_END = 461;
+	ACT_DOTA_CAST_ABILITY_2_END = 462;
+	ACT_DOTA_CAST_ABILITY_3_END = 463;
+	ACT_DOTA_CAST_ABILITY_4_END = 464;
+	ACT_MIRANA_LEAP_END = 465;
+	ACT_WAVEFORM_START = 466;
+	ACT_WAVEFORM_END = 467;
+	ACT_DOTA_CAST_ABILITY_ROT = 468;
+	ACT_DOTA_DIE_SPECIAL = 469;
+	ACT_DOTA_RATTLETRAP_BATTERYASSAULT = 470;
+	ACT_DOTA_RATTLETRAP_POWERCOGS = 471;
+	ACT_DOTA_RATTLETRAP_HOOKSHOT_START = 472;
+	ACT_DOTA_RATTLETRAP_HOOKSHOT_LOOP = 473;
+	ACT_DOTA_RATTLETRAP_HOOKSHOT_END = 474;
+	ACT_STORM_SPIRIT_OVERLOAD_RUN_OVERRIDE = 475;
+	ACT_DOTA_TINKER_REARM1 = 476;
+	ACT_DOTA_TINKER_REARM2 = 477;
+	ACT_DOTA_TINKER_REARM3 = 478;
+	ACT_TINY_AVALANCHE = 479;
+	ACT_TINY_TOSS = 480;
+	ACT_TINY_GROWL = 481;
+	ACT_DOTA_WEAVERBUG_ATTACH = 482;
+	ACT_DOTA_CAST_WILD_AXES_END = 483;
+	ACT_DOTA_CAST_LIFE_BREAK_START = 484;
+	ACT_DOTA_CAST_LIFE_BREAK_END = 485;
+	ACT_DOTA_NIGHTSTALKER_TRANSITION = 486;
+	ACT_DOTA_LIFESTEALER_RAGE = 487;
+	ACT_DOTA_LIFESTEALER_OPEN_WOUNDS = 488;
+	ACT_DOTA_SAND_KING_BURROW_IN = 489;
+	ACT_DOTA_SAND_KING_BURROW_OUT = 490;
+	ACT_DOTA_EARTHSHAKER_TOTEM_ATTACK = 491;
+	ACT_DOTA_WHEEL_LAYER = 492;
+	ACT_DOTA_ALCHEMIST_CHEMICAL_RAGE_START = 493;
+	ACT_DOTA_ALCHEMIST_CONCOCTION = 494;
+	ACT_DOTA_JAKIRO_LIQUIDFIRE_START = 495;
+	ACT_DOTA_JAKIRO_LIQUIDFIRE_LOOP = 496;
+	ACT_DOTA_LIFESTEALER_INFEST = 497;
+	ACT_DOTA_LIFESTEALER_INFEST_END = 498;
+	ACT_DOTA_LASSO_LOOP = 499;
+	ACT_DOTA_ALCHEMIST_CONCOCTION_THROW = 500;
+	ACT_DOTA_ALCHEMIST_CHEMICAL_RAGE_END = 501;
+	ACT_DOTA_CAST_COLD_SNAP = 502;
+	ACT_DOTA_CAST_GHOST_WALK = 503;
+	ACT_DOTA_CAST_TORNADO = 504;
+	ACT_DOTA_CAST_EMP = 505;
+	ACT_DOTA_CAST_ALACRITY = 506;
+	ACT_DOTA_CAST_CHAOS_METEOR = 507;
+	ACT_DOTA_CAST_SUN_STRIKE = 508;
+	ACT_DOTA_CAST_FORGE_SPIRIT = 509;
+	ACT_DOTA_CAST_ICE_WALL = 510;
+	ACT_DOTA_CAST_DEAFENING_BLAST = 511;
+	ACT_DOTA_VICTORY = 512;
+	ACT_DOTA_DEFEAT = 513;
+	ACT_DOTA_SPIRIT_BREAKER_CHARGE_POSE = 514;
+	ACT_DOTA_SPIRIT_BREAKER_CHARGE_END = 515;
+	ACT_DOTA_TELEPORT = 516;
+	ACT_DOTA_TELEPORT_END = 517;
+	ACT_DOTA_CAST_REFRACTION = 518;
+	ACT_DOTA_CAST_ABILITY_7 = 519;
+	ACT_DOTA_CANCEL_SIREN_SONG = 520;
+	ACT_DOTA_CHANNEL_ABILITY_7 = 521;
+	ACT_DOTA_LOADOUT = 522;
+	ACT_DOTA_FORCESTAFF_END = 523;
+	ACT_DOTA_POOF_END = 524;
+	ACT_DOTA_SLARK_POUNCE = 525;
+	ACT_DOTA_MAGNUS_SKEWER_START = 526;
+	ACT_DOTA_MAGNUS_SKEWER_END = 527;
+	ACT_DOTA_MEDUSA_STONE_GAZE = 528;
+	ACT_DOTA_RELAX_START = 529;
+	ACT_DOTA_RELAX_LOOP = 530;
+	ACT_DOTA_RELAX_END = 531;
+	ACT_DOTA_CENTAUR_STAMPEDE = 532;
+	ACT_DOTA_BELLYACHE_START = 533;
+	ACT_DOTA_BELLYACHE_LOOP = 534;
+	ACT_DOTA_BELLYACHE_END = 535;
+	ACT_DOTA_ROQUELAIRE_LAND = 536;
+	ACT_DOTA_ROQUELAIRE_LAND_IDLE = 537;
+	ACT_DOTA_GREEVIL_CAST = 538;
+	ACT_DOTA_GREEVIL_OVERRIDE_ABILITY = 539;
+	ACT_DOTA_GREEVIL_HOOK_START = 540;
+	ACT_DOTA_GREEVIL_HOOK_END = 541;
+	ACT_DOTA_GREEVIL_BLINK_BONE = 542;
+	ACT_DOTA_IDLE_SLEEPING = 543;
+	ACT_DOTA_INTRO = 544;
+	ACT_DOTA_GESTURE_POINT = 545;
+	ACT_DOTA_GESTURE_ACCENT = 546;
+	ACT_DOTA_SLEEPING_END = 547;
+	ACT_DOTA_AMBUSH = 548;
+	ACT_DOTA_ITEM_LOOK = 549;
+	ACT_DOTA_STARTLE = 550;
+	ACT_DOTA_FRUSTRATION = 551;
+	ACT_DOTA_TELEPORT_REACT = 552;
+	ACT_DOTA_TELEPORT_END_REACT = 553;
+	ACT_DOTA_SHRUG = 554;
+	ACT_DOTA_RELAX_LOOP_END = 555;
+	ACT_DOTA_PRESENT_ITEM = 556;
+	ACT_DOTA_IDLE_IMPATIENT = 557;
+	ACT_DOTA_SHARPEN_WEAPON = 558;
+	ACT_DOTA_SHARPEN_WEAPON_OUT = 559;
+	ACT_DOTA_IDLE_SLEEPING_END = 560;
+	ACT_DOTA_BRIDGE_DESTROY = 561;
+	ACT_DOTA_TAUNT_SNIPER = 562;
+	ACT_DOTA_DEATH_BY_SNIPER = 563;
+	ACT_DOTA_LOOK_AROUND = 564;
+	ACT_DOTA_CAGED_CREEP_RAGE = 565;
+	ACT_DOTA_CAGED_CREEP_RAGE_OUT = 566;
+	ACT_DOTA_CAGED_CREEP_SMASH = 567;
+	ACT_DOTA_CAGED_CREEP_SMASH_OUT = 568;
+	ACT_DOTA_IDLE_IMPATIENT_SWORD_TAP = 569;
+	ACT_DOTA_INTRO_LOOP = 570;
+	ACT_DOTA_BRIDGE_THREAT = 571;
+	ACT_DOTA_DAGON = 572;
+	ACT_DOTA_CAST_ABILITY_2_ES_ROLL_START = 573;
+	ACT_DOTA_CAST_ABILITY_2_ES_ROLL = 574;
+	ACT_DOTA_CAST_ABILITY_2_ES_ROLL_END = 575;
+}
+
+
+
+enum EDemoCommands {
+	DEM_Error = -1;
+	DEM_Stop = 0;
+	DEM_FileHeader = 1;
+	DEM_FileInfo = 2;
+	DEM_SyncTick = 3;
+	DEM_SendTables = 4;
+	DEM_ClassInfo = 5;
+	DEM_StringTables = 6;
+	DEM_Packet = 7;
+	DEM_SignonPacket = 8;
+	DEM_ConsoleCmd = 9;
+	DEM_CustomData = 10;
+	DEM_CustomDataCallbacks = 11;
+	DEM_UserCmd = 12;
+	DEM_FullPacket = 13;
+	DEM_Max = 14;
+	DEM_IsCompressed = 112;
+}
+
+message CDemoFileHeader {
+	required string demo_file_stamp = 1;
+	optional int32 network_protocol = 2;
+	optional string server_name = 3;
+	optional string client_name = 4;
+	optional string map_name = 5;
+	optional string game_directory = 6;
+	optional int32 fullpackets_version = 7;
+	optional bool allow_clientside_entities = 8;
+	optional bool allow_clientside_particles = 9;
+}
+
+message CGameInfo {
+	message CDotaGameInfo {
+		message CPlayerInfo {
+			optional string hero_name = 1;
+			optional string player_name = 2;
+			optional bool is_fake_client = 3;
+			optional uint64 steamid = 4;
+			optional int32 game_team = 5;
+		}
+
+		message CHeroSelectEvent {
+			optional bool is_pick = 1;
+			optional uint32 team = 2;
+			optional uint32 hero_id = 3;
+		}
+
+		optional uint32 match_id = 1;
+		optional int32 game_mode = 2;
+		optional int32 game_winner = 3;
+		repeated CPlayerInfo player_info = 4;
+		optional uint32 leagueid = 5;
+		repeated CHeroSelectEvent picks_bans = 6;
+		optional uint32 radiant_team_id = 7;
+		optional uint32 dire_team_id = 8;
+		optional string radiant_team_tag = 9;
+		optional string dire_team_tag = 10;
+		optional uint32 end_time = 11;
+	}
+
+	optional CDotaGameInfo dota = 4;
+}
+
+message CDemoFileInfo {
+	optional float playback_time = 1;
+	optional int32 playback_ticks = 2;
+	optional int32 playback_frames = 3;
+	optional CGameInfo game_info = 4;
+}
+
+message CDemoPacket {
+	optional int32 sequence_in = 1;
+	optional int32 sequence_out_ack = 2;
+	optional bytes data = 3;
+}
+
+message CDemoFullPacket {
+	optional CDemoStringTables string_table = 1;
+	optional CDemoPacket packet = 2;
+}
+
+message CDemoSyncTick {
+}
+
+message CDemoConsoleCmd {
+	optional string cmdstring = 1;
+}
+
+message CDemoSendTables {
+	optional bytes data = 1;
+}
+
+message CDemoClassInfo {
+	message class_t {
+		optional int32 class_id = 1;
+		optional string network_name = 2;
+		optional string table_name = 3;
+	}
+
+	repeated class_t classes = 1;
+}
+
+message CDemoCustomData {
+	optional int32 callback_index = 1;
+	optional bytes data = 2;
+}
+
+message CDemoCustomDataCallbacks {
+	repeated string save_id = 1;
+}
+
+message CDemoStringTables {
+	message items_t {
+		optional string str = 1;
+		optional bytes data = 2;
+	}
+
+	message table_t {
+		optional string table_name = 1;
+		repeated items_t items = 2;
+		repeated items_t items_clientside = 3;
+		optional int32 table_flags = 4;
+	}
+
+	repeated table_t tables = 1;
+}
+
+message CDemoStop {
+}
+
+message CDemoUserCmd {
+	optional int32 cmd_number = 1;
+	optional bytes data = 2;
+}
+
+
+
+
+enum EDOTAChatWheelMessage {
+	k_EDOTA_CW_Ok = 0;
+	k_EDOTA_CW_Care = 1;
+	k_EDOTA_CW_GetBack = 2;
+	k_EDOTA_CW_NeedWards = 3;
+	k_EDOTA_CW_Stun = 4;
+	k_EDOTA_CW_Help = 5;
+	k_EDOTA_CW_Push = 6;
+	k_EDOTA_CW_GoodJob = 7;
+	k_EDOTA_CW_Missing = 8;
+	k_EDOTA_CW_Missing_Top = 9;
+	k_EDOTA_CW_Missing_Mid = 10;
+	k_EDOTA_CW_Missing_Bottom = 11;
+	k_EDOTA_CW_Go = 12;
+	k_EDOTA_CW_Initiate = 13;
+	k_EDOTA_CW_Follow = 14;
+	k_EDOTA_CW_Group_Up = 15;
+	k_EDOTA_CW_Spread_Out = 16;
+	k_EDOTA_CW_Split_Farm = 17;
+	k_EDOTA_CW_Attack = 18;
+	k_EDOTA_CW_BRB = 19;
+	k_EDOTA_CW_Dive = 20;
+	k_EDOTA_CW_OMW = 21;
+	k_EDOTA_CW_Get_Ready = 22;
+	k_EDOTA_CW_Bait = 23;
+	k_EDOTA_CW_Heal = 24;
+	k_EDOTA_CW_Mana = 25;
+	k_EDOTA_CW_OOM = 26;
+	k_EDOTA_CW_Skill_Cooldown = 27;
+	k_EDOTA_CW_Ulti_Ready = 28;
+	k_EDOTA_CW_Enemy_Returned = 29;
+	k_EDOTA_CW_All_Missing = 30;
+	k_EDOTA_CW_Enemy_Incoming = 31;
+	k_EDOTA_CW_Invis_Enemy = 32;
+	k_EDOTA_CW_Enemy_Had_Rune = 33;
+	k_EDOTA_CW_Split_Push = 34;
+	k_EDOTA_CW_Coming_To_Gank = 35;
+	k_EDOTA_CW_Request_Gank = 36;
+	k_EDOTA_CW_Fight_Under_Tower = 37;
+	k_EDOTA_CW_Deny_Tower = 38;
+	k_EDOTA_CW_Buy_Courier = 39;
+	k_EDOTA_CW_Upgrade_Courier = 40;
+	k_EDOTA_CW_Need_Detection = 41;
+	k_EDOTA_CW_They_Have_Detection = 42;
+	k_EDOTA_CW_Buy_TP = 43;
+	k_EDOTA_CW_Reuse_Courier = 44;
+	k_EDOTA_CW_Deward = 45;
+	k_EDOTA_CW_Building_Mek = 46;
+	k_EDOTA_CW_Building_Pipe = 47;
+	k_EDOTA_CW_Stack_And_Pull = 48;
+	k_EDOTA_CW_Pull = 49;
+	k_EDOTA_CW_Pulling = 50;
+	k_EDOTA_CW_Stack = 51;
+	k_EDOTA_CW_Jungling = 52;
+	k_EDOTA_CW_Roshan = 53;
+	k_EDOTA_CW_Affirmative = 54;
+	k_EDOTA_CW_Wait = 55;
+	k_EDOTA_CW_Pause = 56;
+	k_EDOTA_CW_Current_Time = 57;
+	k_EDOTA_CW_Check_Runes = 58;
+	k_EDOTA_CW_Smoke_Gank = 59;
+	k_EDOTA_CW_GLHF = 60;
+	k_EDOTA_CW_Nice = 61;
+	k_EDOTA_CW_Thanks = 62;
+	k_EDOTA_CW_Sorry = 63;
+	k_EDOTA_CW_No_Give_Up = 64;
+	k_EDOTA_CW_Just_Happened = 65;
+	k_EDOTA_CW_Game_Is_Hard = 66;
+	k_EDOTA_CW_New_Meta = 67;
+	k_EDOTA_CW_My_Bad = 68;
+	k_EDOTA_CW_Regret = 69;
+	k_EDOTA_CW_Relax = 70;
+	k_EDOTA_CW_MissingHero = 71;
+}
+
+enum EDOTAStatPopupTypes {
+	k_EDOTA_SPT_Textline = 0;
+	k_EDOTA_SPT_Basic = 1;
+	k_EDOTA_SPT_Poll = 2;
+}
+
+message CDOTAMsg_LocationPing {
+	optional int32 x = 1;
+	optional int32 y = 2;
+	optional int32 target = 3;
+	optional bool direct_ping = 4;
+	optional int32 type = 5;
+}
+
+message CDOTAMsg_ItemAlert {
+	optional int32 x = 1;
+	optional int32 y = 2;
+	optional int32 itemid = 3;
+}
+
+message CDOTAMsg_MapLine {
+	optional int32 x = 1;
+	optional int32 y = 2;
+	optional bool initial = 3;
+}
+
+message CDOTAMsg_WorldLine {
+	optional int32 x = 1;
+	optional int32 y = 2;
+	optional int32 z = 3;
+	optional bool initial = 4;
+	optional bool end = 5;
+}
+
+message CDOTAMsg_SendStatPopup {
+	optional EDOTAStatPopupTypes style = 1 [default = k_EDOTA_SPT_Textline];
+	repeated string stat_strings = 2;
+	repeated int32 stat_images = 3;
+}
+
+message CDOTAMsg_CoachHUDPing {
+	optional uint32 x = 1;
+	optional uint32 y = 2;
+	optional string tgtpath = 3;
+}
+
+
+
+
+enum DOTA_MODIFIER_ENTRY_TYPE {
+	DOTA_MODIFIER_ENTRY_TYPE_ACTIVE = 1;
+	DOTA_MODIFIER_ENTRY_TYPE_REMOVED = 2;
+}
+
+message CDOTAModifierBuffTableEntry {
+	required DOTA_MODIFIER_ENTRY_TYPE entry_type = 1 [default = DOTA_MODIFIER_ENTRY_TYPE_ACTIVE];
+	required int32 parent = 2;
+	required int32 index = 3;
+	required int32 serial_num = 4;
+	optional int32 modifier_class = 5;
+	optional int32 ability_level = 6;
+	optional int32 stack_count = 7;
+	optional float creation_time = 8;
+	optional float duration = 9 [default = -1];
+	optional int32 caster = 10;
+	optional int32 ability = 11;
+	optional int32 armor = 12;
+	optional float fade_time = 13;
+	optional bool subtle = 14;
+	optional float channel_time = 15;
+	optional CMsgVector v_start = 16;
+	optional CMsgVector v_end = 17;
+	optional string portal_loop_appear = 18;
+	optional string portal_loop_disappear = 19;
+	optional string hero_loop_appear = 20;
+	optional string hero_loop_disappear = 21;
+	optional int32 movement_speed = 22;
+	optional bool aura = 23;
+	optional int32 activity = 24;
+	optional int32 damage = 25;
+	optional int32 range = 26;
+	optional int32 dd_modifier_index = 27;
+	optional int32 dd_ability_index = 28;
+}
+
+
+
+
+
+
+enum EDotaUserMessages {
+	DOTA_UM_AddUnitToSelection = 64;
+	DOTA_UM_AIDebugLine = 65;
+	DOTA_UM_ChatEvent = 66;
+	DOTA_UM_CombatHeroPositions = 67;
+	DOTA_UM_CombatLogData = 68;
+	DOTA_UM_CombatLogShowDeath = 70;
+	DOTA_UM_CreateLinearProjectile = 71;
+	DOTA_UM_DestroyLinearProjectile = 72;
+	DOTA_UM_DodgeTrackingProjectiles = 73;
+	DOTA_UM_GlobalLightColor = 74;
+	DOTA_UM_GlobalLightDirection = 75;
+	DOTA_UM_InvalidCommand = 76;
+	DOTA_UM_LocationPing = 77;
+	DOTA_UM_MapLine = 78;
+	DOTA_UM_MiniKillCamInfo = 79;
+	DOTA_UM_MinimapDebugPoint = 80;
+	DOTA_UM_MinimapEvent = 81;
+	DOTA_UM_NevermoreRequiem = 82;
+	DOTA_UM_OverheadEvent = 83;
+	DOTA_UM_SetNextAutobuyItem = 84;
+	DOTA_UM_SharedCooldown = 85;
+	DOTA_UM_SpectatorPlayerClick = 86;
+	DOTA_UM_TutorialTipInfo = 87;
+	DOTA_UM_UnitEvent = 88;
+	DOTA_UM_ParticleManager = 89;
+	DOTA_UM_BotChat = 90;
+	DOTA_UM_HudError = 91;
+	DOTA_UM_ItemPurchased = 92;
+	DOTA_UM_Ping = 93;
+	DOTA_UM_ItemFound = 94;
+	DOTA_UM_CharacterSpeakConcept = 95;
+	DOTA_UM_SwapVerify = 96;
+	DOTA_UM_WorldLine = 97;
+	DOTA_UM_TournamentDrop = 98;
+	DOTA_UM_ItemAlert = 99;
+	DOTA_UM_HalloweenDrops = 100;
+	DOTA_UM_ChatWheel = 101;
+	DOTA_UM_ReceivedXmasGift = 102;
+	DOTA_UM_UpdateSharedContent = 103;
+	DOTA_UM_TutorialRequestExp = 104;
+	DOTA_UM_TutorialPingMinimap = 105;
+	DOTA_UM_GamerulesStateChanged = 106;
+	DOTA_UM_ShowSurvey = 107;
+	DOTA_UM_TutorialFade = 108;
+	DOTA_UM_AddQuestLogEntry = 109;
+	DOTA_UM_SendStatPopup = 110;
+	DOTA_UM_TutorialFinish = 111;
+	DOTA_UM_SendRoshanPopup = 112;
+	DOTA_UM_SendGenericToolTip = 113;
+	DOTA_UM_SendFinalGold = 114;
+	DOTA_UM_CustomMsg = 115;
+	DOTA_UM_CoachHUDPing = 116;
+	DOTA_UM_ClientLoadGridNav = 117;
+}
+
+enum DOTA_CHAT_MESSAGE {
+	CHAT_MESSAGE_INVALID = -1;
+	CHAT_MESSAGE_HERO_KILL = 0;
+	CHAT_MESSAGE_HERO_DENY = 1;
+	CHAT_MESSAGE_BARRACKS_KILL = 2;
+	CHAT_MESSAGE_TOWER_KILL = 3;
+	CHAT_MESSAGE_TOWER_DENY = 4;
+	CHAT_MESSAGE_FIRSTBLOOD = 5;
+	CHAT_MESSAGE_STREAK_KILL = 6;
+	CHAT_MESSAGE_BUYBACK = 7;
+	CHAT_MESSAGE_AEGIS = 8;
+	CHAT_MESSAGE_ROSHAN_KILL = 9;
+	CHAT_MESSAGE_COURIER_LOST = 10;
+	CHAT_MESSAGE_COURIER_RESPAWNED = 11;
+	CHAT_MESSAGE_GLYPH_USED = 12;
+	CHAT_MESSAGE_ITEM_PURCHASE = 13;
+	CHAT_MESSAGE_CONNECT = 14;
+	CHAT_MESSAGE_DISCONNECT = 15;
+	CHAT_MESSAGE_DISCONNECT_WAIT_FOR_RECONNECT = 16;
+	CHAT_MESSAGE_DISCONNECT_TIME_REMAINING = 17;
+	CHAT_MESSAGE_DISCONNECT_TIME_REMAINING_PLURAL = 18;
+	CHAT_MESSAGE_RECONNECT = 19;
+	CHAT_MESSAGE_ABANDON = 20;
+	CHAT_MESSAGE_SAFE_TO_LEAVE = 21;
+	CHAT_MESSAGE_RUNE_PICKUP = 22;
+	CHAT_MESSAGE_RUNE_BOTTLE = 23;
+	CHAT_MESSAGE_INTHEBAG = 24;
+	CHAT_MESSAGE_SECRETSHOP = 25;
+	CHAT_MESSAGE_ITEM_AUTOPURCHASED = 26;
+	CHAT_MESSAGE_ITEMS_COMBINED = 27;
+	CHAT_MESSAGE_SUPER_CREEPS = 28;
+	CHAT_MESSAGE_CANT_USE_ACTION_ITEM = 29;
+	CHAT_MESSAGE_CHARGES_EXHAUSTED = 30;
+	CHAT_MESSAGE_CANTPAUSE = 31;
+	CHAT_MESSAGE_NOPAUSESLEFT = 32;
+	CHAT_MESSAGE_CANTPAUSEYET = 33;
+	CHAT_MESSAGE_PAUSED = 34;
+	CHAT_MESSAGE_UNPAUSE_COUNTDOWN = 35;
+	CHAT_MESSAGE_UNPAUSED = 36;
+	CHAT_MESSAGE_AUTO_UNPAUSED = 37;
+	CHAT_MESSAGE_YOUPAUSED = 38;
+	CHAT_MESSAGE_CANTUNPAUSETEAM = 39;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER = 40;
+	CHAT_MESSAGE_VOICE_TEXT_BANNED = 41;
+	CHAT_MESSAGE_SPECTATORS_WATCHING_THIS_GAME = 42;
+	CHAT_MESSAGE_REPORT_REMINDER = 43;
+	CHAT_MESSAGE_ECON_ITEM = 44;
+	CHAT_MESSAGE_TAUNT = 45;
+	CHAT_MESSAGE_RANDOM = 46;
+	CHAT_MESSAGE_RD_TURN = 47;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_EARLY = 48;
+	CHAT_MESSAGE_DROP_RATE_BONUS = 49;
+	CHAT_MESSAGE_NO_BATTLE_POINTS = 50;
+	CHAT_MESSAGE_DENIED_AEGIS = 51;
+	CHAT_MESSAGE_INFORMATIONAL = 52;
+	CHAT_MESSAGE_AEGIS_STOLEN = 53;
+	CHAT_MESSAGE_ROSHAN_CANDY = 54;
+	CHAT_MESSAGE_ITEM_GIFTED = 55;
+	CHAT_MESSAGE_HERO_KILL_WITH_GREEVIL = 56;
+	CHAT_MESSAGE_HOLDOUT_TOWER_DESTROYED = 57;
+	CHAT_MESSAGE_HOLDOUT_WALL_DESTROYED = 58;
+	CHAT_MESSAGE_HOLDOUT_WALL_FINISHED = 59;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_AFK = 60;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_AFK_EARLY = 61;
+	CHAT_MESSAGE_ABANDON_LIMITED_HERO = 62;
+	CHAT_MESSAGE_ABANDON_LIMITED_HERO_EXPLANATION = 63;
+	CHAT_MESSAGE_DISCONNECT_LIMITED_HERO = 64;
+}
+
+enum DOTA_NO_BATTLE_POINTS_REASONS {
+	NO_BATTLE_POINTS_WRONG_LOBBY_TYPE = 1;
+	NO_BATTLE_POINTS_PRACTICE_BOTS = 2;
+	NO_BATTLE_POINTS_CHEATS_ENABLED = 3;
+	NO_BATTLE_POINTS_LOW_PRIORITY = 4;
+}
+
+enum DOTA_CHAT_INFORMATIONAL {
+	COOP_BATTLE_POINTS_RULES = 1;
+}
+
+enum DOTA_COMBATLOG_TYPES {
+	DOTA_COMBATLOG_DAMAGE = 0;
+	DOTA_COMBATLOG_HEAL = 1;
+	DOTA_COMBATLOG_MODIFIER_ADD = 2;
+	DOTA_COMBATLOG_MODIFIER_REMOVE = 3;
+	DOTA_COMBATLOG_DEATH = 4;
+}
+
+enum EDotaEntityMessages {
+	DOTA_UNIT_SPEECH = 0;
+	DOTA_UNIT_SPEECH_MUTE = 1;
+	DOTA_UNIT_ADD_GESTURE = 2;
+	DOTA_UNIT_REMOVE_GESTURE = 3;
+	DOTA_UNIT_REMOVE_ALL_GESTURES = 4;
+	DOTA_UNIT_FADE_GESTURE = 6;
+	DOTA_UNIT_SPEECH_CLIENTSIDE_RULES = 7;
+}
+
+enum DOTA_PARTICLE_MESSAGE {
+	DOTA_PARTICLE_MANAGER_EVENT_CREATE = 0;
+	DOTA_PARTICLE_MANAGER_EVENT_UPDATE = 1;
+	DOTA_PARTICLE_MANAGER_EVENT_UPDATE_FORWARD = 2;
+	DOTA_PARTICLE_MANAGER_EVENT_UPDATE_ORIENTATION = 3;
+	DOTA_PARTICLE_MANAGER_EVENT_UPDATE_FALLBACK = 4;
+	DOTA_PARTICLE_MANAGER_EVENT_UPDATE_ENT = 5;
+	DOTA_PARTICLE_MANAGER_EVENT_UPDATE_OFFSET = 6;
+	DOTA_PARTICLE_MANAGER_EVENT_DESTROY = 7;
+	DOTA_PARTICLE_MANAGER_EVENT_DESTROY_INVOLVING = 8;
+	DOTA_PARTICLE_MANAGER_EVENT_RELEASE = 9;
+	DOTA_PARTICLE_MANAGER_EVENT_LATENCY = 10;
+	DOTA_PARTICLE_MANAGER_EVENT_SHOULD_DRAW = 11;
+	DOTA_PARTICLE_MANAGER_EVENT_FROZEN = 12;
+}
+
+enum DOTA_OVERHEAD_ALERT {
+	OVERHEAD_ALERT_GOLD = 0;
+	OVERHEAD_ALERT_DENY = 1;
+	OVERHEAD_ALERT_CRITICAL = 2;
+	OVERHEAD_ALERT_XP = 3;
+	OVERHEAD_ALERT_BONUS_SPELL_DAMAGE = 4;
+	OVERHEAD_ALERT_MISS = 5;
+	OVERHEAD_ALERT_DAMAGE = 6;
+	OVERHEAD_ALERT_EVADE = 7;
+	OVERHEAD_ALERT_BLOCK = 8;
+	OVERHEAD_ALERT_BONUS_POISON_DAMAGE = 9;
+	OVERHEAD_ALERT_HEAL = 10;
+	OVERHEAD_ALERT_MANA_ADD = 11;
+	OVERHEAD_ALERT_MANA_LOSS = 12;
+	OVERHEAD_ALERT_LAST_HIT_EARLY = 13;
+	OVERHEAD_ALERT_LAST_HIT_CLOSE = 14;
+	OVERHEAD_ALERT_LAST_HIT_MISS = 15;
+}
+
+message CDOTAUserMsg_AIDebugLine {
+	optional string message = 1;
+}
+
+message CDOTAUserMsg_Ping {
+	optional string message = 1;
+}
+
+message CDOTAUserMsg_SwapVerify {
+	optional uint32 player_id = 1;
+}
+
+message CDOTAUserMsg_ChatEvent {
+	required DOTA_CHAT_MESSAGE type = 1 [default = CHAT_MESSAGE_INVALID];
+	optional uint32 value = 2;
+	optional sint32 playerid_1 = 3 [default = -1];
+	optional sint32 playerid_2 = 4 [default = -1];
+	optional sint32 playerid_3 = 5 [default = -1];
+	optional sint32 playerid_4 = 6 [default = -1];
+	optional sint32 playerid_5 = 7 [default = -1];
+	optional sint32 playerid_6 = 8 [default = -1];
+}
+
+message CDOTAUserMsg_CombatLogData {
+	optional DOTA_COMBATLOG_TYPES type = 1 [default = DOTA_COMBATLOG_DAMAGE];
+	optional uint32 target_name = 2;
+	optional uint32 attacker_name = 3;
+	optional bool attacker_illusion = 4;
+	optional bool target_illusion = 5;
+	optional uint32 inflictor_name = 6;
+	optional int32 value = 7;
+	optional int32 health = 8;
+	optional float time = 9;
+}
+
+message CDOTAUserMsg_CombatLogShowDeath {
+}
+
+message CDOTAUserMsg_BotChat {
+	optional uint32 player_id = 1;
+	optional string format = 2;
+	optional string message = 3;
+	optional string target = 4;
+}
+
+message CDOTAUserMsg_CombatHeroPositions {
+	optional uint32 index = 1;
+	optional int32 time = 2;
+	optional CMsgVector2D world_pos = 3;
+	optional int32 health = 4;
+}
+
+message CDOTAUserMsg_MiniKillCamInfo {
+	message Attacker {
+		message Ability {
+			optional uint32 ability = 1;
+			optional int32 damage = 2;
+		}
+
+		optional uint32 attacker = 1;
+		optional int32 total_damage = 2;
+		repeated Ability abilities = 3;
+	}
+
+	repeated Attacker attackers = 1;
+}
+
+message CDOTAUserMsg_GlobalLightColor {
+	optional uint32 color = 1;
+	optional float duration = 2;
+}
+
+message CDOTAUserMsg_GlobalLightDirection {
+	optional CMsgVector direction = 1;
+	optional float duration = 2;
+}
+
+message CDOTAUserMsg_LocationPing {
+	optional uint32 player_id = 1;
+	optional CDOTAMsg_LocationPing location_ping = 2;
+}
+
+message CDOTAUserMsg_ItemAlert {
+	optional uint32 player_id = 1;
+	optional CDOTAMsg_ItemAlert item_alert = 2;
+}
+
+message CDOTAUserMsg_MinimapEvent {
+	optional int32 event_type = 1;
+	optional int32 entity_handle = 2;
+	optional int32 x = 3;
+	optional int32 y = 4;
+	optional int32 duration = 5;
+}
+
+message CDOTAUserMsg_MapLine {
+	optional int32 player_id = 1;
+	optional CDOTAMsg_MapLine mapline = 2;
+}
+
+message CDOTAUserMsg_MinimapDebugPoint {
+	optional CMsgVector location = 1;
+	optional uint32 color = 2;
+	optional int32 size = 3;
+	optional float duration = 4;
+}
+
+message CDOTAUserMsg_CreateLinearProjectile {
+	optional CMsgVector origin = 1;
+	optional CMsgVector2D velocity = 2;
+	optional int32 latency = 3;
+	optional int32 entindex = 4;
+	optional int32 particle_index = 5;
+	optional int32 handle = 6;
+}
+
+message CDOTAUserMsg_DestroyLinearProjectile {
+	optional int32 handle = 1;
+}
+
+message CDOTAUserMsg_DodgeTrackingProjectiles {
+	required int32 entindex = 1;
+}
+
+message CDOTAUserMsg_SpectatorPlayerClick {
+	required int32 entindex = 1;
+	optional int32 order_type = 2;
+	optional int32 target_index = 3;
+}
+
+message CDOTAUserMsg_NevermoreRequiem {
+	optional int32 entity_handle = 1;
+	optional int32 lines = 2;
+	optional CMsgVector origin = 3;
+}
+
+message CDOTAUserMsg_InvalidCommand {
+	optional string message = 1;
+}
+
+message CDOTAUserMsg_HudError {
+	optional int32 order_id = 1;
+}
+
+message CDOTAUserMsg_SharedCooldown {
+	optional int32 entindex = 1;
+	optional string name = 2;
+	optional float cooldown = 3;
+	optional int32 name_index = 4;
+}
+
+message CDOTAUserMsg_SetNextAutobuyItem {
+	optional string name = 1;
+}
+
+message CDOTAUserMsg_HalloweenDrops {
+	repeated uint32 item_defs = 1;
+	repeated uint32 player_ids = 2;
+	optional uint32 prize_list = 3;
+}
+
+message CDOTAResponseQuerySerialized {
+	message Fact {
+		enum ValueType {
+			NUMERIC = 1;
+			STRING = 2;
+		}
+
+		required int32 key = 1;
+		required ValueType valtype = 2 [default = NUMERIC];
+		optional float val_numeric = 3;
+		optional string val_string = 4;
+	}
+
+	repeated Fact facts = 1;
+}
+
+message CDOTASpeechMatchOnClient {
+	optional int32 concept = 1;
+	optional int32 recipient_type = 2;
+	optional CDOTAResponseQuerySerialized responsequery = 3;
+	optional sfixed32 randomseed = 4 [default = 0];
+}
+
+message CDOTAUserMsg_UnitEvent {
+	message Speech {
+		optional int32 concept = 1;
+		optional string response = 2;
+		optional int32 recipient_type = 3;
+		optional int32 level = 4;
+		optional bool muteable = 5 [default = false];
+	}
+
+	message SpeechMute {
+		optional float delay = 1 [default = 0.5];
+	}
+
+	message AddGesture {
+		optional Activity activity = 1 [default = ACT_INVALID];
+		optional int32 slot = 2;
+		optional float fade_in = 3 [default = 0];
+		optional float fade_out = 4 [default = 0.1];
+	}
+
+	message RemoveGesture {
+		optional Activity activity = 1 [default = ACT_INVALID];
+	}
+
+	message BloodImpact {
+		optional int32 scale = 1;
+		optional int32 x_normal = 2;
+		optional int32 y_normal = 3;
+	}
+
+	message FadeGesture {
+		optional Activity activity = 1 [default = ACT_INVALID];
+	}
+
+	required EDotaEntityMessages msg_type = 1 [default = DOTA_UNIT_SPEECH];
+	required int32 entity_index = 2;
+	optional Speech speech = 3;
+	optional SpeechMute speech_mute = 4;
+	optional AddGesture add_gesture = 5;
+	optional RemoveGesture remove_gesture = 6;
+	optional BloodImpact blood_impact = 7;
+	optional FadeGesture fade_gesture = 8;
+	optional CDOTASpeechMatchOnClient speech_match_on_client = 9;
+}
+
+message CDOTAUserMsg_ItemPurchased {
+	optional int32 item_index = 1;
+}
+
+message CDOTAUserMsg_ItemFound {
+	optional int32 player = 1;
+	optional int32 quality = 2;
+	optional int32 rarity = 3;
+	optional int32 method = 4;
+	optional int32 itemdef = 5;
+}
+
+message CDOTAUserMsg_ParticleManager {
+	message ReleaseParticleIndex {
+	}
+
+	message CreateParticle {
+		optional int32 particle_name_index = 1;
+		optional int32 attach_type = 2;
+		optional int32 entity_handle = 3;
+	}
+
+	message DestroyParticle {
+		optional bool destroy_immediately = 1;
+	}
+
+	message DestroyParticleInvolving {
+		optional bool destroy_immediately = 1;
+		optional int32 entity_handle = 3;
+	}
+
+	message UpdateParticle {
+		optional int32 control_point = 1;
+		optional CMsgVector position = 2;
+	}
+
+	message UpdateParticleFwd {
+		optional int32 control_point = 1;
+		optional CMsgVector forward = 2;
+	}
+
+	message UpdateParticleOrient {
+		optional int32 control_point = 1;
+		optional CMsgVector forward = 2;
+		optional CMsgVector right = 3;
+		optional CMsgVector up = 4;
+	}
+
+	message UpdateParticleFallback {
+		optional int32 control_point = 1;
+		optional CMsgVector position = 2;
+	}
+
+	message UpdateParticleOffset {
+		optional int32 control_point = 1;
+		optional CMsgVector origin_offset = 2;
+	}
+
+	message UpdateParticleEnt {
+		optional int32 control_point = 1;
+		optional int32 entity_handle = 2;
+		optional int32 attach_type = 3;
+		optional int32 attachment = 4;
+		optional CMsgVector fallback_position = 5;
+		optional bool include_wearables = 6;
+	}
+
+	message UpdateParticleSetFrozen {
+		optional bool set_frozen = 1;
+	}
+
+	message UpdateParticleShouldDraw {
+		optional bool should_draw = 1;
+	}
+
+	required DOTA_PARTICLE_MESSAGE type = 1 [default = DOTA_PARTICLE_MANAGER_EVENT_CREATE];
+	required uint32 index = 2;
+	optional ReleaseParticleIndex release_particle_index = 3;
+	optional CreateParticle create_particle = 4;
+	optional DestroyParticle destroy_particle = 5;
+	optional DestroyParticleInvolving destroy_particle_involving = 6;
+	optional UpdateParticle update_particle = 7;
+	optional UpdateParticleFwd update_particle_fwd = 8;
+	optional UpdateParticleOrient update_particle_orient = 9;
+	optional UpdateParticleFallback update_particle_fallback = 10;
+	optional UpdateParticleOffset update_particle_offset = 11;
+	optional UpdateParticleEnt update_particle_ent = 12;
+	optional UpdateParticleShouldDraw update_particle_should_draw = 14;
+	optional UpdateParticleSetFrozen update_particle_set_frozen = 15;
+}
+
+message CDOTAUserMsg_OverheadEvent {
+	required DOTA_OVERHEAD_ALERT message_type = 1 [default = OVERHEAD_ALERT_GOLD];
+	optional int32 value = 2;
+	optional int32 target_player_entindex = 3;
+	optional int32 target_entindex = 4;
+	optional int32 source_player_entindex = 5;
+}
+
+message CDOTAUserMsg_TutorialTipInfo {
+	optional string name = 1;
+	optional int32 progress = 2;
+}
+
+message CDOTAUserMsg_TutorialFinish {
+	optional string heading = 1;
+	optional string emblem = 2;
+	optional string body = 3;
+	optional bool success = 4;
+}
+
+message CDOTAUserMsg_SendGenericToolTip {
+	optional string title = 1;
+	optional string text = 2;
+	optional int32 entindex = 3;
+	optional bool close = 4;
+}
+
+message CDOTAUserMsg_WorldLine {
+	optional int32 player_id = 1;
+	optional CDOTAMsg_WorldLine worldline = 2;
+}
+
+message CDOTAUserMsg_TournamentDrop {
+	optional string winner_name = 1;
+	optional int32 event_type = 2;
+}
+
+message CDOTAUserMsg_ChatWheel {
+	optional EDOTAChatWheelMessage chat_message = 1 [default = k_EDOTA_CW_Ok];
+	optional uint32 player_id = 2;
+	optional uint32 account_id = 3;
+	optional uint32 param_hero_id = 4;
+}
+
+message CDOTAUserMsg_ReceivedXmasGift {
+	optional int32 player_id = 1;
+	optional string item_name = 2;
+	optional int32 inventory_slot = 3;
+}
+
+message CDOTAUserMsg_ShowSurvey {
+	optional int32 survey_id = 1;
+	optional uint32 match_id = 2;
+	optional string response_style = 3;
+}
+
+message CDOTAUserMsg_UpdateSharedContent {
+	optional int32 slot_type = 1;
+}
+
+message CDOTAUserMsg_TutorialRequestExp {
+}
+
+message CDOTAUserMsg_TutorialFade {
+	optional int32 tgt_alpha = 1;
+}
+
+message CDOTAUserMsg_TutorialPingMinimap {
+	optional uint32 player_id = 1;
+	optional float pos_x = 2;
+	optional float pos_y = 3;
+	optional float pos_z = 4;
+	optional int32 entity_index = 5;
+}
+
+message CDOTA_UM_GamerulesStateChanged {
+	optional uint32 state = 1;
+}
+
+message CDOTAUserMsg_AddQuestLogEntry {
+	optional string npc_name = 1;
+	optional string npc_dialog = 2;
+}
+
+message CDOTAUserMsg_SendStatPopup {
+	optional int32 player_id = 1;
+	optional CDOTAMsg_SendStatPopup statpopup = 2;
+}
+
+message CDOTAUserMsg_SendRoshanPopup {
+	optional bool reclaimed = 1;
+	optional int32 gametime = 2;
+}
+
+message CDOTAUserMsg_SendFinalGold {
+	repeated uint32 reliable_gold = 1;
+	repeated uint32 unreliable_gold = 2;
+}
+
+message CDOTAUserMsg_CustomMsg {
+	optional string message = 1;
+	optional int32 player_id = 2;
+	optional int32 value = 3;
+}
+
+message CDOTAUserMsg_CoachHUDPing {
+	optional uint32 player_id = 1;
+	optional CDOTAMsg_CoachHUDPing hud_ping = 2;
+}
+
+message CDOTAUserMsg_ClientLoadGridNav {
+}
+
+
+
+
+enum NET_Messages {
+	net_NOP = 0;
+	net_Disconnect = 1;
+	net_File = 2;
+	net_SplitScreenUser = 3;
+	net_Tick = 4;
+	net_StringCmd = 5;
+	net_SetConVar = 6;
+	net_SignonState = 7;
+}
+
+enum CLC_Messages {
+	clc_ClientInfo = 8;
+	clc_Move = 9;
+	clc_VoiceData = 10;
+	clc_BaselineAck = 11;
+	clc_ListenEvents = 12;
+	clc_RespondCvarValue = 13;
+	clc_FileCRCCheck = 14;
+	clc_LoadingProgress = 15;
+	clc_SplitPlayerConnect = 16;
+	clc_ClientMessage = 17;
+}
+
+enum VoiceDataFormat_t {
+	VOICEDATA_FORMAT_STEAM = 0;
+	VOICEDATA_FORMAT_ENGINE = 1;
+}
+
+enum SVC_Messages {
+	svc_ServerInfo = 8;
+	svc_SendTable = 9;
+	svc_ClassInfo = 10;
+	svc_SetPause = 11;
+	svc_CreateStringTable = 12;
+	svc_UpdateStringTable = 13;
+	svc_VoiceInit = 14;
+	svc_VoiceData = 15;
+	svc_Print = 16;
+	svc_Sounds = 17;
+	svc_SetView = 18;
+	svc_FixAngle = 19;
+	svc_CrosshairAngle = 20;
+	svc_BSPDecal = 21;
+	svc_SplitScreen = 22;
+	svc_UserMessage = 23;
+	svc_EntityMessage = 24;
+	svc_GameEvent = 25;
+	svc_PacketEntities = 26;
+	svc_TempEntities = 27;
+	svc_Prefetch = 28;
+	svc_Menu = 29;
+	svc_GameEventList = 30;
+	svc_GetCvarValue = 31;
+	svc_PacketReliable = 32;
+}
+
+enum ESplitScreenMessageType {
+	MSG_SPLITSCREEN_ADDUSER = 0;
+	MSG_SPLITSCREEN_REMOVEUSER = 1;
+}
+
+message CMsg_CVars {
+	message CVar {
+		optional string name = 1;
+		optional string value = 2;
+	}
+
+	repeated CVar cvars = 1;
+}
+
+message CNETMsg_NOP {
+}
+
+message CNETMsg_Disconnect {
+	optional string text = 1;
+}
+
+message CNETMsg_File {
+	optional int32 transfer_id = 1;
+	optional string file_name = 2;
+	optional bool is_replay_demo_file = 3;
+	optional bool deny = 4;
+}
+
+message CNETMsg_SplitScreenUser {
+	optional int32 slot = 1;
+}
+
+message CNETMsg_Tick {
+	optional uint32 tick = 1;
+	optional uint32 host_frametime = 2;
+	optional uint32 host_frametime_std_deviation = 3;
+}
+
+message CNETMsg_StringCmd {
+	optional string command = 1;
+}
+
+message CNETMsg_SetConVar {
+	optional CMsg_CVars convars = 1;
+}
+
+message CNETMsg_SignonState {
+	optional uint32 signon_state = 1;
+	optional uint32 spawn_count = 2;
+	optional uint32 num_server_players = 3;
+	repeated string players_networkids = 4;
+	optional string map_name = 5;
+}
+
+message CCLCMsg_ClientInfo {
+	optional fixed32 send_table_crc = 1;
+	optional uint32 server_count = 2;
+	optional bool is_hltv = 3;
+	optional bool is_replay = 4;
+	optional uint32 friends_id = 5;
+	optional string friends_name = 6;
+	repeated fixed32 custom_files = 7;
+}
+
+message CCLCMsg_Move {
+	optional uint32 num_backup_commands = 1;
+	optional uint32 num_new_commands = 2;
+	optional bytes data = 3;
+}
+
+message CCLCMsg_VoiceData {
+	optional bytes data = 1;
+	optional fixed64 xuid = 2;
+	optional VoiceDataFormat_t format = 3 [default = VOICEDATA_FORMAT_STEAM];
+}
+
+message CCLCMsg_BaselineAck {
+	optional int32 baseline_tick = 1;
+	optional int32 baseline_nr = 2;
+}
+
+message CCLCMsg_ListenEvents {
+	repeated fixed32 event_mask = 1;
+}
+
+message CCLCMsg_RespondCvarValue {
+	optional int32 cookie = 1;
+	optional int32 status_code = 2;
+	optional string name = 3;
+	optional string value = 4;
+}
+
+message CCLCMsg_FileCRCCheck {
+	optional int32 code_path = 1;
+	optional string path = 2;
+	optional int32 code_filename = 3;
+	optional string filename = 4;
+	optional fixed32 crc = 5;
+}
+
+message CCLCMsg_LoadingProgress {
+	optional int32 progress = 1;
+}
+
+message CCLCMsg_SplitPlayerConnect {
+	optional CMsg_CVars convars = 1;
+}
+
+message CCLCMsg_ClientMessage {
+	optional int32 msg_type = 1;
+	optional bytes data = 2;
+}
+
+message CSVCMsg_ServerInfo {
+	optional int32 protocol = 1;
+	optional int32 server_count = 2;
+	optional bool is_dedicated = 3;
+	optional bool is_hltv = 4;
+	optional bool is_replay = 5;
+	optional int32 c_os = 6;
+	optional fixed32 map_crc = 7;
+	optional fixed32 client_crc = 8;
+	optional fixed32 string_table_crc = 9;
+	optional int32 max_clients = 10;
+	optional int32 max_classes = 11;
+	optional int32 player_slot = 12;
+	optional float tick_interval = 13;
+	optional string game_dir = 14;
+	optional string map_name = 15;
+	optional string sky_name = 16;
+	optional string host_name = 17;
+}
+
+message CSVCMsg_ClassInfo {
+	message class_t {
+		optional int32 class_id = 1;
+		optional string data_table_name = 2;
+		optional string class_name = 3;
+	}
+
+	optional bool create_on_client = 1;
+	repeated class_t classes = 2;
+}
+
+message CSVCMsg_SetPause {
+	optional bool paused = 1;
+}
+
+message CSVCMsg_VoiceInit {
+	optional int32 quality = 1;
+	optional string codec = 2;
+	optional int32 version = 3 [default = 0];
+}
+
+message CSVCMsg_Print {
+	optional string text = 1;
+}
+
+message CSVCMsg_Sounds {
+	message sounddata_t {
+		optional sint32 origin_x = 1;
+		optional sint32 origin_y = 2;
+		optional sint32 origin_z = 3;
+		optional uint32 volume = 4;
+		optional float delay_value = 5;
+		optional int32 sequence_number = 6;
+		optional int32 entity_index = 7;
+		optional int32 channel = 8;
+		optional int32 pitch = 9;
+		optional int32 flags = 10;
+		optional uint32 sound_num = 11;
+		optional fixed32 sound_num_handle = 12;
+		optional int32 speaker_entity = 13;
+		optional int32 random_seed = 14;
+		optional int32 sound_level = 15;
+		optional bool is_sentence = 16;
+		optional bool is_ambient = 17;
+	}
+
+	optional bool reliable_sound = 1;
+	repeated sounddata_t sounds = 2;
+}
+
+message CSVCMsg_Prefetch {
+	optional int32 sound_index = 1;
+}
+
+message CSVCMsg_SetView {
+	optional int32 entity_index = 1;
+}
+
+message CSVCMsg_FixAngle {
+	optional bool relative = 1;
+	optional CMsgQAngle angle = 2;
+}
+
+message CSVCMsg_CrosshairAngle {
+	optional CMsgQAngle angle = 1;
+}
+
+message CSVCMsg_BSPDecal {
+	optional CMsgVector pos = 1;
+	optional int32 decal_texture_index = 2;
+	optional int32 entity_index = 3;
+	optional int32 model_index = 4;
+	optional bool low_priority = 5;
+}
+
+message CSVCMsg_SplitScreen {
+	optional ESplitScreenMessageType type = 1 [default = MSG_SPLITSCREEN_ADDUSER];
+	optional int32 slot = 2;
+	optional int32 player_index = 3;
+}
+
+message CSVCMsg_GetCvarValue {
+	optional int32 cookie = 1;
+	optional string cvar_name = 2;
+}
+
+message CSVCMsg_Menu {
+	optional int32 dialog_type = 1;
+	optional bytes menu_key_values = 2;
+}
+
+message CSVCMsg_SendTable {
+	message sendprop_t {
+		optional int32 type = 1;
+		optional string var_name = 2;
+		optional int32 flags = 3;
+		optional int32 priority = 4;
+		optional string dt_name = 5;
+		optional int32 num_elements = 6;
+		optional float low_value = 7;
+		optional float high_value = 8;
+		optional int32 num_bits = 9;
+	}
+
+	optional bool is_end = 1;
+	optional string net_table_name = 2;
+	optional bool needs_decoder = 3;
+	repeated sendprop_t props = 4;
+}
+
+message CSVCMsg_GameEventList {
+	message key_t {
+		optional int32 type = 1;
+		optional string name = 2;
+	}
+
+	message descriptor_t {
+		optional int32 eventid = 1;
+		optional string name = 2;
+		repeated key_t keys = 3;
+	}
+
+	repeated descriptor_t descriptors = 1;
+}
+
+message CSVCMsg_PacketEntities {
+	optional int32 max_entries = 1;
+	optional int32 updated_entries = 2;
+	optional bool is_delta = 3;
+	optional bool update_baseline = 4;
+	optional int32 baseline = 5;
+	optional int32 delta_from = 6;
+	optional bytes entity_data = 7;
+}
+
+message CSVCMsg_TempEntities {
+	optional bool reliable = 1;
+	optional int32 num_entries = 2;
+	optional bytes entity_data = 3;
+}
+
+message CSVCMsg_CreateStringTable {
+	optional string name = 1;
+	optional int32 max_entries = 2;
+	optional int32 num_entries = 3;
+	optional bool user_data_fixed_size = 4;
+	optional int32 user_data_size = 5;
+	optional int32 user_data_size_bits = 6;
+	optional int32 flags = 7;
+	optional bytes string_data = 8;
+}
+
+message CSVCMsg_UpdateStringTable {
+	optional int32 table_id = 1;
+	optional int32 num_changed_entries = 2;
+	optional bytes string_data = 3;
+}
+
+message CSVCMsg_VoiceData {
+	optional int32 client = 1;
+	optional bool proximity = 2;
+	optional fixed64 xuid = 3;
+	optional int32 audible_mask = 4;
+	optional bytes voice_data = 5;
+	optional VoiceDataFormat_t format = 6 [default = VOICEDATA_FORMAT_STEAM];
+}
+
+message CSVCMsg_PacketReliable {
+	optional int32 tick = 1;
+	optional int32 messagessize = 2;
+}
+
+
+
+enum SIGNONSTATE {
+	SIGNONSTATE_NONE = 0;
+	SIGNONSTATE_CHALLENGE = 1;
+	SIGNONSTATE_CONNECTED = 2;
+	SIGNONSTATE_NEW = 3;
+	SIGNONSTATE_PRESPAWN = 4;
+	SIGNONSTATE_SPAWN = 5;
+	SIGNONSTATE_FULL = 6;
+	SIGNONSTATE_CHANGELEVEL = 7;
+}
+
+message CMsgVector {
+	optional float x = 1;
+	optional float y = 2;
+	optional float z = 3;
+}
+
+message CMsgVector2D {
+	optional float x = 1;
+	optional float y = 2;
+}
+
+message CMsgQAngle {
+	optional float x = 1;
+	optional float y = 2;
+	optional float z = 3;
+}
+
+message CSVCMsg_GameEvent {
+	message key_t {
+		optional int32 type = 1;
+		optional string val_string = 2;
+		optional float val_float = 3;
+		optional int32 val_long = 4;
+		optional int32 val_short = 5;
+		optional int32 val_byte = 6;
+		optional bool val_bool = 7;
+		optional uint64 val_uint64 = 8;
+	}
+
+	optional string event_name = 1;
+	optional int32 eventid = 2;
+	repeated key_t keys = 3;
+}
+
+message CSVCMsgList_GameEvents {
+	message event_t {
+		optional int32 tick = 1;
+		optional CSVCMsg_GameEvent event = 2;
+	}
+
+	repeated event_t events = 1;
+}
+
+message CSVCMsg_UserMessage {
+	optional int32 msg_type = 1;
+	optional bytes msg_data = 2;
+}
+
+message CSVCMsgList_UserMessages {
+	message usermsg_t {
+		optional int32 tick = 1;
+		optional CSVCMsg_UserMessage msg = 2;
+	}
+
+	repeated usermsg_t usermsgs = 1;
+}
+
+
+
+
+enum EBaseUserMessages {
+	UM_AchievementEvent = 1;
+	UM_CloseCaption = 2;
+	UM_CloseCaptionDirect = 3;
+	UM_CurrentTimescale = 4;
+	UM_DesiredTimescale = 5;
+	UM_Fade = 6;
+	UM_GameTitle = 7;
+	UM_Geiger = 8;
+	UM_HintText = 9;
+	UM_HudMsg = 10;
+	UM_HudText = 11;
+	UM_KeyHintText = 12;
+	UM_MessageText = 13;
+	UM_RequestState = 14;
+	UM_ResetHUD = 15;
+	UM_Rumble = 16;
+	UM_SayText = 17;
+	UM_SayText2 = 18;
+	UM_SayTextChannel = 19;
+	UM_Shake = 20;
+	UM_ShakeDir = 21;
+	UM_StatsCrawlMsg = 22;
+	UM_StatsSkipState = 23;
+	UM_TextMsg = 24;
+	UM_Tilt = 25;
+	UM_Train = 26;
+	UM_VGUIMenu = 27;
+	UM_VoiceMask = 28;
+	UM_VoiceSubtitle = 29;
+	UM_SendAudio = 30;
+	UM_MAX_BASE = 63;
+}
+
+message CUserMsg_AchievementEvent {
+	optional uint32 achievement = 1;
+}
+
+message CUserMsg_CloseCaption {
+	optional fixed32 hash = 1;
+	optional float duration = 2;
+	optional bool from_player = 3;
+}
+
+message CUserMsg_CurrentTimescale {
+	optional float current = 1;
+}
+
+message CUserMsg_DesiredTimescale {
+	optional float desired = 1;
+	optional float duration = 2;
+	optional uint32 interpolator = 3;
+	optional float start_blend_time = 4;
+}
+
+message CUserMsg_Fade {
+	optional uint32 duration = 1;
+	optional uint32 hold_time = 2;
+	optional uint32 flags = 3;
+	optional fixed32 color = 4;
+}
+
+message CUserMsg_Shake {
+	optional uint32 command = 1;
+	optional float amplitude = 2;
+	optional float frequency = 3;
+	optional float duration = 4;
+}
+
+message CUserMsg_ShakeDir {
+	optional CUserMsg_Shake shake = 1;
+	optional CMsgVector direction = 2;
+}
+
+message CUserMsg_Tilt {
+	optional uint32 command = 1;
+	optional bool ease_in_out = 2;
+	optional CMsgVector angle = 3;
+	optional float duration = 4;
+	optional float time = 5;
+}
+
+message CUserMsg_SayText {
+	optional uint32 client = 1;
+	optional string text = 2;
+	optional bool chat = 3;
+}
+
+message CUserMsg_SayText2 {
+	optional uint32 client = 1;
+	optional bool chat = 2;
+	optional string format = 3;
+	optional string prefix = 4;
+	optional string text = 5;
+	optional string location = 6;
+}
+
+message CUserMsg_HudMsg {
+	optional uint32 channel = 1;
+	optional float x = 2;
+	optional float y = 3;
+	optional uint32 color1 = 4;
+	optional uint32 color2 = 5;
+	optional uint32 effect = 6;
+	optional float fade_in_time = 7;
+	optional float fade_out_time = 8;
+	optional float hold_time = 9;
+	optional float fx_time = 10;
+	optional string message = 11;
+}
+
+message CUserMsg_HudText {
+	optional string message = 1;
+}
+
+message CUserMsg_TextMsg {
+	optional uint32 dest = 1;
+	repeated string param = 2;
+}
+
+message CUserMsg_GameTitle {
+}
+
+message CUserMsg_ResetHUD {
+}
+
+message CUserMsg_SendAudio {
+	optional bool stop = 2;
+	optional string name = 3;
+}
+
+message CUserMsg_VoiceMask {
+	repeated int32 audible_players_mask = 1;
+	optional bool player_mod_enabled = 2;
+}
+
+message CUserMsg_RequestState {
+}
+
+message CUserMsg_HintText {
+	optional string message = 1;
+}
+
+message CUserMsg_KeyHintText {
+	repeated string messages = 1;
+}
+
+message CUserMsg_StatsCrawlMsg {
+}
+
+message CUserMsg_StatsSkipState {
+	optional int32 num_skips = 1;
+	optional int32 num_players = 2;
+}
+
+message CUserMsg_VoiceSubtitle {
+	optional int32 ent_index = 1;
+	optional int32 menu = 2;
+	optional int32 item = 3;
+}
+
+message CUserMsg_VGUIMenu {
+	message Keys {
+		optional string name = 1;
+		optional string value = 2;
+	}
+
+	optional string name = 1;
+	optional bool show = 2;
+	repeated Keys keys = 3;
+}
+
+message CUserMsg_Geiger {
+	optional int32 range = 1;
+}
+
+message CUserMsg_Rumble {
+	optional int32 index = 1;
+	optional int32 data = 2;
+	optional int32 flags = 3;
+}
+
+message CUserMsg_Train {
+	optional int32 train = 1;
+}
+
+message CUserMsg_SayTextChannel {
+	optional int32 player = 1;
+	optional int32 channel = 2;
+	optional string text = 3;
+}
+
+message CUserMsg_MessageText {
+	optional uint32 color = 1;
+	optional string text = 2;
+}
+
