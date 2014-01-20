@@ -1,18 +1,20 @@
+from smoke.replay.decoder cimport dt as dcdr_dt
 from smoke.model.entity import Entity, PVS
-from smoke.replay.decoder import dt as dcdr_dt
 
 
-def mk(recv_tables):
+cpdef PacketEntitiesDecoder mk(recv_tables):
     return PacketEntitiesDecoder(recv_tables)
 
 
-class PacketEntitiesDecoder(object):
-    def __init__(self, recv_tables):
+cdef class PacketEntitiesDecoder(object):
+    def __init__(PacketEntitiesDecoder self, object recv_tables):
         self.recv_tables = recv_tables
         self.class_bits = len(recv_tables.by_cls).bit_length()
         self.decoders = dict()
 
-    def __getitem__(self, cls):
+    def __getitem__(PacketEntitiesDecoder self, int cls):
+        cdef object decoder
+
         if cls in self.decoders:
             return self.decoders[cls]
 
@@ -21,9 +23,9 @@ class PacketEntitiesDecoder(object):
 
         return decoder
 
-    def decode(self, stream, is_delta, count, world):
-        index = -1
-        patch = []
+    cpdef object decode(PacketEntitiesDecoder self, object stream, int is_delta, int count, object world):
+        cdef int index = -1
+        cdef object patch = []
 
         while len(patch) < count:
             pvs, entry = self._decode_diff(stream, index, world)
@@ -35,9 +37,9 @@ class PacketEntitiesDecoder(object):
 
         return patch
 
-    def _decode_diff(self, stream, index, entities):
-        index = stream.read_entity_index(index)
-        pvs = stream.read_entity_pvs()
+    cdef _decode_diff(PacketEntitiesDecoder self, object stream, int i, object entities):
+        cdef int diff_index = stream.read_entity_index(i)
+        cdef int pvs = stream.read_entity_pvs()
 
         if pvs == PVS.Enter:
             cls = stream.read_numeric_bits(self.class_bits)
@@ -45,20 +47,23 @@ class PacketEntitiesDecoder(object):
             prop_list = stream.read_entity_prop_list()
             state = self[cls].decode(stream, prop_list)
         elif pvs == PVS.Preserve:
-            _, entity = entities.entry_by_index[index]
+            _, entity = entities.entry_by_index[diff_index]
             cls, serial = entity.cls, entity.serial
             prop_list = stream.read_entity_prop_list()
             state = self[cls].decode(stream, prop_list)
         elif pvs in (PVS.Leave, PVS.Delete):
             serial, cls, state = None, None, dict()
 
-        return pvs, Entity(index, serial, cls, state)
+        return pvs, Entity(diff_index, serial, cls, state)
 
-    def _decode_deletion_diffs(self, stream):
+    cdef _decode_deletion_diffs(PacketEntitiesDecoder self, stream):
+        cdef int deletion_index
+        cdef object deletions
+
         deletions = []
 
         while stream.read_numeric_bits(1):
-            index = stream.read_numeric_bits(11) # max is 2^11-1, or 2047
-            deletions.append((PVS.Delete, Entity(index, None, None, None)))
+            deletion_index = stream.read_numeric_bits(11) # max is 2^11-1, or 2047
+            deletions.append((PVS.Delete, Entity(deletion_index, None, None, None)))
 
         return deletions

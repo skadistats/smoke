@@ -1,7 +1,5 @@
 from collections import OrderedDict
-from protobuf.impl import demo_pb2 as pb_d
-from protobuf.impl import netmessages_pb2 as pb_n
-from protobuf.impl import networkbasetypes_pb2 as pb_nbt
+from smoke.protobuf import dota2_palm as pbd2
 from smoke.io.stream import entity as io_strm_ntt
 from smoke.model.collection import entities as mdl_cllctn_ntts
 from smoke.model.collection import game_event_descriptors as \
@@ -20,15 +18,15 @@ def handle(pb, match):
 
 def handle_dem_fileheader(pb, match):
     file_header = {
-        'demo_file_stamp': pb.demo_file_stamp,
-        'network_protocol': pb.network_protocol,
-        'server_name': pb.server_name,
-        'client_name': pb.client_name,
-        'map_name': pb.map_name,
-        'game_directory': pb.game_directory,
-        'fullpackets_version': pb.fullpackets_version,
-        'allow_clientside_entities': pb.allow_clientside_entities,
-        'allow_clientside_particles': pb.allow_clientside_particles
+        'demo_file_stamp': pb.get('demo_file_stamp'),
+        'network_protocol': pb.get('network_protocol'),
+        'server_name': pb.get('server_name'),
+        'client_name': pb.get('client_name'),
+        'map_name': pb.get('map_name'),
+        'game_directory': pb.get('game_directory'),
+        'fullpackets_version': pb.get('fullpackets_version'),
+        'allow_clientside_entities': pb.get('allow_clientside_entities'),
+        'allow_clientside_particles': pb.get('allow_clientside_particles')
     }
 
     match.file_header = file_header
@@ -36,22 +34,22 @@ def handle_dem_fileheader(pb, match):
 
 def handle_svc_serverinfo(pb, match):
     server_info = {
-        'server_count': pb.server_count,
-        'is_dedicated': pb.is_dedicated,
-        'is_hltv': pb.is_hltv,
-        'is_replay': pb.is_replay,
-        'c_os': pb.c_os,
-        'map_crc': pb.map_crc,
-        'client_crc': pb.client_crc,
-        'string_table_crc': pb.string_table_crc,
-        'max_clients': pb.max_clients,
-        'max_classes': pb.max_classes,
-        'player_slot': pb.player_slot,
-        'tick_interval': pb.tick_interval,
-        'game_dir': pb.game_dir,
-        'map_name': pb.map_name,
-        'sky_name': pb.sky_name,
-        'host_name': pb.host_name
+        'server_count': pb.get('server_count'),
+        'is_dedicated': pb.get('is_dedicated'),
+        'is_hltv': pb.get('is_hltv'),
+        'is_replay': pb.get('is_replay'),
+        'c_os': pb.get('c_os'),
+        'map_crc': pb.get('map_crc'),
+        'client_crc': pb.get('client_crc'),
+        'string_table_crc': pb.get('string_table_crc'),
+        'max_clients': pb.get('max_clients'),
+        'max_classes': pb.get('max_classes'),
+        'player_slot': pb.get('player_slot'),
+        'tick_interval': pb.get('tick_interval'),
+        'game_dir': pb.get('game_dir'),
+        'map_name': pb.get('map_name'),
+        'sky_name': pb.get('sky_name'),
+        'host_name': pb.get('host_name')
     }
 
     match.server_info = server_info
@@ -110,17 +108,26 @@ def handle_svc_sendtable(pb, match):
         # the "template" for each of the items in the array.
         array_prop = send_props[-1] if sp.type is Type.Array else None
 
+        num_elements = sp.get('num_elements')
+        num_bits = sp.get('num_bits')
+        dt_name = sp.get('dt_name')
+        low_value = sp.get('low_value')
+        high_value = sp.get('high_value')
+
         send_prop = Prop(
             pb.net_table_name,
-            sp.var_name, sp.type, sp.flags, sp.priority, sp.num_elements,
-            sp.num_bits, sp.dt_name, sp.low_value, sp.high_value,
-            array_prop
-        )
+            sp.var_name, sp.type, sp.flags, sp.priority, num_elements,
+            num_bits, dt_name, low_value, high_value, array_prop)
 
         send_props.append(send_prop)
 
-    send_tables[pb.net_table_name] = \
-        SendTable(pb.net_table_name, send_props, pb.needs_decoder)
+    needs_decoder = pb.get('needs_decoder')
+
+    try:
+        send_tables[pb.net_table_name] = \
+            SendTable(pb.get('net_table_name'), send_props, needs_decoder)
+    except:
+        assert pb.is_end
 
     match.send_tables = send_tables
 
@@ -195,23 +202,23 @@ def handle_dem_fileinfo(pb, match):
 
 
 HANDLERS = {
-    pb_d.CDemoFileHeader: handle_dem_fileheader,
-    pb_n.CSVCMsg_ServerInfo: handle_svc_serverinfo,
-    pb_n.CNETMsg_Tick: handle_net_tick,
-    pb_n.CNETMsg_SetConVar: handle_net_setconvar,
-    pb_n.CSVCMsg_CreateStringTable: handle_svc_createstringtable,
-    pb_n.CNETMsg_SignonState: handle_net_signonstate,
-    pb_n.CSVCMsg_SendTable: handle_svc_sendtable,
-    pb_d.CDemoClassInfo: handle_dem_classinfo,
-    pb_n.CSVCMsg_VoiceInit: handle_svc_voiceinit,
-    pb_n.CSVCMsg_GameEventList: handle_svc_gameeventlist,
-    pb_n.CSVCMsg_SetView: handle_svc_setview,
-    pb_n.CSVCMsg_PacketEntities: handle_svc_packetentities,
-    pb_nbt.CSVCMsg_GameEvent: handle_svc_gameevent,
-    pb_nbt.CSVCMsg_UserMessage: handle_svc_usermessage,
-    pb_n.CSVCMsg_UpdateStringTable: handle_svc_updatestringtable,
-    pb_n.CSVCMsg_TempEntities: handle_svc_tempentities,
-    pb_n.CSVCMsg_Sounds: handle_svc_sounds,
-    pb_n.CSVCMsg_VoiceData: handle_svc_voicedata,
-    pb_d.CDemoFileInfo: handle_dem_fileinfo
+    pbd2.CDemoFileHeader: handle_dem_fileheader,
+    pbd2.CSVCMsg_ServerInfo: handle_svc_serverinfo,
+    pbd2.CNETMsg_Tick: handle_net_tick,
+    pbd2.CNETMsg_SetConVar: handle_net_setconvar,
+    pbd2.CSVCMsg_CreateStringTable: handle_svc_createstringtable,
+    pbd2.CNETMsg_SignonState: handle_net_signonstate,
+    pbd2.CSVCMsg_SendTable: handle_svc_sendtable,
+    pbd2.CDemoClassInfo: handle_dem_classinfo,
+    pbd2.CSVCMsg_VoiceInit: handle_svc_voiceinit,
+    pbd2.CSVCMsg_GameEventList: handle_svc_gameeventlist,
+    pbd2.CSVCMsg_SetView: handle_svc_setview,
+    pbd2.CSVCMsg_PacketEntities: handle_svc_packetentities,
+    pbd2.CSVCMsg_GameEvent: handle_svc_gameevent,
+    pbd2.CSVCMsg_UserMessage: handle_svc_usermessage,
+    pbd2.CSVCMsg_UpdateStringTable: handle_svc_updatestringtable,
+    pbd2.CSVCMsg_TempEntities: handle_svc_tempentities,
+    pbd2.CSVCMsg_Sounds: handle_svc_sounds,
+    pbd2.CSVCMsg_VoiceData: handle_svc_voicedata,
+    pbd2.CDemoFileInfo: handle_dem_fileinfo
 }

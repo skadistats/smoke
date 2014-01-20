@@ -2,27 +2,16 @@ import collections
 import warnings
 
 from smoke.protobuf import dota2_palm as pbd2
+from smoke.io.const import Action, DEMSyncTickEncountered, DEMStopEncountered
 from smoke.io import factory as io_fctr
 from smoke.io.wrap import embed as io_wrp_mbd
-from smoke.util import enum
 
 
-def mk(demo_io, **args):
-    return Plexer(demo_io, **args)
+cpdef mk(object demo_io, top_blacklist=None, embed_blacklist=None):
+    return Plexer(demo_io, top_blacklist=top_blacklist, embed_blacklist=embed_blacklist)
 
 
-class DEMSyncTickEncountered(RuntimeError):
-    pass
-
-
-class DEMStopEncountered(RuntimeError):
-    pass
-
-
-Action = enum(Enqueue = 0, Inline = 1, Ignore = 2)
-
-
-OPERATIONS = {
+cdef object OPERATIONS = {
     pbd2.DEM_ClassInfo:           Action.Enqueue,
     pbd2.DEM_ConsoleCmd:          Action.Ignore,
     pbd2.DEM_CustomData:          Action.Ignore,
@@ -40,12 +29,18 @@ OPERATIONS = {
 }
 
 
-TOP_WHITELIST = set([pbd2.DEM_FileHeader, pbd2.DEM_ClassInfo,
+cdef object TOP_WHITELIST = set([pbd2.DEM_FileHeader, pbd2.DEM_ClassInfo,
     pbd2.DEM_SignonPacket, pbd2.DEM_SyncTick, pbd2.DEM_Packet, pbd2.DEM_Stop,
     pbd2.DEM_FileInfo])
 
 
-class Plexer(object):
+cdef class Plexer(object):
+    cdef object demo_io
+    cdef object queue
+    cdef object top_blacklist
+    cdef object embed_blacklist
+    cdef object stopped
+
     def __init__(self, demo_io, top_blacklist=None, embed_blacklist=None):
         tb = top_blacklist or set()
         tb = set(tb) - TOP_WHITELIST

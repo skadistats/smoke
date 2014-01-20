@@ -1,19 +1,13 @@
-import collections as c
 
 
-Peek = c.namedtuple('Peek', 'compressed, kind, tick, size')
+cdef int VI_MAX_BYTES = 5
+cdef int VI_SHIFT = 7
+cdef int VI_MASK = (1 << 32) - 1
 
 
-class VarintTooLongError(RuntimeError):
-    pass
-
-
-VI_MAX_BYTES, VI_SHIFT = 5, 7
-VI_MASK = (1 << 32) - 1
-
-
-def read_varint(handle):
-    size, value, shift = 0, 0, 0
+cpdef int read_varint(object handle) except -1:
+    cdef int size, value, shift
+    size = value = shift = 0
 
     while True:
         byte = handle.read(1)
@@ -29,4 +23,4 @@ def read_varint(handle):
             return value & VI_MASK
 
         if shift >= VI_SHIFT * VI_MAX_BYTES:
-            raise VarintTooLongError()
+            raise RuntimeError()

@@ -1,17 +1,18 @@
-from smoke.io.stream.generic import Stream
+from smoke.io.stream cimport generic
 from smoke.model.entity import PVS
 
 
-def mk(*args):
-    return EntityStream(*args)
+cpdef EntityStream mk(str data):
+    return EntityStream(data)
 
 
-class EntityStream(Stream):
-    def __init__(self, *args):
-        super(EntityStream, self).__init__(*args)
+cdef class EntityStream(generic.Stream):
+    def __init__(self, str data):
+        super(EntityStream, self).__init__(data)
 
-    def read_entity_index(self, base_index):
-        encoded_index = self.read_numeric_bits(6)
+    cpdef int read_entity_index(EntityStream self, int base_index):
+        cdef int encoded_index = self.read_numeric_bits(6)
+        cdef int a, b, i
 
         if encoded_index & 0x30:
             # no idea how this actually works, but it does
@@ -22,7 +23,9 @@ class EntityStream(Stream):
 
         return base_index + encoded_index + 1
 
-    def read_entity_pvs(self):
+    cpdef int read_entity_pvs(EntityStream self):
+        cdef int hi, lo
+
         hi = self.read_numeric_bits(1)
         lo = self.read_numeric_bits(1)
 
@@ -36,9 +39,10 @@ class EntityStream(Stream):
 
         return pvs
 
-    def read_entity_prop_list(self):
-        prop_list = []
-        cursor = -1
+    cpdef list read_entity_prop_list(self):
+        cdef list prop_list = []
+        cdef int cursor = -1
+        cdef int offsest
 
         while True:
             if self.read_numeric_bits(1):

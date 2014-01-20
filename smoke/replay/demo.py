@@ -1,5 +1,4 @@
-from protobuf.impl import netmessages_pb2 as pb_n
-from protobuf.impl import demo_pb2 as pb_d
+from smoke.protobuf import dota2_palm as pbd2
 from smoke.io import factory as io_fctr
 from smoke.io import plexer as io_plxr
 from smoke.replay import handler as rply_hndlr
@@ -18,20 +17,20 @@ Game = enum(Entities     = 1 << 0, TempEntities = 1 << 1, Modifiers = 1 << 2,
 
 
 PB_DEPENDENCIES = {
-    'Entities': [pb_n.svc_UpdateStringTable, pb_n.svc_PacketEntities],
-    'TempEntities': [pb_n.svc_TempEntities],
-    'Modifiers': [pb_n.svc_UpdateStringTable],
-    'UserMessages': [pb_n.svc_UserMessage],
-    'GameEvents': [pb_n.svc_GameEvent],
-    'Sounds': [pb_n.svc_Sounds],
-    'VoiceData': [pb_n.svc_VoiceData]
+    'Entities': [pbd2.svc_UpdateStringTable, pbd2.svc_PacketEntities],
+    'TempEntities': [pbd2.svc_TempEntities],
+    'Modifiers': [pbd2.svc_UpdateStringTable],
+    'UserMessages': [pbd2.svc_UserMessage],
+    'GameEvents': [pbd2.svc_GameEvent],
+    'Sounds': [pbd2.svc_Sounds],
+    'VoiceData': [pbd2.svc_VoiceData]
 }
 
 
-EMBED_WHITELIST = set([pb_n.net_Tick, pb_n.net_SetConVar, pb_n.svc_SendTable,
-    pb_n.net_SignonState, pb_n.svc_ServerInfo, pb_n.svc_ClassInfo,
-    pb_n.svc_CreateStringTable, pb_n.svc_SetView, pb_n.svc_VoiceInit,
-    pb_n.svc_GameEventList])
+EMBED_WHITELIST = set([pbd2.net_Tick, pbd2.net_SetConVar, pbd2.svc_SendTable,
+    pbd2.net_SignonState, pbd2.svc_ServerInfo, pbd2.svc_ClassInfo,
+    pbd2.svc_CreateStringTable, pbd2.svc_SetView, pbd2.svc_VoiceInit,
+    pbd2.svc_GameEventList])
 
 
 class Demo(object):
@@ -59,7 +58,7 @@ class Demo(object):
         return embed_blacklist
 
     def __init__(self, d_io, parse=Game.All, skip_full=True, match=None):
-        tb = set([pb_d.DEM_FullPacket]) if skip_full else set()
+        tb = set([pbd2.DEM_FullPacket]) if skip_full else set()
         eb = Demo.mk_embed_blacklist(Demo.calc_deps(parse))
 
         self.parse = parse

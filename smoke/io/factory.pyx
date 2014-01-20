@@ -36,9 +36,9 @@ EMBED = {
 }
 
 
-def mk_top(peek, message):
+cpdef mk_top(peek, message):
     return TOP[peek.kind](message)
 
 
-def mk_embed(peek, message):
+cpdef mk_embed(peek, message):
     return EMBED[peek.kind](message)

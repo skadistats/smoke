@@ -1,7 +1,9 @@
+import io
 import snappy
+import struct
 
-from smoke.io import util as io_utl
-from smoke.io.util import Peek
+from smoke.io cimport util as io_utl
+from smoke.io.peek import Peek
 
 
 COMPRESSED_MASK = 0b01110000
@@ -9,16 +11,18 @@ LEN_HEADER = 8
 LEN_OFFSET = 4
 
 
-def mk(handle):
+cpdef DemoIO mk(object handle):
     return DemoIO(handle)
 
 
-class InvalidHeaderError(RuntimeError):
+cdef object InvalidHeaderError(RuntimeError):
     pass
 
 
-class DemoIO(object):
-    def __init__(self, handle):
+cdef class DemoIO(object):
+    cdef public object handle
+
+    def __init__(DemoIO self, object handle):
         self.handle = handle
 
     def __iter__(self):
@@ -28,17 +32,15 @@ class DemoIO(object):
             except EOFError:
                 raise StopIteration()
 
-    def bootstrap(self):
+    cpdef int bootstrap(DemoIO self) except -1:
         header = self.handle.read(LEN_HEADER)
         offset = self.handle.read(LEN_OFFSET)
         if header != 'PBUFDEM\0':
-            raise InvalidHeaderError
+            raise InvalidHeaderError('header invalid')
 
-        gio = bytearray(offset)
+        return struct.unpack('I', bytearray(offset))[0]
 
-        return sum(gio[i] << (i * 8) for i in range(4))
-
-    def read(self):
+    cpdef object read(DemoIO self):
         try:
             kind = io_utl.read_varint(self.handle)
             comp = bool(kind & COMPRESSED_MASK)
@@ -52,6 +54,6 @@ class DemoIO(object):
             if comp:
                 message = snappy.uncompress(message)
         except AssertionError:
-            raise EOFError()
+            return EOFError()
 
         return Peek(comp, kind, tick, size), message

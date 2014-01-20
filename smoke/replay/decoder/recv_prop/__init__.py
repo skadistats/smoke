@@ -1,11 +1,12 @@
 from smoke.model.dt.prop import Type
-from smoke.replay.decoder.recv_prop import array as rply_dcdr_rcvprp_ry
-from smoke.replay.decoder.recv_prop import float as rply_dcdr_rcvprp_flt
-from smoke.replay.decoder.recv_prop import int as rply_dcdr_rcvprp_nt
-from smoke.replay.decoder.recv_prop import int64 as rply_dcdr_rcvprp_nt64
-from smoke.replay.decoder.recv_prop import string as rply_dcdr_rcvprp_strng
-from smoke.replay.decoder.recv_prop import vector as rply_dcdr_rcvprp_vctr
-from smoke.replay.decoder.recv_prop import vectorxy as rply_dcdr_rcvprp_vctrxy
+from smoke.replay.decoder.recv_prop import darray as rply_dcdr_rcvprp_ry
+from smoke.replay.decoder.recv_prop import dfloat as rply_dcdr_rcvprp_flt
+from smoke.replay.decoder.recv_prop import dint as rply_dcdr_rcvprp_nt
+from smoke.replay.decoder.recv_prop import dint64 as rply_dcdr_rcvprp_nt64
+from smoke.replay.decoder.recv_prop import dstring as rply_dcdr_rcvprp_strng
+from smoke.replay.decoder.recv_prop import dvector as rply_dcdr_rcvprp_vctr
+from smoke.replay.decoder.recv_prop import dvectorxy as \
+    rply_dcdr_rcvprp_vctrxy
 
 
 MODULES_BY_TYPE = {
