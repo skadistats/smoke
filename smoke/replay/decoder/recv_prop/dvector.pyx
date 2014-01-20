@@ -1,7 +1,7 @@
 import math
 
 from smoke.replay.decoder.recv_prop cimport dfloat as dcdr_flt
-from smoke.model.dt.prop import Flag
+from smoke.model.dt.const import Flag
 
 
 cpdef VectorDecoder mk(object prop):

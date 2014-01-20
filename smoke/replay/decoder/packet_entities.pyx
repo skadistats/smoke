@@ -1,5 +1,5 @@
 from smoke.replay.decoder cimport dt as dcdr_dt
-from smoke.model.entity import Entity, PVS
+from smoke.model.const import Entity, PVS
 
 
 cpdef PacketEntitiesDecoder mk(recv_tables):

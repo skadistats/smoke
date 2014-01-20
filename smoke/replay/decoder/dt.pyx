@@ -1,5 +1,5 @@
 from smoke.replay.decoder import recv_prop as dcdr_rcvprp
-from smoke.model.dt.prop import Prop
+from smoke.model.dt.const import Prop
 
 
 cpdef DTDecoder mk(object recv_table):

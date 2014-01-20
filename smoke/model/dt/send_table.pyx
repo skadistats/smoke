@@ -1,5 +1,5 @@
 from itertools import chain, imap
-from smoke.model.dt.prop import Prop, Flag, Type
+from smoke.model.dt.const import Prop, Flag, Type
 
 
 cdef class SendTable(object):

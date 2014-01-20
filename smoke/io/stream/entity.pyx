@@ -1,5 +1,5 @@
 from smoke.io.stream cimport generic
-from smoke.model.entity import PVS
+from smoke.model.const import PVS
 
 
 cpdef EntityStream mk(str data):

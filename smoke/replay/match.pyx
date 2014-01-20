@@ -1,16 +1,38 @@
-from itertools import chain
 from smoke.model.collection import recv_tables as mdl_cllctn_rcvtbls
 from smoke.model.dt import recv_table as mdl_dt_rcvtbl
-from smoke.model.dt.prop import Prop, Flag, Type
 from smoke.replay import flattening
 from smoke.replay.decoder import packet_entities as rply_dcdr_pcktntts
 
 
-def mk():
+cpdef Match mk():
     return Match()
 
 
-class Match(object):
+cdef class Match(object):
+    cdef public object file_header
+    cdef public object signon_state
+    cdef public object server_info
+    cdef public object basis_string_tables
+    cdef public object send_tables
+    cdef public object class_info
+    cdef public object recv_tables
+    cdef public object con_vars
+    cdef public object voice_init
+    cdef public object game_event_descriptors
+    cdef public object view
+    cdef public object _packet_entities_decoder
+
+    cdef public object tick
+    cdef public object entities
+    cdef public object modifiers
+    cdef public object temp_entities
+    cdef public object game_events
+    cdef public object user_messages
+    cdef public object sounds
+    cdef public object voice_data
+
+    cdef public object file_info
+
     def __init__(self):
         # prologue
         self.file_header = None
@@ -39,15 +61,15 @@ class Match(object):
         # epilogue
         self.file_info = None
 
-    @property
-    def packet_entities_decoder(self):
-        if not self._packet_entities_decoder:
-            self._packet_entities_decoder = \
-                rply_dcdr_pcktntts.mk(self.recv_tables)
+    property packet_entities_decoder:
+        def __get__(self):
+            if not self._packet_entities_decoder:
+                self._packet_entities_decoder = \
+                    rply_dcdr_pcktntts.mk(self.recv_tables)
 
-        return self._packet_entities_decoder
+            return self._packet_entities_decoder
 
-    def flatten_send_tables(self):
+    cpdef flatten_send_tables(self):
         recv_tables = dict()
 
         for dt, send_table in self.send_tables.items():
@@ -60,13 +82,13 @@ class Match(object):
 
         self.recv_tables = mdl_cllctn_rcvtbls.mk(recv_tables)
 
-    def check_sanity(self):
+    cpdef check_sanity(self):
         assert self.file_header and self.signon_state and self.server_info \
             and self.basis_string_tables and self.send_tables and \
             self.class_info and self.recv_tables and self.con_vars and \
             self.voice_init and self.game_event_descriptors and self.view
 
-    def reset_transient_state(self):
+    cpdef reset_transient_state(self):
         self.temp_entities = None # TBD: what collection to use here?
         self.game_events = dict()
         self.user_messages = dict()

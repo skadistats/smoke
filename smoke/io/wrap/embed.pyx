@@ -3,7 +3,7 @@ import snappy
 import struct
 
 from smoke.io cimport util as io_utl
-from smoke.io.peek import Peek
+from smoke.io.const import Peek
 
 
 cpdef EmbedIO mk(str data, tick=0):

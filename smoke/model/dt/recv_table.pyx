@@ -1,5 +1,5 @@
 from collections import defaultdict
-from smoke.model.dt.prop import Flag
+from smoke.model.dt.const import Flag
 
 
 cpdef RecvTable mk(object dt, object recv_props):

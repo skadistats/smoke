@@ -1,4 +1,4 @@
-from smoke.model.dt.prop import Flag
+from smoke.model.dt.const import Flag
 
 
 cpdef IntDecoder mk(object prop):

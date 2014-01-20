@@ -6,12 +6,17 @@ def mk(plexer, match):
     return Ticker(plexer, match)
 
 
-class Ticker(object):
+cdef class Ticker(object):
+    cdef public object plexer
+    cdef public object match
+
     def __init__(self, plexer, match):
         self.plexer = plexer
         self.match = match
 
     def __iter__(self):
+        cdef object collection
+
         while True:
             try:
                 collection = self.plexer.read_tick()

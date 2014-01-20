@@ -3,7 +3,7 @@ import snappy
 import struct
 
 from smoke.io cimport util as io_utl
-from smoke.io.peek import Peek
+from smoke.io.const import Peek
 
 
 COMPRESSED_MASK = 0b01110000

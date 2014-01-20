@@ -1,5 +1,5 @@
 from itertools import chain
-from smoke.model.dt.prop import Flag, Type, Prop
+from smoke.model.dt.const import Flag, Type, Prop
 
 
 cpdef object flatten(object descendant, object lookup):

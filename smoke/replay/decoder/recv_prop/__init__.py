@@ -1,4 +1,4 @@
-from smoke.model.dt.prop import Type
+from smoke.model.dt.const import Type
 from smoke.replay.decoder.recv_prop import darray as rply_dcdr_rcvprp_ry
 from smoke.replay.decoder.recv_prop import dfloat as rply_dcdr_rcvprp_flt
 from smoke.replay.decoder.recv_prop import dint as rply_dcdr_rcvprp_nt

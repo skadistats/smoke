@@ -6,18 +6,18 @@ from smoke.model.collection import game_event_descriptors as \
     mdl_cllctn_gmvntdscrptrs
 from smoke.model.collection.game_event_descriptors import GameEventDescriptor
 from smoke.model.collection import string_tables as mdl_cllctn_strngtbl
-from smoke.model.dt.prop import Prop, Type
+from smoke.model.dt.const import Prop, Type
 from smoke.model.dt.send_table import SendTable
 from smoke.model.string_table import String
 from smoke.replay.decoder import string_table as rply_dcdr_strngtbl
 
 
-def handle(pb, match):
+cpdef handle(pb, match):
     HANDLERS[type(pb)](pb, match)
 
 
-def handle_dem_fileheader(pb, match):
-    file_header = {
+cpdef handle_dem_fileheader(pb, match):
+    cdef object file_header = {
         'demo_file_stamp': pb.get('demo_file_stamp'),
         'network_protocol': pb.get('network_protocol'),
         'server_name': pb.get('server_name'),
@@ -32,8 +32,8 @@ def handle_dem_fileheader(pb, match):
     match.file_header = file_header
 
 
-def handle_svc_serverinfo(pb, match):
-    server_info = {
+cpdef handle_svc_serverinfo(pb, match):
+    cdef object server_info = {
         'server_count': pb.get('server_count'),
         'is_dedicated': pb.get('is_dedicated'),
         'is_hltv': pb.get('is_hltv'),
@@ -55,13 +55,13 @@ def handle_svc_serverinfo(pb, match):
     match.server_info = server_info
 
 
-def handle_net_tick(pb, match):
+cpdef handle_net_tick(pb, match):
     match.tick = pb.tick
     match.reset_transient_state()
 
 
-def handle_net_setconvar(pb, match):
-    con_vars = match.con_vars or dict()
+cpdef handle_net_setconvar(pb, match):
+    cdef object con_vars = match.con_vars or dict()
 
     for cvar in pb.convars.cvars:
         name, value = cvar.name, cvar.value
@@ -70,21 +70,20 @@ def handle_net_setconvar(pb, match):
     match.con_vars = con_vars
 
 
-def handle_svc_createstringtable(pb, match):
-    basis_string_tables = match.basis_string_tables or \
+cpdef handle_svc_createstringtable(pb, match):
+    cdef object basis_string_tables = match.basis_string_tables or \
         mdl_cllctn_strngtbl.mk()
+    cdef int index = len(basis_string_tables.by_index)
+    cdef object string_table = rply_dcdr_strngtbl.decode_and_create(pb)
 
-    string_table = rply_dcdr_strngtbl.decode_and_create(pb)
-
-    index = len(basis_string_tables.by_index)
     basis_string_tables.mapping[index] = string_table
     basis_string_tables.by_name[pb.name] = string_table
 
     match.basis_string_tables = basis_string_tables
 
 
-def handle_net_signonstate(pb, match):
-    signon_state = {
+cpdef handle_net_signonstate(pb, match):
+    cdef object signon_state = {
         'signon_state': pb.signon_state,
         'spawn_count': pb.spawn_count,
         'num_server_players': pb.num_server_players
@@ -98,10 +97,18 @@ def handle_net_signonstate(pb, match):
         match.check_sanity()
 
 
-def handle_svc_sendtable(pb, match):
-    send_tables = match.send_tables or dict()
+cpdef handle_svc_sendtable(pb, match):
+    cdef object send_tables = match.send_tables or dict()
+    cdef object send_props = list()
 
-    send_props = []
+    cdef object array_prop
+    cdef object num_elements
+    cdef object num_bits
+    cdef object dt_name
+    cdef object low_value
+    cdef object high_value
+    cdef object send_prop
+    cdef object needs_decoder
 
     for sp in pb.props:
         # for send props of type Type.Array, the previous property stored is
@@ -132,12 +139,12 @@ def handle_svc_sendtable(pb, match):
     match.send_tables = send_tables
 
 
-def handle_dem_classinfo(pb, match):
+cpdef handle_dem_classinfo(pb, match):
     match.class_info = {i.table_name:int(i.class_id) for i in pb.classes}
 
 
-def handle_svc_voiceinit(pb, match):
-    voice_init = {
+cpdef handle_svc_voiceinit(pb, match):
+    cdef object voice_init = {
         'quality': pb.quality,
         'codec': pb.codec,
         'version': pb.version
@@ -146,8 +153,12 @@ def handle_svc_voiceinit(pb, match):
     match.voice_init = voice_init
 
 
-def handle_svc_gameeventlist(pb, match):
-    game_event_descriptors = mdl_cllctn_gmvntdscrptrs.mk()
+cpdef handle_svc_gameeventlist(pb, match):
+    cdef object game_event_descriptors = mdl_cllctn_gmvntdscrptrs.mk()
+    cdef int eventid
+    cdef object name
+    cdef object keys
+    cdef object game_event_descriptor
 
     for desc in pb.descriptors:
         eventid, name = desc.eventid, desc.name
@@ -159,11 +170,16 @@ def handle_svc_gameeventlist(pb, match):
     match.game_event_descriptors = game_event_descriptors
 
 
-def handle_svc_setview(pb, match):
+cpdef handle_svc_setview(pb, match):
     match.view = { 'entity_index': pb.entity_index }
 
 
-def handle_svc_packetentities(pb, match):
+cpdef handle_svc_packetentities(pb, match):
+    cdef object s
+    cdef int d
+    cdef int n
+    cdef object patch
+
     match.entities = match.entities or mdl_cllctn_ntts.mk()
 
     s = io_strm_ntt.mk(pb.entity_data)
@@ -173,31 +189,31 @@ def handle_svc_packetentities(pb, match):
     match.entities.apply(patch)
 
 
-def handle_svc_gameevent(pb, match):
+cpdef handle_svc_gameevent(pb, match):
     pass
 
 
-def handle_svc_usermessage(pb, match):
+cpdef handle_svc_usermessage(pb, match):
     pass
 
 
-def handle_svc_updatestringtable(pb, match):
+cpdef handle_svc_updatestringtable(pb, match):
     pass
 
 
-def handle_svc_tempentities(pb, match):
+cpdef handle_svc_tempentities(pb, match):
     pass
 
 
-def handle_svc_sounds(pb, match):
+cpdef handle_svc_sounds(pb, match):
     pass
 
 
-def handle_svc_voicedata(pb, match):
+cpdef handle_svc_voicedata(pb, match):
     pass
 
 
-def handle_dem_fileinfo(pb, match):
+cpdef handle_dem_fileinfo(pb, match):
     pass
 
 
