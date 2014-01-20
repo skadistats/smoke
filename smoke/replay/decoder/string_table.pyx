@@ -21,14 +21,9 @@ cpdef object decode_and_create(object pb):
     return string_table
 
 
-# def decode_and_apply_update(pb, string_table):
-#     update = deserialize(pb.num_changed_entries, pb.string_data, \
-#         string_table.user_data_fixed_size, string_table.user_data_size_bits)
-
-#     for string in update:
-#         string_table.update(string)
-
-#     return update
+cpdef decode_and_apply_update(object pb, object string_table):
+    for string in deserialize(pb.num_changed_entries, pb.string_data, string_table):
+        string_table.update(string)
 
 
 cdef object deserialize(int num_entries, object string_data, object string_table):

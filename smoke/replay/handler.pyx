@@ -71,15 +71,15 @@ cpdef handle_net_setconvar(pb, match):
 
 
 cpdef handle_svc_createstringtable(pb, match):
-    cdef object basis_string_tables = match.basis_string_tables or \
+    cdef object string_tables = match.string_tables or \
         mdl_cllctn_strngtbl.mk()
-    cdef int index = len(basis_string_tables.by_index)
+    cdef int index = len(string_tables.by_index)
     cdef object string_table = rply_dcdr_strngtbl.decode_and_create(pb)
 
-    basis_string_tables.mapping[index] = string_table
-    basis_string_tables.by_name[pb.name] = string_table
+    string_tables.by_index[index] = string_table
+    string_tables.by_name[pb.name] = string_table
 
-    match.basis_string_tables = basis_string_tables
+    match.string_tables = string_tables
 
 
 cpdef handle_net_signonstate(pb, match):
@@ -198,7 +198,9 @@ cpdef handle_svc_usermessage(pb, match):
 
 
 cpdef handle_svc_updatestringtable(pb, match):
-    pass
+    cdef object string_table = match.string_tables.by_index[pb.table_id]
+
+    rply_dcdr_strngtbl.decode_and_apply_update(pb, string_table)
 
 
 cpdef handle_svc_tempentities(pb, match):

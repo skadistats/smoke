@@ -12,7 +12,7 @@ cdef class Match(object):
     cdef public object file_header
     cdef public object signon_state
     cdef public object server_info
-    cdef public object basis_string_tables
+    cdef public object string_tables
     cdef public object send_tables
     cdef public object class_info
     cdef public object recv_tables
@@ -38,7 +38,7 @@ cdef class Match(object):
         self.file_header = None
         self.signon_state = None
         self.server_info = None
-        self.basis_string_tables = None
+        self.string_tables = None
         self.send_tables = None
         self.class_info = None
         self.recv_tables = None
@@ -84,7 +84,7 @@ cdef class Match(object):
 
     cpdef check_sanity(self):
         assert self.file_header and self.signon_state and self.server_info \
-            and self.basis_string_tables and self.send_tables and \
+            and self.string_tables and self.send_tables and \
             self.class_info and self.recv_tables and self.con_vars and \
             self.voice_init and self.game_event_descriptors and self.view
 

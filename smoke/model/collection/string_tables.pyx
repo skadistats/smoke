@@ -6,19 +6,16 @@ cpdef StringTablesCollection mk():
 
 
 cdef class StringTablesCollection(object):
-    cdef public object mapping
     cdef public object by_index
     cdef public object by_name
 
     def __init__(self):
-        self.mapping = dict()
         self.by_index = dict()
         self.by_name = dict()
 
     def __add__(self, other):
         cdef StringTablesCollection new = copy.copy(self)
 
-        new.mapping.update(other.mapping)
         new.by_index.update(other.by_index)
         new.by_name.update(other.by_name)
 
@@ -27,7 +24,6 @@ cdef class StringTablesCollection(object):
     def __copy__(self):
         cdef StringTablesCollection new = StringTablesCollection()
         
-        new.mapping = self.mapping.copy()
         new.by_index = self.by_index.copy()
         new.by_name = self.by_name.copy()
 
