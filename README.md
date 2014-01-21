@@ -12,9 +12,6 @@ If speed is of paramount concern for your use case, or if you prefer Java,
 check out [clarity](https://github.com/skadistats/clarity). It is comically
 fast--even cython can't compete.
 
-Of course, we'll be continually looking for ways of improving smoke's speed.
-Pull requests welcome!
-
 
 # Installation
 
@@ -22,8 +19,8 @@ smoke is authored using python 2.7.x*.
 
 If you use a [Unix-like](http://en.wikipedia.org/wiki/Unix-like) operating
 system (Linux or Mac OS X), installating smoke should be pretty painless.
-**Windows users, halp! If you figure out how to get it running on Windows, let
-us know. It should be possible.**
+**Windows hackers, halp! If you figure out how to get it running on Windows,
+let us know. It should be possible.**
 
 First, you need a C compiler. OS X users will need to install the Xcode
 "Command Line Tools" from
@@ -37,6 +34,7 @@ You will need the `snappy` development libraries. Mac OS X users can get this
 easily with Homebrew or MacPorts. With Homebrew, for example:
 
     brew install snappy
+    brew install protobuf
 
 In Ubuntu, you might install dependencies thusly:
 
@@ -66,17 +64,17 @@ investigation. Happy to accept pull requests for Python 3 support.
 smoke parses only the data you're interested in from a replay. Here are the
 kinds of data it can parse (optionally) from files:
 
-* entities: in-game things like heroes, players, and creeps
-* modifiers: auras and effects on in-game entities
-* \*voice data: the protobuf-formatted binary data blobs that are somehow
+* **entities**: in-game things like heroes, players, and creeps
+* **modifiers**: auras and effects on in-game entities
+* \***voice data**: the protobuf-formatted binary data blobs that are somehow
 strung into voice--only really relevant to commentated pro matches
-* \*"temp" entities: fire-and-forget things the game server tells the
-client about... and then never mentions again (WIP)
-* \*user messages: many different things, including spectator clicks, global
-chat messages, overhead events (like last-hit gold, and much more) (WIP)
-* \*game events: lower-level messages like Dota TV control (directed camera
-commands, for example), combat log messages, etc. (WIP)
-* \*sounds: sounds that occur in the game (WIP)
+* \***"temp" entities**: fire-and-forget things the game server tells the
+client about... and then never mentions again
+* \***user messages**: many different things, including spectator clicks, global
+chat messages, overhead events (like last-hit gold, and much more)
+* \***game events**: lower-level messages like Dota TV control (directed camera
+commands, for example), combat log messages, etc.
+* \***sounds**: sounds that occur in the game
 
 An asterisk above denotes "transient" data--data that changes completely each
 tick of the game. Non-transient data is instead updated at each tick.
@@ -166,7 +164,8 @@ Currently, the following are not parsed by smoke:
 * Temp Entities
 * Sounds
 
-No major technical limitations, just unfinished work.
+No major technical limitations, just unfinished work. This should be working
+soon.
 
 
 # License
