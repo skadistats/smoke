@@ -66,15 +66,15 @@ kinds of data it can parse (optionally) from files:
 
 * **entities**: in-game things like heroes, players, and creeps
 * **modifiers**: auras and effects on in-game entities
-* \***voice data**: the protobuf-formatted binary data blobs that are somehow
-strung into voice--only really relevant to commentated pro matches
-* \***"temp" entities**: fire-and-forget things the game server tells the
-client about... and then never mentions again
-* \***user messages**: many different things, including spectator clicks, global
-chat messages, overhead events (like last-hit gold, and much more)
-* \***game events**: lower-level messages like Dota TV control (directed camera
-commands, for example), combat log messages, etc.
-* \***sounds**: sounds that occur in the game
+* **voice data**: the protobuf-formatted binary data blobs that are somehow
+strung into voice--only really relevant to commentated pro matches*
+* **"temp" entities**: fire-and-forget things the game server tells the
+client about... and then never mentions again*
+* **user messages**: many different things, including spectator clicks, global
+chat messages, overhead events (like last-hit gold, and much more)*
+* **game events**: lower-level messages like Dota TV control (directed camera
+commands, for example), combat log messages, etc.*
+* **sounds**: sounds that occur in the game*
 
 An asterisk above denotes "transient" data--data that changes completely each
 tick of the game. Non-transient data is instead updated at each tick.
