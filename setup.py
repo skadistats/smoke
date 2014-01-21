@@ -4,7 +4,7 @@ from Cython.Build import cythonize
 
 setup(
     name='smoke',
-    version='1.0',
+    version='0.1',
     description='Fast, full Dota 2 game replay parser.',
     long_description=open('README.md').read(),
     author='Joshua Morris',
