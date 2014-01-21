@@ -1,3 +1,4 @@
+from collections import defaultdict
 from smoke.model.collection import recv_tables as mdl_cllctn_rcvtbls
 from smoke.model.dt import recv_table as mdl_dt_rcvtbl
 from smoke.replay import flattening
@@ -90,7 +91,7 @@ cdef class Match(object):
 
     cpdef reset_transient_state(self):
         self.temp_entities = None # TBD: what collection to use here?
-        self.game_events = dict()
-        self.user_messages = dict()
+        self.game_events = defaultdict(list)
+        self.user_messages = defaultdict(list)
         self.sounds = list()
         self.voice_data = list()

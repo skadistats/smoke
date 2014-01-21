@@ -7,6 +7,8 @@ cdef int VI_MASK = (1 << 32) - 1
 
 cpdef int read_varint(object handle) except -1:
     cdef int size, value, shift
+    cdef str byte
+
     size = value = shift = 0
 
     while True:

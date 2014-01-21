@@ -10,6 +10,6 @@ cdef class StringDecoder(object):
     def __init__(StringDecoder self, prop):
         self.prop = prop
 
-    cpdef decode(StringDecoder self, object stream):
+    cpdef str decode(StringDecoder self, object stream):
         cdef int bytelength = stream.read_numeric_bits(9)
         return stream.read_string(bytelength)

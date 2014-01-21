@@ -8,7 +8,6 @@ cpdef FloatDecoder mk(object prop):
 
 
 cdef class FloatDecoder(object):
-
     def __init__(self, prop):
         self.prop = prop
         self._bits = prop.bits

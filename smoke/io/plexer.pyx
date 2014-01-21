@@ -54,7 +54,7 @@ cdef class Plexer(object):
         self.embed_blacklist = eb
         self.stopped = False
 
-    cpdef read(self):
+    cpdef object read(self):
         peek, pb = self.lookahead()
 
         self.queue.popleft()
@@ -64,7 +64,7 @@ cdef class Plexer(object):
 
         return peek, pb
 
-    cpdef read_tick(self):
+    cpdef object read_tick(self):
         if self.stopped:
             raise DEMStopEncountered()
 
@@ -85,7 +85,7 @@ cdef class Plexer(object):
 
         return collection
 
-    cdef lookahead(self):
+    cdef object lookahead(self):
         while len(self.queue) == 0:
             peek, message = self.demo_io.read()
             kind = peek.kind

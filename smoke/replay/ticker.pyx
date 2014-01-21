@@ -1,4 +1,4 @@
-from smoke.replay import handler
+from smoke.replay import handler as rply_hndlr
 from smoke.io import plexer as io_plxr
 
 
@@ -15,15 +15,11 @@ cdef class Ticker(object):
         self.match = match
 
     def __iter__(self):
-        cdef object collection
-
-        while True:
-            try:
-                collection = self.plexer.read_tick()
-
-                for _, pb in collection:
-                    handler.handle(pb, self.match)
+        try:
+            while True:
+                for _, pb in self.plexer.read_tick():
+                    rply_hndlr.handle(pb, self.match)
 
                 yield self.match
-            except io_plxr.DEMStopEncountered:
-                raise StopIteration()
+        except io_plxr.DEMStopEncountered:
+            raise StopIteration()

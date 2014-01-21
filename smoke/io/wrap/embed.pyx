@@ -20,20 +20,17 @@ cdef class EmbedIO(object):
         self.tick = tick
 
     def __iter__(EmbedIO self):
-        while True:
-            try:
+        try:
+            while True:
                 yield self.read()
-            except EOFError:
-                raise StopIteration()
+        except EOFError:
+            raise StopIteration()
 
     cpdef read(self):
-        try:
-            kind = io_utl.read_varint(self.handle)
-            size = io_utl.read_varint(self.handle)
-            message = self.handle.read(size)
+        kind = io_utl.read_varint(self.handle)
+        size = io_utl.read_varint(self.handle)
+        message = self.handle.read(size)
 
-            assert len(message) == size
-        except AssertionError:
-            return EOFError()
+        assert len(message) == size
 
         return Peek(False, kind, self.tick, size), message

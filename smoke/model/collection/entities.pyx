@@ -9,11 +9,11 @@ cpdef EntitiesCollection mk(object entry_by_index=None, object recv_table_by_cls
     return EntitiesCollection(entry_by_index, recv_table_by_cls)
 
 
-cpdef to_e(int index, int serial):
+cdef to_e(int index, int serial):
     return (serial << MAX_EDICT_BITS) | index
 
 
-cpdef from_e(int ehandle):
+cdef from_e(int ehandle):
     index = ehandle & ((1 << MAX_EDICT_BITS) - 1)
     serial = ehandle >> MAX_EDICT_BITS
 
@@ -44,10 +44,7 @@ cdef class EntitiesCollection(object):
             elif pvs == PVS.Preserve:
                 assert e.index in entry_by_index
                 peek, entry = entry_by_index[e.index]
-                state = entry.state.copy()
-                state.update(e.state)
-                entry = (peek, Entity(e.index, e.serial, e.cls, state))
-                entry_by_index[e.index] = entry
+                entry.state.update(e.state)
             elif pvs == PVS.Leave:
                 _, entry = entry_by_index[e.index]
                 entry_by_index[entry.index] = (PVS.Leave, entry)

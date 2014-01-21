@@ -65,20 +65,20 @@ cdef class Demo(object):
         self.match = match or rply_mtch.mk()
 
     cpdef bootstrap(Demo self):
-        while True:
-            try:
+        try:
+            while True:
                 _, pb = self.plexer.read()
                 rply_hndlr.handle(pb, self.match)
-            except io_plxr.DEMSyncTickEncountered:
-                break
+        except io_plxr.DEMSyncTickEncountered:
+            pass
 
     cpdef play(Demo self):
         return rply_tckr.mk(self.plexer, self.match)
 
     cpdef finish(Demo self):
-        while True:
-            try:
+        try:
+            while True:
                 _, pb = self.plexer.read()
                 rply_hndlr.handle(pb, self.match)
-            except EOFError:
-                break
+        except EOFError:
+            pass
