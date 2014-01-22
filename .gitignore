@@ -3,3 +3,5 @@
 *.c
 *.so
 *.sublime-*
+build
+dist
