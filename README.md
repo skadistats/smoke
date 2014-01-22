@@ -2,15 +2,16 @@
 
 # smoke
 
-Relatively fast, complete replay parser written in cython. Cython is a Python-
-like language which is processed into C and then compiled for C-like speed.
+Relatively fast, complete Dota 2 "demo" (aka "replay") parser written in
+cython. Cython is a Python-like language which is processed into C and then
+compiled for execution speed.
 
 smoke parses replays at or faster than 88x game time. So if a game lasted 44
 minutes, expect parsing to take around 30 seconds.
 
 If speed is of paramount concern for your use case, or if you prefer Java,
 check out [clarity](https://github.com/skadistats/clarity). It is comically
-fast--even cython can't compete.
+fast--cython can't compete.
 
 
 # Installation
@@ -59,15 +60,14 @@ this out is not a priority for us, but feel free to conduct your own
 investigation. Happy to accept pull requests for Python 3 support.
 
 
-# Using smoke
+# Replay Data
 
-smoke parses only the data you're interested in from a replay. Here are the
-kinds of data it can parse (optionally) from files:
+smoke parses only the data you're interested in from a replay. Choose from:
 
 * **entities**: in-game things like heroes, players, and creeps
 * **modifiers**: auras and effects on in-game entities
 * **"temp" entities**: fire-and-forget things the game server tells the
-client about... and then never mentions again*
+client about*
 * **user messages**: many different things, including spectator clicks, global
 chat messages, overhead events (like last-hit gold, and much more), etc.*✝
 * **game events**: lower-level messages like Dota TV control (directed camera
@@ -79,6 +79,8 @@ strung into voice--only really relevant to commentated pro matches*✝
 \* **transient**: new dataset (i.e. list, dict) for each tick of the parse
 
 ✝ **unprocessed**: data is provided as original protobuf message object
+
+# Parsing Replay Data
 
 By default, smoke parses everything. This is the slowest parsing option. Here
 is a simple example which parses a demo, doing nothing:
@@ -162,8 +164,7 @@ Currently, the following are not parsed by smoke:
 * Temp Entities
 * FileInfo (end of file match information)
 
-No major technical limitations, just unfinished work. This should be working
-soon.
+These should be available soon.
 
 
 # License
