@@ -1,6 +1,6 @@
 import warnings
 
-from collections import OrderedDict
+from collections import defaultdict
 from smoke.protobuf import dota2_palm as pbd2
 from smoke.io.stream import entity as io_strm_ntt
 from smoke.model.collection import entities as mdl_cllctn_ntts
@@ -156,6 +156,18 @@ cpdef handle_net_signonstate(pb, match):
             match._instance_baseline_cache[cls] = \
                 match.packet_entities_decoder[cls].decode(ntt_stream, prop_list)
 
+        active_modifiers = match.string_tables.by_name['ActiveModifiers']
+        modifiers = defaultdict(dict)
+
+        for string in active_modifiers.by_index.values():
+            if len(string.value) == 0:
+                continue
+            _pb = pbd2.CDOTAModifierBuffTableEntry(string.value)
+            assert _pb.entry_type == pbd2.DOTA_MODIFIER_ENTRY_TYPE_ACTIVE
+            modifiers[_pb.parent][_pb.index] = _pb
+
+        match.modifiers = modifiers
+
 
 cpdef handle_svc_sendtable(pb, match):
     send_tables = match.send_tables or dict()
@@ -291,6 +303,28 @@ cpdef handle_svc_updatestringtable(pb, match):
             prop_list = ntt_stream.read_entity_prop_list()
             match._instance_baseline_cache[cls] = \
                 match.packet_entities_decoder[cls].decode(ntt_stream, prop_list)
+
+    if string_table.name == 'ActiveModifiers':
+        for string in update:
+            _pb = pbd2.CDOTAModifierBuffTableEntry(string.value)
+
+            if _pb.entry_type == pbd2.DOTA_MODIFIER_ENTRY_TYPE_ACTIVE:
+                match.modifiers[_pb.parent][_pb.index] = _pb
+            else:
+                assert _pb.entry_type == pbd2.DOTA_MODIFIER_ENTRY_TYPE_REMOVED
+
+                try:
+                    for_parent = match.modifiers[_pb.parent]
+
+                    try:
+                        del for_parent[_pb.index]
+                    except KeyError:
+                        pass
+
+                    if len(for_parent) == 0:
+                        del match.modifiers[_pb.parent]
+                except KeyError:
+                    pass
 
 
 cpdef handle_svc_tempentities(pb, match):

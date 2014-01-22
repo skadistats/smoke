@@ -65,7 +65,7 @@ investigation. Happy to accept pull requests for Python 3 support.
 smoke parses only the data you're interested in from a replay. Choose from:
 
 * **entities**: in-game things like heroes, players, and creeps
-* **modifiers**: auras and effects on in-game entities
+* **modifiers**: auras and effects on in-game entities✝
 * **"temp" entities**: fire-and-forget things the game server tells the
 client about*
 * **user messages**: many different things, including spectator clicks, global
@@ -160,7 +160,6 @@ while `play`ing a demo.
 
 Currently, the following are not parsed by smoke:
 
-* Modifiers
 * Temp Entities
 * FileInfo (end of file match information)
 
