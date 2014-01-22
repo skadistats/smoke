@@ -15,18 +15,17 @@ cpdef object decode_and_create(object pb):
     cdef int udsb = pb.user_data_size_bits
     cdef object string_table = mdl_strngtbl.mk(pb.name, pb.max_entries, udfs, udsb)
 
-    for string in deserialize(pb.num_entries, pb.string_data, string_table):
+    for string in _deserialize(pb.num_entries, pb.string_data, string_table):
         string_table.update(string)
 
     return string_table
 
 
-cpdef decode_and_apply_update(object pb, object string_table):
-    for string in deserialize(pb.num_changed_entries, pb.string_data, string_table):
-        string_table.update(string)
+cpdef object decode_update(object pb, object string_table):
+    return _deserialize(pb.num_changed_entries, pb.string_data, string_table)
 
 
-cdef object deserialize(int num_entries, object string_data, object string_table):
+cdef object _deserialize(int num_entries, object string_data, object string_table):
     cdef object stream = io_strm_gnrc.mk(string_data)
 
     # The meaning of this one-bit flag is unknown, but we can use it later

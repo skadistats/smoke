@@ -22,6 +22,7 @@ cdef class Match(object):
     cdef public object game_event_descriptors
     cdef public object view
     cdef public object _packet_entities_decoder
+    cdef public object _instance_baseline_cache
 
     cdef public object tick
     cdef public object entities
@@ -48,8 +49,9 @@ cdef class Match(object):
         self.game_event_descriptors = None
         self.view = None
         self._packet_entities_decoder = None
+        self._instance_baseline_cache = dict()
 
-        # game
+        # data properties
         self.tick = None
         self.entities = None
         self.modifiers = None

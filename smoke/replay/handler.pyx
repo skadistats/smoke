@@ -68,7 +68,7 @@ cpdef handle(pb, match):
 
 
 cpdef handle_dem_fileheader(pb, match):
-    cdef object file_header = {
+    file_header = {
         'demo_file_stamp': pb.get('demo_file_stamp'),
         'network_protocol': pb.get('network_protocol'),
         'server_name': pb.get('server_name'),
@@ -84,7 +84,7 @@ cpdef handle_dem_fileheader(pb, match):
 
 
 cpdef handle_svc_serverinfo(pb, match):
-    cdef object server_info = {
+    server_info = {
         'server_count': pb.get('server_count'),
         'is_dedicated': pb.get('is_dedicated'),
         'is_hltv': pb.get('is_hltv'),
@@ -112,7 +112,7 @@ cpdef handle_net_tick(pb, match):
 
 
 cpdef handle_net_setconvar(pb, match):
-    cdef object con_vars = match.con_vars or dict()
+    con_vars = match.con_vars or dict()
 
     for cvar in pb.convars.cvars:
         name, value = cvar.name, cvar.value
@@ -122,10 +122,9 @@ cpdef handle_net_setconvar(pb, match):
 
 
 cpdef handle_svc_createstringtable(pb, match):
-    cdef object string_tables = match.string_tables or \
-        mdl_cllctn_strngtbl.mk()
-    cdef int index = len(string_tables.by_index)
-    cdef object string_table = rply_dcdr_strngtbl.decode_and_create(pb)
+    string_tables = match.string_tables or mdl_cllctn_strngtbl.mk()
+    index = len(string_tables.by_index)
+    string_table = rply_dcdr_strngtbl.decode_and_create(pb)
 
     string_tables.by_index[index] = string_table
     string_tables.by_name[pb.name] = string_table
@@ -134,7 +133,7 @@ cpdef handle_svc_createstringtable(pb, match):
 
 
 cpdef handle_net_signonstate(pb, match):
-    cdef object signon_state = {
+    signon_state = {
         'signon_state': pb.signon_state,
         'spawn_count': pb.spawn_count,
         'num_server_players': pb.num_server_players
@@ -147,19 +146,20 @@ cpdef handle_net_signonstate(pb, match):
         match.flatten_send_tables()
         match.check_sanity()
 
+        # populate instance baselines
+        instance_baselines = match.string_tables.by_name['instancebaseline']
+
+        for string in instance_baselines.by_index.values():
+            cls = int(string.name)
+            ntt_stream = io_strm_ntt.mk(string.value)
+            prop_list = ntt_stream.read_entity_prop_list()
+            match._instance_baseline_cache[cls] = \
+                match.packet_entities_decoder[cls].decode(ntt_stream, prop_list)
+
 
 cpdef handle_svc_sendtable(pb, match):
-    cdef object send_tables = match.send_tables or dict()
-    cdef object send_props = list()
-
-    cdef object array_prop
-    cdef object num_elements
-    cdef object num_bits
-    cdef object dt_name
-    cdef object low_value
-    cdef object high_value
-    cdef object send_prop
-    cdef object needs_decoder
+    send_tables = match.send_tables or dict()
+    send_props = list()
 
     for sp in pb.props:
         # for send props of type Type.Array, the previous property stored is
@@ -195,7 +195,7 @@ cpdef handle_dem_classinfo(pb, match):
 
 
 cpdef handle_svc_voiceinit(pb, match):
-    cdef object voice_init = {
+    voice_init = {
         'quality': pb.quality,
         'codec': pb.codec,
         'version': pb.version
@@ -205,11 +205,7 @@ cpdef handle_svc_voiceinit(pb, match):
 
 
 cpdef handle_svc_gameeventlist(pb, match):
-    cdef object game_event_descriptors = mdl_cllctn_gmvntdscrptrs.mk()
-    cdef int eventid
-    cdef object name
-    cdef object keys
-    cdef object game_event_descriptor
+    game_event_descriptors = mdl_cllctn_gmvntdscrptrs.mk()
 
     for desc in pb.descriptors:
         eventid, name = desc.eventid, desc.name
@@ -226,23 +222,17 @@ cpdef handle_svc_setview(pb, match):
 
 
 cpdef handle_svc_packetentities(pb, match):
-    cdef object s
-    cdef int d
-    cdef int n
-    cdef object patch
-
     match.entities = match.entities or mdl_cllctn_ntts.mk()
 
     s = io_strm_ntt.mk(pb.entity_data)
     d, n = pb.is_delta, pb.updated_entries
     patch = match.packet_entities_decoder.decode(s, d, n, match.entities)
 
-    match.entities.apply(patch)
+    match.entities.apply(patch, match._instance_baseline_cache)
 
 
 cpdef handle_svc_gameevent(pb, match):
-    cdef object attrs = []
-
+    attrs = []
     ged = match.game_event_descriptors.by_eventid[pb.eventid]
 
     for i, (k_type, k_name) in enumerate(ged.keys):
@@ -269,9 +259,7 @@ cpdef handle_svc_gameevent(pb, match):
 
 
 cpdef handle_svc_usermessage(pb, match):
-    cdef int kind = pb.msg_type
-    cdef object cls
-    cdef object infix
+    kind = pb.msg_type
 
     if kind == 106: # one-off?
         cls = 'CDOTA_UM_GamerulesStateChanged'
@@ -290,9 +278,19 @@ cpdef handle_svc_usermessage(pb, match):
 
 
 cpdef handle_svc_updatestringtable(pb, match):
-    cdef object string_table = match.string_tables.by_index[pb.table_id]
+    string_table = match.string_tables.by_index[pb.table_id]
+    update = rply_dcdr_strngtbl.decode_update(pb, string_table)
 
-    rply_dcdr_strngtbl.decode_and_apply_update(pb, string_table)
+    for string in update:
+        string_table.update(string)
+
+    if string_table.name == 'instancebaseline':
+        for string in update:
+            cls = int(string.name)
+            ntt_stream = io_strm_ntt.mk(string.value)
+            prop_list = ntt_stream.read_entity_prop_list()
+            match._instance_baseline_cache[cls] = \
+                match.packet_entities_decoder[cls].decode(ntt_stream, prop_list)
 
 
 cpdef handle_svc_tempentities(pb, match):

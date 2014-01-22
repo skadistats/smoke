@@ -35,11 +35,14 @@ cdef class EntitiesCollection(object):
     def __len__(self):
         return len(self.entry_by_index)
 
-    cpdef apply(EntitiesCollection self, object patch):
+    cpdef apply(EntitiesCollection self, object patch, object baselines):
         entry_by_index = self.entry_by_index
 
         for pvs, e in patch:
             if pvs == PVS.Enter:
+                state = baselines[e.cls].copy()
+                state.update(e.state)
+                e = Entity(e.index, e.serial, e.cls, state)
                 entry_by_index[e.index] = (PVS.Enter, e)
             elif pvs == PVS.Preserve:
                 assert e.index in entry_by_index
