@@ -58,7 +58,7 @@ cdef class FloatDecoder(object):
 
         s = stream.read_numeric_bits(1) # sign
         l = stream.read_numeric_bits(11) # low
-        b = bytearray(0, 0, l & 0x0000ff00, l & 0x000000ff)
+        b = bytearray([0, 0, l & 0x0000ff00, l & 0x000000ff])
         v = struct.unpack('f', b)[0]
 
         # not sure how to approach this.
