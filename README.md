@@ -66,20 +66,19 @@ kinds of data it can parse (optionally) from files:
 
 * **entities**: in-game things like heroes, players, and creeps
 * **modifiers**: auras and effects on in-game entities
-* **voice data**: the protobuf-formatted binary data blobs that are somehow
-strung into voice--only really relevant to commentated pro matches*
 * **"temp" entities**: fire-and-forget things the game server tells the
 client about... and then never mentions again*
 * **user messages**: many different things, including spectator clicks, global
-chat messages, overhead events (like last-hit gold, and much more)*
+chat messages, overhead events (like last-hit gold, and much more), etc.*✝
 * **game events**: lower-level messages like Dota TV control (directed camera
 commands, for example), combat log messages, etc.*
-* **sounds**: sounds that occur in the game*
+* **voice data**: the protobuf-formatted binary data blobs that are somehow
+strung into voice--only really relevant to commentated pro matches*✝
+* **sounds**: sounds that occur in the game*✝
 
-An asterisk above denotes "transient" data--data that changes completely each
-tick of the game. Non-transient data is instead updated at each tick.
-Understanding this difference will help you make sense of the data as you
-parse.
+\* **transient**: new dataset (i.e. list, dict) for each tick of the parse
+
+✝ **unprocessed**: data is provided as original protobuf message object
 
 By default, smoke parses everything. This is the slowest parsing option. Here
 is a simple example which parses a demo, doing nothing:
@@ -105,7 +104,7 @@ is a simple example which parses a demo, doing nothing:
 
         # this is the core loop for iterating over a game
         for match in demo.play():
-            # this is where you will do things!
+            # this is where you will do things! see smoke.replay.match
             pass
 
         # parses game summary found at the end of the demo file
@@ -159,10 +158,9 @@ while `play`ing a demo.
 
 Currently, the following are not parsed by smoke:
 
-* User messages
-* Game Events
+* Modifiers
 * Temp Entities
-* Sounds
+* FileInfo (end of file match information)
 
 No major technical limitations, just unfinished work. This should be working
 soon.

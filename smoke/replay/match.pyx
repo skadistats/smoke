@@ -93,5 +93,5 @@ cdef class Match(object):
         self.temp_entities = None # TBD: what collection to use here?
         self.game_events = defaultdict(list)
         self.user_messages = defaultdict(list)
-        self.sounds = list()
+        self.sounds = None
         self.voice_data = list()
