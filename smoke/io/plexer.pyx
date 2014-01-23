@@ -30,8 +30,7 @@ cdef object OPERATIONS = {
 
 
 cdef object TOP_WHITELIST = set([pbd2.DEM_FileHeader, pbd2.DEM_ClassInfo,
-    pbd2.DEM_SignonPacket, pbd2.DEM_SyncTick, pbd2.DEM_Packet, pbd2.DEM_Stop,
-    pbd2.DEM_FileInfo])
+    pbd2.DEM_SignonPacket, pbd2.DEM_SyncTick, pbd2.DEM_Packet, pbd2.DEM_Stop])
 
 
 cdef class Plexer(object):

@@ -18,7 +18,8 @@ cdef object PB_DEPENDENCIES = {
     'UserMessages': [pbd2.svc_UserMessage],
     'GameEvents': [pbd2.svc_GameEvent],
     'Sounds': [pbd2.svc_Sounds],
-    'VoiceData': [pbd2.svc_VoiceData]
+    'VoiceData': [pbd2.svc_VoiceData],
+    'Overview': [pbd2.DEM_FileInfo]
 }
 
 
@@ -55,6 +56,7 @@ cdef class Demo(object):
     cdef public int parse
     cdef public object plexer
     cdef public object match
+    cdef public object overview
 
     def __init__(self, d_io, parse=Game.All, skip_full=True, match=None):
         tb = set([pbd2.DEM_FullPacket]) if skip_full else set()

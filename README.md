@@ -75,6 +75,8 @@ commands, for example), combat log messages, etc.*
 * **voice data**: the protobuf-formatted binary data blobs that are somehow
 strung into voice--only really relevant to commentated pro matches*✝
 * **sounds**: sounds that occur in the game*✝
+* **overview**: end-of-game summary, including players, game winner, match id,
+duration, and often picks/bans
 
 \* **transient**: new dataset (i.e. list, dict) for each tick of the parse
 
@@ -109,7 +111,7 @@ is a simple example which parses a demo, doing nothing:
             # this is where you will do things! see smoke.replay.match
             count = len(match.entities)
 
-        # parses game summary found at the end of the demo file
+        # parses game overview found at the end of the demo file
         demo.finish()
 
 When run with `time python entity_counter.py`, we get:
@@ -141,7 +143,7 @@ Consequently, it'll be tons faster:
         for match in demo.play():
             count = len(match.entities)
 
-        # parses game summary found at the end of the demo file
+        # parses game overview found at the end of the demo file
         demo.finish()
 
 When run with `time python with_less_data.py`:
@@ -150,19 +152,38 @@ When run with `time python with_less_data.py`:
     user    0m38.344s
     sys     0m0.220s
 
+Finally, if we just want an overview of the game:
+
+    # overview_only.py
+    import io
+
+    from smoke.io.wrap import demo as io_wrp_dm
+    from smoke.replay import demo as rply_dm
+    from smoke.replay.demo import Game
+
+    with io.open('37633163.dem', 'rb') as infile:
+        demo_io = io_wrp_dm.mk(infile)
+        overview_offset = demo_io.bootstrap() # returns offset to overview
+
+        # we can seek on the raw underlying IO instead of parsing everything
+        infile.seek(overview_offset)
+
+        demo = rply_dm.mk(demo_io, parse=Game.Overview)
+        demo.finish()
+
+        print demo.match.overview
+
+When run with `time python overview_only.py':
+
+    real    0m0.147s
+    user    0m0.113s
+    sys     0m0.025s
+
 If you **only** need `UserMessages` or `GameEvents` (for example), you end up
 with 5 second parses. So parse as little as you can!
 
-Take a look at `smoke.replay.match` to see which properties you can play with
+Take a look at `smoke.replay.match` to see which properties you can access
 while `play`ing a demo.
-
-# Rough Edges
-
-Currently, the following are not parsed by smoke:
-
-* FileInfo (end of file match information)
-
-This should be available soon.
 
 
 # License

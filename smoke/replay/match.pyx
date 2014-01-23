@@ -33,7 +33,7 @@ cdef class Match(object):
     cdef public object sounds
     cdef public object voice_data
 
-    cdef public object file_info
+    cdef public object overview
 
     def __init__(self):
         # prologue
@@ -61,8 +61,8 @@ cdef class Match(object):
         self.sounds = None
         self.voice_data = None
 
-        # epilogue
-        self.file_info = None
+        # overview
+        self.overview = None
 
     property packet_entities_decoder:
         def __get__(self):
