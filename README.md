@@ -6,8 +6,8 @@ Relatively fast, complete Dota 2 "demo" (aka "replay") parser written in
 cython. Cython is a Python-like language which is processed into C and then
 compiled for execution speed.
 
-smoke parses replays at or faster than 88x game time. So if a game lasted 44
-minutes, expect parsing to take around 30 seconds.
+On a fast CPU, smoke parses replays at **least** 67x game time. So if a game
+lasted 57 minutes, expect a full replay parse to take 51 seconds or less.
 
 If speed is of paramount concern for your use case, or if you prefer Java,
 check out [clarity](https://github.com/skadistats/clarity). It is comically
@@ -107,16 +107,16 @@ is a simple example which parses a demo, doing nothing:
         # this is the core loop for iterating over a game
         for match in demo.play():
             # this is where you will do things! see smoke.replay.match
-            pass
+            count = len(match.entities)
 
         # parses game summary found at the end of the demo file
         demo.finish()
 
 When run with `time python entity_counter.py`, we get:
 
-    real    0m40.974s
-    user    0m40.752s
-    sys     0m0.209s
+    real    0m51.005s
+    user    0m50.730s
+    sys     0m0.255s
 
 Perhaps you want to be more selective about parsing. We do this by bitmask.
 Here's code similar to the above, but more restrictive about what it parses.
@@ -134,21 +134,21 @@ Consequently, it'll be tons faster:
         demo_io.bootstrap() 
 
         # it's a bitmask -- see smoke.replay.demo for all options
-        parse = Game.All ^ (Game.UserMessages | Game.GameEvents | Game.VoiceData)
+        parse = Game.All ^ (Game.UserMessages | Game.GameEvents | Game.VoiceData | Game.TempEntities)
         demo = rply_dm.mk(demo_io, parse=parse)
         demo.bootstrap() 
 
         for match in demo.play():
-            pass
+            count = len(match.entities)
 
         # parses game summary found at the end of the demo file
         demo.finish()
 
 When run with `time python with_less_data.py`:
 
-    real    0m36.676s
-    user    0m36.469s
-    sys     0m0.201s
+    real    0m38.589s
+    user    0m38.344s
+    sys     0m0.220s
 
 If you **only** need `UserMessages` or `GameEvents` (for example), you end up
 with 5 second parses. So parse as little as you can!
@@ -160,10 +160,9 @@ while `play`ing a demo.
 
 Currently, the following are not parsed by smoke:
 
-* Temp Entities
 * FileInfo (end of file match information)
 
-These should be available soon.
+This should be available soon.
 
 
 # License

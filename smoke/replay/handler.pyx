@@ -10,7 +10,7 @@ from smoke.model.collection.game_event_descriptors import GameEventDescriptor
 from smoke.model.collection import string_tables as mdl_cllctn_strngtbl
 from smoke.model.dt.const import Prop, Type
 from smoke.model.dt.send_table import SendTable
-from smoke.model.string_table import String
+from smoke.model.const import Entity, PVS, String
 from smoke.replay.decoder import string_table as rply_dcdr_strngtbl
 
 
@@ -328,7 +328,24 @@ cpdef handle_svc_updatestringtable(pb, match):
 
 
 cpdef handle_svc_tempentities(pb, match):
-    pass
+    match.temp_entities = match.temp_entities or defaultdict(list)
+
+    class_bits = match.packet_entities_decoder.class_bits
+    stream = io_strm_ntt.mk(pb.entity_data)
+    i = 0
+
+    while i < pb.num_entries:
+        mystery = stream.read_numeric_bits(1) # always 0?
+        new_cls = stream.read_numeric_bits(1)
+
+        if new_cls:
+            cls = stream.read_numeric_bits(class_bits)
+
+        prop_list = stream.read_entity_prop_list()
+
+        state = match.packet_entities_decoder[cls-1].decode(stream, prop_list)
+        match.temp_entities[cls].append(Entity(0, 0, PVS.Enter, state))
+        i += 1
 
 
 cpdef handle_svc_sounds(pb, match):
