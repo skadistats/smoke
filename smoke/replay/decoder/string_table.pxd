@@ -1,19 +1,24 @@
+# cython: profile=False
+
 import math
 
-from smoke.io.stream cimport generic as io_strm_gnrc
-
-from collections import deque, OrderedDict
-from smoke.model import string_table as mdl_strngtbl
-from smoke.model.string_table import String
+from smoke.io.stream cimport generic
+from smoke.model cimport string_table as mdl_strngtbl
 
 
-cdef int MAX_NAME_LENGTH
-cdef int KEY_HISTORY_SIZE
+cdef object decode_and_create(object pb)
 
 
-cpdef object decode_and_create(object pb)
-cpdef object decode_update(pb, string_table)
-cdef object _deserialize(int num_entries, object string_data, object string_table)
-cdef object _deserialize_index(io_strm_gnrc.Stream stream, int index, object string_table)
-cdef object _deserialize_name(io_strm_gnrc.Stream stream, object mystery_flag, object key_history)
-cdef object _deserialize_value(io_strm_gnrc.Stream stream, object string_table)
+cdef list decode_update(object pb, mdl_strngtbl.StringTable string_table)
+
+
+cdef list _deserialize(int num_entries, str string_data, mdl_strngtbl.StringTable string_table)
+
+
+cdef int _deserialize_index(generic.Stream stream, int index, mdl_strngtbl.StringTable string_table)
+
+
+cdef str _deserialize_name(generic.Stream stream, int mystery_flag, object key_history)
+
+
+cdef str _deserialize_value(generic.Stream stream, mdl_strngtbl.StringTable string_table)

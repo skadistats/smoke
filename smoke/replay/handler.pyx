@@ -3,9 +3,12 @@
 import warnings
 
 from smoke.io.stream cimport entity
+from smoke.model cimport string_table as mdl_strngtbl
 from smoke.replay.decoder cimport packet_entities
 from smoke.replay.decoder.recv_prop cimport abstract
 from smoke.replay.decoder.recv_prop cimport factory
+from smoke.replay.decoder cimport string_table as rply_dcdr_strngtbl
+
 
 from collections import defaultdict
 from smoke.model.collection import entities as mdl_cllctn_ntts
@@ -16,7 +19,6 @@ from smoke.model.dt.const import Prop, Type
 from smoke.model.dt.send_table import SendTable
 from smoke.model.const import Entity, PVS, String
 from smoke.protobuf import dota2_palm as pbd2
-from smoke.replay.decoder import string_table as rply_dcdr_strngtbl
 
 
 DOTA_UM_ID_BASE = 64
@@ -189,6 +191,8 @@ cdef void _handle_net_setconvar(pb, match):
 
 
 cdef void _handle_svc_createstringtable(pb, match):
+    cdef mdl_strngtbl.StringTable string_table
+
     string_tables = match.string_tables or mdl_cllctn_strngtbl.mk()
     index = len(string_tables.by_index)
     string_table = rply_dcdr_strngtbl.decode_and_create(pb)
@@ -200,6 +204,8 @@ cdef void _handle_svc_createstringtable(pb, match):
 
 
 cdef void _handle_net_signonstate(pb, match):
+    cdef entity.Stream ntt_stream
+
     signon_state = {
         'signon_state': pb.signon_state,
         'spawn_count': pb.spawn_count,
@@ -218,7 +224,7 @@ cdef void _handle_net_signonstate(pb, match):
 
         for string in instance_baselines.by_index.values():
             cls = int(string.name)
-            ntt_stream = entity.mk(string.value)
+            ntt_stream = entity.Stream(string.value)
             prop_list = ntt_stream.read_entity_prop_list()
             decoder = match.packet_entities_decoder.fetch_decoder(cls)
             match._instance_baseline_cache[cls] = decoder.decode(ntt_stream, prop_list)
@@ -303,12 +309,12 @@ cdef void _handle_svc_setview(pb, match):
 cdef void _handle_svc_packetentities(pb, match):
     match.entities = match.entities or mdl_cllctn_ntts.mk()
 
-    cdef entity.Stream s = entity.mk(pb.entity_data)
+    cdef entity.Stream ntt_stream = entity.Stream(pb.entity_data)
     cdef int d = pb.is_delta
     cdef int n = pb.updated_entries
     cdef object patch
 
-    patch = match.packet_entities_decoder.decode(s, d, n, match.entities)
+    patch = match.packet_entities_decoder.decode(ntt_stream, d, n, match.entities)
     match.entities.apply(patch, match._instance_baseline_cache)
 
 
@@ -359,6 +365,9 @@ cdef void _handle_svc_usermessage(pb, match):
 
 
 cdef void _handle_svc_updatestringtable(pb, match):
+    cdef entity.Stream ntt_stream
+    cdef mdl_strngtbl.StringTable string_table
+
     string_table = match.string_tables.by_index[pb.table_id]
     update = rply_dcdr_strngtbl.decode_update(pb, string_table)
 
@@ -368,7 +377,7 @@ cdef void _handle_svc_updatestringtable(pb, match):
     if string_table.name == 'instancebaseline':
         for string in update:
             cls = int(string.name)
-            ntt_stream = entity.mk(string.value)
+            ntt_stream = entity.Stream(string.value)
             prop_list = ntt_stream.read_entity_prop_list()
             decoder = match.packet_entities_decoder.fetch_decoder(cls)
             match._instance_baseline_cache[cls] = decoder.decode(ntt_stream, prop_list)
@@ -397,23 +406,25 @@ cdef void _handle_svc_updatestringtable(pb, match):
 
 
 cdef void _handle_svc_tempentities(pb, match):
+    cdef entity.Stream ntt_stream
+
     match.temp_entities = match.temp_entities or defaultdict(list)
 
     class_bits = match.packet_entities_decoder.class_bits
-    stream = entity.mk(pb.entity_data)
+    ntt_stream = entity.Stream(pb.entity_data)
     i = 0
 
     while i < pb.num_entries:
-        mystery = stream.read_numeric_bits(1) # always 0?
-        new_cls = stream.read_numeric_bits(1)
+        mystery = ntt_stream.read_numeric_bits(1) # always 0?
+        new_cls = ntt_stream.read_numeric_bits(1)
 
         if new_cls:
-            cls = stream.read_numeric_bits(class_bits)
+            cls = ntt_stream.read_numeric_bits(class_bits)
 
-        prop_list = stream.read_entity_prop_list()
+        prop_list = ntt_stream.read_entity_prop_list()
 
         decoder = match.packet_entities_decoder.fetch_decoder(cls-1)
-        state = decoder.decode(stream, prop_list)
+        state = decoder.decode(ntt_stream, prop_list)
         match.temp_entities[cls].append(Entity(0, 0, PVS.Enter, state))
         i += 1
 

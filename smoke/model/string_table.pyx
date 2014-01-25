@@ -1,22 +1,11 @@
 # cython: profile=False
 
 import math
+
 from smoke.model.const import String
 
 
-def mk(name, max_entries, ud_fixed_size, ud_size_bits):
-    return StringTable(name, max_entries, ud_fixed_size, ud_size_bits)
-
-
 cdef class StringTable(object):
-    cdef public unicode name
-    cdef public int max_entries
-    cdef public int user_data_fixed_size
-    cdef public int user_data_size_bits
-    cdef public int entry_sz_bits
-    cdef public dict by_name
-    cdef public dict by_index
-
     def __init__(self, name, max_entries, ud_fixed_size, ud_size_bits):
         self.name = name
         self.max_entries = max_entries
@@ -26,7 +15,7 @@ cdef class StringTable(object):
         self.by_name = dict()
         self.by_index = dict()
 
-    cpdef update(StringTable self, object string):
+    cdef update(StringTable self, object string):
         if string.index in self.by_index:
             name = self.by_index[string.index].name
             string = String(string.index, name, string.value)

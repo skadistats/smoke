@@ -2,20 +2,22 @@
 
 import math
 
-from collections import deque, OrderedDict
 from smoke.io.stream cimport generic
-from smoke.model import string_table as mdl_strngtbl
-from smoke.model.string_table import String
+from smoke.model cimport string_table as mdl_strngtbl
+
+from collections import deque
+from smoke.model.const import String
 
 
 cdef int MAX_NAME_LENGTH = 0x400
 cdef int KEY_HISTORY_SIZE = 32
 
 
-cpdef object decode_and_create(object pb):
+cdef object decode_and_create(object pb):
     cdef int udfs = pb.user_data_fixed_size
     cdef int udsb = pb.user_data_size_bits
-    cdef object string_table = mdl_strngtbl.mk(pb.name, pb.max_entries, udfs, udsb)
+    cdef mdl_strngtbl.StringTable string_table = \
+        mdl_strngtbl.StringTable(pb.name, pb.max_entries, udfs, udsb)
 
     for string in _deserialize(pb.num_entries, pb.string_data, string_table):
         string_table.update(string)
@@ -23,22 +25,22 @@ cpdef object decode_and_create(object pb):
     return string_table
 
 
-cpdef object decode_update(object pb, object string_table):
+cdef list decode_update(object pb, mdl_strngtbl.StringTable string_table):
     return _deserialize(pb.num_changed_entries, pb.string_data, string_table)
 
 
-cdef object _deserialize(int num_entries, object string_data, object string_table):
-    cdef generic.Stream stream = generic.mk(string_data)
+cdef list _deserialize(int num_entries, str string_data, mdl_strngtbl.StringTable string_table):
+    cdef generic.Stream stream = generic.Stream(string_data)
 
     # The meaning of this one-bit flag is unknown, but we can use it later
     # for sanity checks. It corresponds to unimplemented string table
     # functionality in combination with other bits parsed later.
-    cdef object mystery_flag = stream.read_numeric_bits(1)
+    cdef int mystery_flag = stream.read_numeric_bits(1)
     cdef object key_history = deque()
     cdef int index = -1
 
-    cdef object diff = []
-    cdef object name, value
+    cdef list diff = list()
+    cdef str name, value
 
     while len(diff) < num_entries:
         index = _deserialize_index(stream, index, string_table)
@@ -49,7 +51,7 @@ cdef object _deserialize(int num_entries, object string_data, object string_tabl
     return diff
 
 
-cdef object _deserialize_index(generic.Stream stream, int index, object string_table):
+cdef int _deserialize_index(generic.Stream stream, int index, mdl_strngtbl.StringTable string_table):
     # first bit indicates whether the index is consecutive
     if stream.read_numeric_bits(1):
         index += 1
@@ -59,8 +61,8 @@ cdef object _deserialize_index(generic.Stream stream, int index, object string_t
     return index
 
 
-cdef object _deserialize_name(generic.Stream stream, object mystery_flag, object key_history):
-    cdef object name = None
+cdef str _deserialize_name(generic.Stream stream, int mystery_flag, object key_history):
+    cdef str name = None
     cdef int basis, length
 
     # first bit indicates whether the entry has a name
@@ -86,8 +88,8 @@ cdef object _deserialize_name(generic.Stream stream, object mystery_flag, object
     return name
 
 
-cdef object _deserialize_value(generic.Stream stream, object string_table):
-    cdef object value = ''
+cdef str _deserialize_value(generic.Stream stream, mdl_strngtbl.StringTable string_table):
+    cdef str value = ''
 
     # first bit indicates whether the entry has a value
     if stream.read_numeric_bits(1):

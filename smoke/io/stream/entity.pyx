@@ -11,10 +11,6 @@ cdef int Leave = PVS.Leave
 cdef int Delete = PVS.Delete
 
 
-cpdef Stream mk(str data):
-    return Stream(data)
-
-
 cdef class Stream(generic.Stream):
     def __init__(self, str data):
         generic.Stream.__init__(self, data)
@@ -50,7 +46,7 @@ cdef class Stream(generic.Stream):
 
         return pvs
 
-    cdef object read_entity_prop_list(self):
+    cdef list read_entity_prop_list(Stream self):
         cdef list prop_list = list()
         cdef int cursor = -1
         cdef int offset

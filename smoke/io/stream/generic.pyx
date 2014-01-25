@@ -9,47 +9,34 @@ cdef extern from "arpa/inet.h":
     uint32_t ntohl(uint32_t)
 
 
-cpdef Stream mk(str data):
-    return Stream(data)
-
-
 cdef int WORD_BYTES = 4
 cdef int WORD_BITS = WORD_BYTES * 8
 
 
 cdef class Stream(object):
-    def __init__(self, data):
-        self.pos = 0
-
-        remainder = len(data) % 4
+    def __cinit__(self, str data):
+        cdef int remainder = len(data) % 4
         if remainder:
             data = data + '\0' * (4 - remainder)
 
-        self._init_data(array.array('I', data))
+        ary = array.array('I', data)
 
-    cdef int _init_data(Stream self, array.array[unsigned int] ary) except -1:
-        cdef int lenwords = len(ary)
-        cdef uint32_t *words = <uint32_t*>stdlib.malloc(lenwords * sizeof(uint32_t))
+        self.words = <uint32_t*>stdlib.malloc(len(ary) * sizeof(uint32_t))
+        self.pos = 0
 
-        if words is NULL:
+        if self.words is NULL:
           raise MemoryError()
 
-        cdef int i = 0
+        cdef int i
         cdef uint32_t be
-        for i in range(lenwords):
+        for i in range(len(ary)):
             be = ntohl(<uint32_t>ary[i])
-            words[i] = (((be & 0xFF) << 24)  | ((be & 0xFF00) << 8) |
-                        ((be >> 8) & 0xFF00) |  (be >> 24))
-
-        self.lenwords = lenwords
-        self.words = words
-
-    cdef int _dealloc(Stream self):
-        if self.words != NULL:
-            stdlib.free(self.words)
+            self.words[i] = (((be & 0xFF) <<     24) | ((be & 0xFF00) << 8) |
+                             ((be >> 8)    & 0xFF00) |  (be >> 24))
 
     def __dealloc__(self):
-        self._dealloc()
+        if self.words != NULL:
+            stdlib.free(self.words)
 
     cdef int read_numeric_bits(self, int n):
         cdef uint32_t a, b
@@ -71,8 +58,8 @@ cdef class Stream(object):
 
         return ret
 
-    cdef bytes read_bits(Stream self, int bitlength):
-        cdef object data = bytearray()
+    cdef str read_bits(Stream self, int bitlength):
+        cdef bytearray data = bytearray()
         cdef int i, remainder
 
         i = 0
@@ -87,16 +74,13 @@ cdef class Stream(object):
             data.append(<unsigned char>self.read_numeric_bits(remainder))
             i += 1
 
-        return bytes(data)
+        return str(data)
 
-    cdef bytes read_string(Stream self, int bytelength):
-        cdef int bitlength = bytelength * 8
-        cdef object data = bytearray()
-        cdef int i
+    cdef str read_string(Stream self, int bytelength):
+        cdef bytearray data = bytearray()
+        cdef int i = 0
         cdef unsigned char c
-
-        i = 0
-        remainder = bitlength
+        cdef int remainder = bytelength * 8
 
         while remainder > 7:
             c = <unsigned char>self.read_numeric_bits(8)
@@ -106,7 +90,7 @@ cdef class Stream(object):
             remainder -= 8
             i += 1
 
-        return bytes(data)
+        return str(data)
 
     cdef int read_varint(Stream self):
         cdef uint64_t run, value
