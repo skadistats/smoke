@@ -1,5 +1,3 @@
-# cython: profile=False
-
 cdef public dict TOP
 cdef public dict EMBED
 

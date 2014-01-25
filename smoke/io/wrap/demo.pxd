@@ -1,5 +1,3 @@
-# cython: profile=False
-
 import io
 import snappy
 import struct

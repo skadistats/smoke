@@ -1,5 +1,3 @@
-# cython: profile=False
-
 cdef int VI_MAX_BYTES
 cdef int VI_SHIFT
 cdef int VI_MASK

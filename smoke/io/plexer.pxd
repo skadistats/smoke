@@ -1,5 +1,3 @@
-# cython: profile=False
-
 cpdef mk(object demo_io, top_blacklist=?, embed_blacklist=?)
 
 
