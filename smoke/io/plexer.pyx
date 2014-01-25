@@ -1,17 +1,20 @@
+# cython: profile=False
+
 import collections
 import warnings
 
+from smoke.io cimport factory
+from smoke.io.wrap cimport embed
+
 from smoke.protobuf import dota2_palm as pbd2
 from smoke.io.const import Action, DEMSyncTickEncountered, DEMStopEncountered
-from smoke.io import factory as io_fctr
-from smoke.io.wrap import embed as io_wrp_mbd
 
 
 cpdef mk(object demo_io, top_blacklist=None, embed_blacklist=None):
     return Plexer(demo_io, top_blacklist=top_blacklist, embed_blacklist=embed_blacklist)
 
 
-cdef object OPERATIONS = {
+cdef dict OPERATIONS = {
     pbd2.DEM_ClassInfo:           Action.Enqueue,
     pbd2.DEM_ConsoleCmd:          Action.Ignore,
     pbd2.DEM_CustomData:          Action.Ignore,
@@ -29,17 +32,11 @@ cdef object OPERATIONS = {
 }
 
 
-cdef object TOP_WHITELIST = set([pbd2.DEM_FileHeader, pbd2.DEM_ClassInfo,
+cdef set TOP_WHITELIST = set([pbd2.DEM_FileHeader, pbd2.DEM_ClassInfo,
     pbd2.DEM_SignonPacket, pbd2.DEM_SyncTick, pbd2.DEM_Packet, pbd2.DEM_Stop])
 
 
 cdef class Plexer(object):
-    cdef object demo_io
-    cdef object queue
-    cdef object top_blacklist
-    cdef object embed_blacklist
-    cdef object stopped
-
     def __init__(self, demo_io, top_blacklist=None, embed_blacklist=None):
         tb = top_blacklist or set()
         tb = set(tb) - TOP_WHITELIST
@@ -85,6 +82,11 @@ cdef class Plexer(object):
         return collection
 
     cdef object lookahead(self):
+        cdef object peek
+        cdef str message
+        cdef int op, kind
+        cdef object embed_io
+
         while len(self.queue) == 0:
             peek, message = self.demo_io.read()
             kind = peek.kind
@@ -96,23 +98,28 @@ cdef class Plexer(object):
                 continue
 
             if op is not Action.Ignore and kind not in self.top_blacklist:
-                pb = io_fctr.mk_top(peek, message)
+                pb = factory.mk_top(peek, message)
 
                 if op is Action.Enqueue:
                     self.queue.append((peek, pb))
                     continue
 
                 # otherwise, inline embedded messages:
-                embed_io = io_wrp_mbd.mk(pb.data, peek.tick)
+                embed_io = embed.mk(pb.data, peek.tick)
 
-                for peek, message in embed_io:
-                    if peek.kind in self.embed_blacklist:
-                        continue
+                try:
+                    while True:
+                        peek, message = embed_io.read()
 
-                    try:
-                        pb = io_fctr.mk_embed(peek, message)
-                        self.queue.append((peek, pb))
-                    except KeyError:
-                        warnings.warn('unhandled embed #{}'.format(kind))
+                        if peek.kind in self.embed_blacklist:
+                            continue
+
+                        try:
+                            pb = factory.mk_embed(peek, message)
+                            self.queue.append((peek, pb))
+                        except KeyError:
+                            warnings.warn('unhandled embed #{}'.format(kind))
+                except EOFError:
+                    pass
 
         return self.queue[0]

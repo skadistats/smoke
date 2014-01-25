@@ -1,3 +1,4 @@
+from smoke.io.stream cimport generic
 
 
 cpdef DTDecoder mk(object recv_table)
@@ -5,8 +6,8 @@ cpdef DTDecoder mk(object recv_table)
 
 cdef class DTDecoder(object):
     cdef public object recv_table
-    cdef public object by_index
-    cdef public object by_recv_prop
-    cdef object cache
+    cdef public list by_index
+    cdef public dict by_recv_prop
+    cdef dict cache
 
-    cpdef object decode(DTDecoder self, object stream, object prop_list)
+    cpdef dict decode(DTDecoder self, generic.Stream stream, list prop_list)

@@ -1,32 +1,33 @@
+# cython: profile=False
+
+from smoke.io.stream cimport generic
+
 from smoke.model.dt.const import Flag
+from smoke.replay.decoder.recv_prop cimport abstract
 
 
-cpdef IntDecoder mk(object prop):
-    return IntDecoder(prop)
+cpdef Int64Decoder mk(object prop):
+    return Int64Decoder(prop)
 
 
-cdef class IntDecoder(object):
-    cdef public object prop
-    cdef int _bits
-    cdef long _unsigned
-
-    def __init__(IntDecoder self, object prop):
-        self.prop = prop
+cdef class Int64Decoder(abstract.AbstractDecoder):
+    def __init__(Int64Decoder self, object prop):
+        abstract.AbstractDecoder.__init__(self, prop)
 
         assert prop.flags ^ Flag.EncodedAgainstTickcount
 
-        self._unsigned = prop.flags & Flag.Unsigned
-        self._bits = prop.bits
+        self.unsign = prop.flags & Flag.Unsigned
+        self.bits = prop.bits
 
-    cpdef int decode(IntDecoder self, object stream):
+    cpdef int decode(Int64Decoder self, generic.Stream stream):
         cdef long l, r, v
         cdef int negate
         cdef int remainder
 
         negate = 0
-        remainder = self._bits - 32
+        remainder = self.bits - 32
 
-        if not self._unsigned:
+        if not self.unsign:
             remainder -= 1
             if stream.read_numeric_bits(1):
                 negate = 1

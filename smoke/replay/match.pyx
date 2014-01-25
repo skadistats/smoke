@@ -1,3 +1,5 @@
+# cython: profile=False
+
 from collections import defaultdict
 from smoke.model.collection import recv_tables as mdl_cllctn_rcvtbls
 from smoke.model.dt import recv_table as mdl_dt_rcvtbl

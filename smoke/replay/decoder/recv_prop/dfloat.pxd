@@ -1,19 +1,21 @@
+from smoke.io.stream cimport generic as io_strm_gnrc
+from smoke.replay.decoder.recv_prop cimport abstract
 
 
 cpdef FloatDecoder mk(object prop)
 
 
-cdef class FloatDecoder(object):
-    cdef public object prop
+cdef class FloatDecoder(abstract.AbstractDecoder):
     cdef object _fn
-    cdef int _bits
-    cdef int _low
-    cdef int _high
+    cdef int flags
+    cdef int bits
+    cdef int low
+    cdef int high
 
-    cpdef float decode(self, stream)
-    cpdef float _decode_coord(self, stream)
-    cpdef float _decode_no_scale(self, stream)
-    cpdef float _decode_cell_coord(self, stream)
-    cpdef float _decode_default(self, stream)
-    cpdef float _decode_normal(self, stream)
-    cpdef float _decode_cell_coord_integral(self, stream)
+    cpdef float decode(self, io_strm_gnrc.Stream stream)
+    cdef float _decode_coord(self, io_strm_gnrc.Stream stream)
+    cdef float _decode_no_scale(self, io_strm_gnrc.Stream stream)
+    cdef float _decode_cell_coord(self, io_strm_gnrc.Stream stream)
+    cdef float _decode_default(self, io_strm_gnrc.Stream stream)
+    cdef float _decode_normal(self, io_strm_gnrc.Stream stream)
+    cdef float _decode_cell_coord_integral(self, io_strm_gnrc.Stream stream)

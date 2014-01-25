@@ -1,0 +1,23 @@
+
+
+cpdef handle(object pb, object match)
+
+cdef void _handle_dem_fileheader(object pb, object match)
+cdef void _handle_svc_serverinfo(object pb, object match)
+cdef void _handle_net_tick(object pb, object match)
+cdef void _handle_net_setconvar(object pb, object match)
+cdef void _handle_svc_createstringtable(object pb, object match)
+cdef void _handle_net_signonstate(object pb, object match)
+cdef void _handle_svc_sendtable(object pb, object match)
+cdef void _handle_dem_classinfo(object pb, object match)
+cdef void _handle_svc_voiceinit(object pb, object match)
+cdef void _handle_svc_gameeventlist(object pb, object match)
+cdef void _handle_svc_setview(object pb, object match)
+cdef void _handle_svc_packetentities(object pb, object match)
+cdef void _handle_svc_gameevent(object pb, object match)
+cdef void _handle_svc_usermessage(object pb, object match)
+cdef void _handle_svc_updatestringtable(object pb, object match)
+cdef void _handle_svc_tempentities(object pb, object match)
+cdef void _handle_svc_sounds(object pb, object match)
+cdef void _handle_svc_voicedata(object pb, object match)
+cdef void _handle_dem_fileinfo(object pb, object match)

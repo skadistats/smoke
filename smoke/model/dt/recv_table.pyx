@@ -1,9 +1,11 @@
+# cython: profile=False
+
 from collections import defaultdict
 from smoke.model.dt.const import Flag
 
 
 cpdef RecvTable mk(object dt, object recv_props):
-    cdef object priorities
+    cdef list priorities
     cdef int offset = 0
     cdef int hole, cursor
     cdef object recv_prop
@@ -35,25 +37,24 @@ cdef class RecvTable(object):
     def __init__(self, dt, recv_props):
         self.dt = dt
         self.recv_props = recv_props
-        self._cache = dict()
 
     def __iter__(self):
         return iter(self.recv_props)
 
     def __init__(self, dt, recv_props):
         self.dt = dt
-        self._recv_props = recv_props
+        self.recv_props = recv_props
 
         self._by_src = None
         self._by_name = None
         self._by_tuple = None
 
     def __iter__(self):
-        return iter(self._recv_props)
+        return iter(self.recv_props)
 
     property by_index:
         def __get__(self):
-            return self._recv_props
+            return self.recv_props
 
     property by_src:
         def __get__(self):

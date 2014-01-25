@@ -1,7 +1,9 @@
+# cython: profile=False
+
 import math
 
 from collections import deque, OrderedDict
-from smoke.io.stream import generic as io_strm_gnrc
+from smoke.io.stream cimport generic
 from smoke.model import string_table as mdl_strngtbl
 from smoke.model.string_table import String
 
@@ -26,7 +28,7 @@ cpdef object decode_update(object pb, object string_table):
 
 
 cdef object _deserialize(int num_entries, object string_data, object string_table):
-    cdef object stream = io_strm_gnrc.mk(string_data)
+    cdef generic.Stream stream = generic.mk(string_data)
 
     # The meaning of this one-bit flag is unknown, but we can use it later
     # for sanity checks. It corresponds to unimplemented string table
@@ -47,7 +49,7 @@ cdef object _deserialize(int num_entries, object string_data, object string_tabl
     return diff
 
 
-cdef object _deserialize_index(object stream, int index, object string_table):
+cdef object _deserialize_index(generic.Stream stream, int index, object string_table):
     # first bit indicates whether the index is consecutive
     if stream.read_numeric_bits(1):
         index += 1
@@ -57,7 +59,7 @@ cdef object _deserialize_index(object stream, int index, object string_table):
     return index
 
 
-cdef object _deserialize_name(object stream, object mystery_flag, object key_history):
+cdef object _deserialize_name(generic.Stream stream, object mystery_flag, object key_history):
     cdef object name = None
     cdef int basis, length
 
@@ -84,7 +86,7 @@ cdef object _deserialize_name(object stream, object mystery_flag, object key_his
     return name
 
 
-cdef object _deserialize_value(object stream, object string_table):
+cdef object _deserialize_value(generic.Stream stream, object string_table):
     cdef object value = ''
 
     # first bit indicates whether the entry has a value

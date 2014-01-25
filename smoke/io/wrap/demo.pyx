@@ -1,8 +1,11 @@
+# cython: profile=False
+
 import io
 import snappy
 import struct
 
 from smoke.io cimport util as io_utl
+
 from smoke.io.const import Peek
 
 
@@ -20,17 +23,8 @@ cdef object InvalidHeaderError(RuntimeError):
 
 
 cdef class DemoIO(object):
-    cdef public object handle
-
     def __init__(DemoIO self, object handle):
         self.handle = handle
-
-    def __iter__(self):
-        try:
-            while True:
-                yield self.read()
-        except EOFError:
-            raise StopIteration()
 
     cpdef int bootstrap(DemoIO self) except -1:
         header = self.handle.read(LEN_HEADER)
@@ -42,14 +36,15 @@ cdef class DemoIO(object):
         return struct.unpack('I', bytearray(offset))[0]
 
     cpdef object read(DemoIO self):
-        kind = io_utl.read_varint(self.handle)
-        comp = bool(kind & COMPRESSED_MASK)
+        cdef int kind = io_utl.read_varint(self.handle)
+        cdef int comp = bool(kind & COMPRESSED_MASK)
+        cdef int tick, size
+        cdef str message
+
         kind = (kind & ~COMPRESSED_MASK) if comp else kind
         tick = io_utl.read_varint(self.handle)
         size = io_utl.read_varint(self.handle)
         message = self.handle.read(size)
-
-        assert len(message) == size
 
         if comp:
             message = snappy.uncompress(message)

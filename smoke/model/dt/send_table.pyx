@@ -1,3 +1,5 @@
+# cython: profile=False
+
 from itertools import chain, imap
 from smoke.model.dt.const import Prop, Flag, Type
 

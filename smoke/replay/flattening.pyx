@@ -1,12 +1,14 @@
+# cython: profile=False
+
 from itertools import chain
 from smoke.model.dt.const import Flag, Type, Prop
 
 
-cpdef object flatten(object descendant, object lookup):
+cpdef list flatten(object descendant, object lookup):
     assert descendant.needs_flattening
 
-    cdef object excl = _aggregate_exclusions(lookup, descendant)
-    cdef object rp = [] # shared state within recursion
+    cdef list excl = _aggregate_exclusions(lookup, descendant)
+    cdef list rp = [] # shared state within recursion
 
     _flatten(lookup, rp, excl, descendant) # recv_props is mutated
 
@@ -19,8 +21,8 @@ def _aggregate_exclusions(object l, object st):
     return list(st.all_exclusions) + list(chain(*excl))
 
 
-cdef object _flatten(object l, object rp, object excl, object anc, object acc=None, object prx=None):
-    cdef object _acc = acc or []
+cdef _flatten(object l, object rp, object excl, object anc, object acc=None, object prx=None):
+    cdef list _acc = acc or []
     cdef object n, s
 
     _flatten_collapsible(l, rp, excl, anc, _acc)
@@ -36,7 +38,7 @@ cdef object _flatten(object l, object rp, object excl, object anc, object acc=No
         rp.append(Prop(s, n, *sp[2:]))
 
 
-cdef object _flatten_collapsible(object l, object rp, object excl, object anc, object acc):
+cdef _flatten_collapsible(object l, object rp, object excl, object anc, object acc):
     cdef int excluded, ineligible
 
     for sp in anc.all_non_exclusions:

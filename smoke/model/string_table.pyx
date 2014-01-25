@@ -1,3 +1,5 @@
+# cython: profile=False
+
 import math
 from smoke.model.const import String
 
@@ -7,13 +9,13 @@ def mk(name, max_entries, ud_fixed_size, ud_size_bits):
 
 
 cdef class StringTable(object):
-    cdef public object name
+    cdef public unicode name
     cdef public int max_entries
     cdef public int user_data_fixed_size
     cdef public int user_data_size_bits
     cdef public int entry_sz_bits
-    cdef public object by_name
-    cdef public object by_index
+    cdef public dict by_name
+    cdef public dict by_index
 
     def __init__(self, name, max_entries, ud_fixed_size, ud_size_bits):
         self.name = name

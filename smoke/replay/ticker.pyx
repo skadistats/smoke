@@ -1,8 +1,12 @@
-from smoke.replay import handler as rply_hndlr
-from smoke.io import plexer as io_plxr
+# cython: profile=False
 
+from smoke.replay cimport handler as rply_hndlr
+from smoke.io cimport plexer as io_plxr
 
-def mk(plexer, match):
+from smoke.io import const as io_cnst
+from smoke.replay import match as rply_mtch
+
+cpdef mk(io_plxr.Plexer plexer, object match):
     return Ticker(plexer, match)
 
 
@@ -21,5 +25,5 @@ cdef class Ticker(object):
                     rply_hndlr.handle(pb, self.match)
 
                 yield self.match
-        except io_plxr.DEMStopEncountered:
+        except io_cnst.DEMStopEncountered:
             raise StopIteration()

@@ -1,3 +1,5 @@
+# cython: profile=False
+
 from libc cimport stdlib
 from libc.stdint cimport int64_t, uint32_t, uint64_t, uint8_t
 from cpython cimport array
@@ -11,14 +13,23 @@ cpdef Stream mk(str data):
     return Stream(data)
 
 
-WORD_BYTES = 4
-WORD_BITS = WORD_BYTES * 8
+cdef int WORD_BYTES = 4
+cdef int WORD_BITS = WORD_BYTES * 8
 
 
 cdef class Stream(object):
-    cpdef _init_data(Stream self, array.array[unsigned int] ary):
-        lenwords = len(ary)
-        words = <uint32_t*>stdlib.malloc(lenwords * sizeof(uint32_t))
+    def __init__(self, data):
+        self.pos = 0
+
+        remainder = len(data) % 4
+        if remainder:
+            data = data + '\0' * (4 - remainder)
+
+        self._init_data(array.array('I', data))
+
+    cdef int _init_data(Stream self, array.array[unsigned int] ary) except -1:
+        cdef int lenwords = len(ary)
+        cdef uint32_t *words = <uint32_t*>stdlib.malloc(lenwords * sizeof(uint32_t))
 
         if words is NULL:
           raise MemoryError()
@@ -33,23 +44,14 @@ cdef class Stream(object):
         self.lenwords = lenwords
         self.words = words
 
-    def __init__(self, data):
-        self.pos = 0
-
-        remainder = len(data) % 4
-        if remainder:
-            data = data + '\0' * (4 - remainder)
-
-        self._init_data(array.array('I', data))
-
-    cdef _dealloc(Stream self):
+    cdef int _dealloc(Stream self):
         if self.words != NULL:
             stdlib.free(self.words)
 
     def __dealloc__(self):
         self._dealloc()
 
-    cpdef int read_numeric_bits(self, int n):
+    cdef int read_numeric_bits(self, int n):
         cdef uint32_t a, b
         a = self.words[self.pos / 32]
         b = self.words[(self.pos + n - 1) / 32]
@@ -69,7 +71,7 @@ cdef class Stream(object):
 
         return ret
 
-    cpdef bytes read_bits(Stream self, int bitlength):
+    cdef bytes read_bits(Stream self, int bitlength):
         cdef object data = bytearray()
         cdef int i, remainder
 
@@ -87,7 +89,7 @@ cdef class Stream(object):
 
         return bytes(data)
 
-    cpdef bytes read_string(Stream self, int bytelength):
+    cdef bytes read_string(Stream self, int bytelength):
         cdef int bitlength = bytelength * 8
         cdef object data = bytearray()
         cdef int i
@@ -106,7 +108,7 @@ cdef class Stream(object):
 
         return bytes(data)
 
-    cpdef int read_varint(Stream self):
+    cdef int read_varint(Stream self):
         cdef uint64_t run, value
         run = value = 0
 

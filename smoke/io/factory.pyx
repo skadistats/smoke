@@ -1,7 +1,9 @@
+# cython: profile=False
+
 from smoke.protobuf import dota2_palm as pbd2
 
 
-TOP = {
+cdef dict TOP = {
     pbd2.DEM_FileHeader:        pbd2.CDemoFileHeader,
     pbd2.DEM_SignonPacket:      pbd2.CDemoPacket,
     pbd2.DEM_SendTables:        pbd2.CDemoSendTables,
@@ -15,7 +17,7 @@ TOP = {
 }
 
 
-EMBED = {
+cdef dict EMBED = {
     pbd2.svc_ServerInfo:        pbd2.CSVCMsg_ServerInfo,
     pbd2.net_Tick:              pbd2.CNETMsg_Tick,
     pbd2.net_SetConVar:         pbd2.CNETMsg_SetConVar,
@@ -36,9 +38,9 @@ EMBED = {
 }
 
 
-cpdef mk_top(peek, message):
+cpdef object mk_top(object peek, str message):
     return TOP[peek.kind](message)
 
 
-cpdef mk_embed(peek, message):
+cpdef object mk_embed(object peek, str message):
     return EMBED[peek.kind](message)

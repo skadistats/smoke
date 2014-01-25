@@ -10,9 +10,9 @@ cdef class Stream(object):
     cdef int lenwords
     cdef uint32_t *words
 
-    cpdef _init_data(Stream self, array.array[unsigned int] ary)
-    cdef _dealloc(Stream self)
-    cpdef int read_numeric_bits(self, int n)
-    cpdef bytes read_bits(Stream self, int bitlength)
-    cpdef bytes read_string(Stream self, int bytelength)
-    cpdef int read_varint(Stream self)
+    cdef int _init_data(Stream self, array.array[unsigned int] ary) except -1
+    cdef int _dealloc(Stream self) except -1
+    cdef int read_numeric_bits(self, int n)
+    cdef bytes read_bits(Stream self, int bitlength)
+    cdef bytes read_string(Stream self, int bytelength)
+    cdef int read_varint(Stream self)

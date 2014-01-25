@@ -1,23 +1,49 @@
+# cython: profile=False
+
 import warnings
 
+from smoke.io.stream cimport entity
+from smoke.replay.decoder cimport packet_entities
+from smoke.replay.decoder.recv_prop cimport abstract
+from smoke.replay.decoder.recv_prop cimport factory
+
 from collections import defaultdict
-from smoke.protobuf import dota2_palm as pbd2
-from smoke.io.stream import entity as io_strm_ntt
 from smoke.model.collection import entities as mdl_cllctn_ntts
-from smoke.model.collection import game_event_descriptors as \
-    mdl_cllctn_gmvntdscrptrs
-from smoke.model.collection.game_event_descriptors import GameEventDescriptor
+from smoke.model.collection import game_event_descriptors as mdl_cllctn_gmvntdscrptrs
 from smoke.model.collection import string_tables as mdl_cllctn_strngtbl
+from smoke.model.collection.game_event_descriptors import GameEventDescriptor
 from smoke.model.dt.const import Prop, Type
 from smoke.model.dt.send_table import SendTable
 from smoke.model.const import Entity, PVS, String
+from smoke.protobuf import dota2_palm as pbd2
 from smoke.replay.decoder import string_table as rply_dcdr_strngtbl
 
 
 DOTA_UM_ID_BASE = 64
 
 
-USER_MESSAGE_BY_KIND = {
+cdef object CDemoFileHeader = pbd2.CDemoFileHeader
+cdef object CSVCMsg_ServerInfo = pbd2.CSVCMsg_ServerInfo
+cdef object CNETMsg_Tick = pbd2.CNETMsg_Tick
+cdef object CNETMsg_SetConVar = pbd2.CNETMsg_SetConVar
+cdef object CSVCMsg_CreateStringTable = pbd2.CSVCMsg_CreateStringTable
+cdef object CNETMsg_SignonState = pbd2.CNETMsg_SignonState
+cdef object CSVCMsg_SendTable = pbd2.CSVCMsg_SendTable
+cdef object CDemoClassInfo = pbd2.CDemoClassInfo
+cdef object CSVCMsg_VoiceInit = pbd2.CSVCMsg_VoiceInit
+cdef object CSVCMsg_GameEventList = pbd2.CSVCMsg_GameEventList
+cdef object CSVCMsg_SetView = pbd2.CSVCMsg_SetView
+cdef object CSVCMsg_PacketEntities = pbd2.CSVCMsg_PacketEntities
+cdef object CSVCMsg_GameEvent = pbd2.CSVCMsg_GameEvent
+cdef object CSVCMsg_UserMessage = pbd2.CSVCMsg_UserMessage
+cdef object CSVCMsg_UpdateStringTable = pbd2.CSVCMsg_UpdateStringTable
+cdef object CSVCMsg_TempEntities = pbd2.CSVCMsg_TempEntities
+cdef object CSVCMsg_Sounds = pbd2.CSVCMsg_Sounds
+cdef object CSVCMsg_VoiceData = pbd2.CSVCMsg_VoiceData
+cdef object CDemoFileInfo = pbd2.CDemoFileInfo
+
+
+cdef object USER_MESSAGE_BY_KIND = {
     1: 'AchievementEvent',          2: 'CloseCaption',
     3: 'CloseCaptionDirect',        4: 'CurrentTimescale',
     5: 'DesiredTimescale',          6: 'Fade',
@@ -64,10 +90,51 @@ USER_MESSAGE_BY_KIND = {
 
 
 cpdef handle(pb, match):
-    HANDLERS[type(pb)](pb, match)
+    cdef object t = type(pb)
+
+    if t == CDemoFileHeader:
+        _handle_dem_fileheader(pb, match)
+    elif t == CSVCMsg_ServerInfo:
+        _handle_svc_serverinfo(pb, match)
+    elif t == CNETMsg_Tick:
+        _handle_net_tick(pb, match)
+    elif t == CNETMsg_SetConVar:
+        _handle_net_setconvar(pb, match)
+    elif t == CSVCMsg_CreateStringTable:
+        _handle_svc_createstringtable(pb, match)
+    elif t == CNETMsg_SignonState:
+        _handle_net_signonstate(pb, match)
+    elif t == CSVCMsg_SendTable:
+        _handle_svc_sendtable(pb, match)
+    elif t == CDemoClassInfo:
+        _handle_dem_classinfo(pb, match)
+    elif t == CSVCMsg_VoiceInit:
+        _handle_svc_voiceinit(pb, match)
+    elif t == CSVCMsg_GameEventList:
+        _handle_svc_gameeventlist(pb, match)
+    elif t == CSVCMsg_SetView:
+        _handle_svc_setview(pb, match)
+    elif t == CSVCMsg_PacketEntities:
+        _handle_svc_packetentities(pb, match)
+    elif t == CSVCMsg_GameEvent:
+        _handle_svc_gameevent(pb, match)
+    elif t == CSVCMsg_UserMessage:
+        _handle_svc_usermessage(pb, match)
+    elif t == CSVCMsg_UpdateStringTable:
+        _handle_svc_updatestringtable(pb, match)
+    elif t == CSVCMsg_TempEntities:
+        _handle_svc_tempentities(pb, match)
+    elif t == CSVCMsg_Sounds:
+        _handle_svc_sounds(pb, match)
+    elif t == CSVCMsg_VoiceData:
+        _handle_svc_voicedata(pb, match)
+    elif t == CDemoFileInfo:
+        _handle_dem_fileinfo(pb, match)
+    else:
+        raise RuntimeError(t)
 
 
-cpdef handle_dem_fileheader(pb, match):
+cdef void _handle_dem_fileheader(pb, match):
     file_header = {
         'demo_file_stamp': pb.get('demo_file_stamp'),
         'network_protocol': pb.get('network_protocol'),
@@ -83,7 +150,7 @@ cpdef handle_dem_fileheader(pb, match):
     match.file_header = file_header
 
 
-cpdef handle_svc_serverinfo(pb, match):
+cdef void _handle_svc_serverinfo(pb, match):
     server_info = {
         'server_count': pb.get('server_count'),
         'is_dedicated': pb.get('is_dedicated'),
@@ -106,12 +173,12 @@ cpdef handle_svc_serverinfo(pb, match):
     match.server_info = server_info
 
 
-cpdef handle_net_tick(pb, match):
+cdef void _handle_net_tick(pb, match):
     match.tick = pb.tick
     match.reset_transient_state()
 
 
-cpdef handle_net_setconvar(pb, match):
+cdef void _handle_net_setconvar(pb, match):
     con_vars = match.con_vars or dict()
 
     for cvar in pb.convars.cvars:
@@ -121,7 +188,7 @@ cpdef handle_net_setconvar(pb, match):
     match.con_vars = con_vars
 
 
-cpdef handle_svc_createstringtable(pb, match):
+cdef void _handle_svc_createstringtable(pb, match):
     string_tables = match.string_tables or mdl_cllctn_strngtbl.mk()
     index = len(string_tables.by_index)
     string_table = rply_dcdr_strngtbl.decode_and_create(pb)
@@ -132,7 +199,7 @@ cpdef handle_svc_createstringtable(pb, match):
     match.string_tables = string_tables
 
 
-cpdef handle_net_signonstate(pb, match):
+cdef void _handle_net_signonstate(pb, match):
     signon_state = {
         'signon_state': pb.signon_state,
         'spawn_count': pb.spawn_count,
@@ -151,10 +218,10 @@ cpdef handle_net_signonstate(pb, match):
 
         for string in instance_baselines.by_index.values():
             cls = int(string.name)
-            ntt_stream = io_strm_ntt.mk(string.value)
+            ntt_stream = entity.mk(string.value)
             prop_list = ntt_stream.read_entity_prop_list()
-            match._instance_baseline_cache[cls] = \
-                match.packet_entities_decoder[cls].decode(ntt_stream, prop_list)
+            decoder = match.packet_entities_decoder.fetch_decoder(cls)
+            match._instance_baseline_cache[cls] = decoder.decode(ntt_stream, prop_list)
 
         active_modifiers = match.string_tables.by_name['ActiveModifiers']
         modifiers = defaultdict(dict)
@@ -169,7 +236,7 @@ cpdef handle_net_signonstate(pb, match):
         match.modifiers = modifiers
 
 
-cpdef handle_svc_sendtable(pb, match):
+cdef void _handle_svc_sendtable(pb, match):
     send_tables = match.send_tables or dict()
     send_props = list()
 
@@ -196,17 +263,17 @@ cpdef handle_svc_sendtable(pb, match):
     try:
         send_tables[pb.net_table_name] = \
             SendTable(pb.get('net_table_name'), send_props, needs_decoder)
-    except:
+    except Exception, e:
         assert pb.is_end
 
     match.send_tables = send_tables
 
 
-cpdef handle_dem_classinfo(pb, match):
+cdef void _handle_dem_classinfo(pb, match):
     match.class_info = {i.table_name:int(i.class_id) for i in pb.classes}
 
 
-cpdef handle_svc_voiceinit(pb, match):
+cdef void _handle_svc_voiceinit(pb, match):
     voice_init = {
         'quality': pb.quality,
         'codec': pb.codec,
@@ -216,7 +283,7 @@ cpdef handle_svc_voiceinit(pb, match):
     match.voice_init = voice_init
 
 
-cpdef handle_svc_gameeventlist(pb, match):
+cdef void _handle_svc_gameeventlist(pb, match):
     game_event_descriptors = mdl_cllctn_gmvntdscrptrs.mk()
 
     for desc in pb.descriptors:
@@ -229,21 +296,23 @@ cpdef handle_svc_gameeventlist(pb, match):
     match.game_event_descriptors = game_event_descriptors
 
 
-cpdef handle_svc_setview(pb, match):
+cdef void _handle_svc_setview(pb, match):
     match.view = { 'entity_index': pb.entity_index }
 
 
-cpdef handle_svc_packetentities(pb, match):
+cdef void _handle_svc_packetentities(pb, match):
     match.entities = match.entities or mdl_cllctn_ntts.mk()
 
-    s = io_strm_ntt.mk(pb.entity_data)
-    d, n = pb.is_delta, pb.updated_entries
-    patch = match.packet_entities_decoder.decode(s, d, n, match.entities)
+    cdef entity.Stream s = entity.mk(pb.entity_data)
+    cdef int d = pb.is_delta
+    cdef int n = pb.updated_entries
+    cdef object patch
 
+    patch = match.packet_entities_decoder.decode(s, d, n, match.entities)
     match.entities.apply(patch, match._instance_baseline_cache)
 
 
-cpdef handle_svc_gameevent(pb, match):
+cdef void _handle_svc_gameevent(pb, match):
     attrs = []
     ged = match.game_event_descriptors.by_eventid[pb.eventid]
 
@@ -270,7 +339,7 @@ cpdef handle_svc_gameevent(pb, match):
     match.game_events[pb.eventid].append(attrs)
 
 
-cpdef handle_svc_usermessage(pb, match):
+cdef void _handle_svc_usermessage(pb, match):
     kind = pb.msg_type
 
     if kind == 106: # one-off?
@@ -289,7 +358,7 @@ cpdef handle_svc_usermessage(pb, match):
     match.user_messages[kind].append(pb)
 
 
-cpdef handle_svc_updatestringtable(pb, match):
+cdef void _handle_svc_updatestringtable(pb, match):
     string_table = match.string_tables.by_index[pb.table_id]
     update = rply_dcdr_strngtbl.decode_update(pb, string_table)
 
@@ -299,10 +368,10 @@ cpdef handle_svc_updatestringtable(pb, match):
     if string_table.name == 'instancebaseline':
         for string in update:
             cls = int(string.name)
-            ntt_stream = io_strm_ntt.mk(string.value)
+            ntt_stream = entity.mk(string.value)
             prop_list = ntt_stream.read_entity_prop_list()
-            match._instance_baseline_cache[cls] = \
-                match.packet_entities_decoder[cls].decode(ntt_stream, prop_list)
+            decoder = match.packet_entities_decoder.fetch_decoder(cls)
+            match._instance_baseline_cache[cls] = decoder.decode(ntt_stream, prop_list)
 
     if string_table.name == 'ActiveModifiers':
         for string in update:
@@ -327,11 +396,11 @@ cpdef handle_svc_updatestringtable(pb, match):
                     pass
 
 
-cpdef handle_svc_tempentities(pb, match):
+cdef void _handle_svc_tempentities(pb, match):
     match.temp_entities = match.temp_entities or defaultdict(list)
 
     class_bits = match.packet_entities_decoder.class_bits
-    stream = io_strm_ntt.mk(pb.entity_data)
+    stream = entity.mk(pb.entity_data)
     i = 0
 
     while i < pb.num_entries:
@@ -343,20 +412,21 @@ cpdef handle_svc_tempentities(pb, match):
 
         prop_list = stream.read_entity_prop_list()
 
-        state = match.packet_entities_decoder[cls-1].decode(stream, prop_list)
+        decoder = match.packet_entities_decoder.fetch_decoder(cls-1)
+        state = decoder.decode(stream, prop_list)
         match.temp_entities[cls].append(Entity(0, 0, PVS.Enter, state))
         i += 1
 
 
-cpdef handle_svc_sounds(pb, match):
+cdef void _handle_svc_sounds(pb, match):
     match.sounds = pb
 
 
-cpdef handle_svc_voicedata(pb, match):
+cdef void _handle_svc_voicedata(pb, match):
     match.voice_data.append(pb)
 
 
-cpdef handle_dem_fileinfo(pb, match):
+cdef void _handle_dem_fileinfo(pb, match):
     game_info = pb.game_info.dota
 
     players = []
@@ -405,26 +475,3 @@ cpdef handle_dem_fileinfo(pb, match):
     }
 
     match.overview = overview
-
-
-HANDLERS = {
-    pbd2.CDemoFileHeader: handle_dem_fileheader,
-    pbd2.CSVCMsg_ServerInfo: handle_svc_serverinfo,
-    pbd2.CNETMsg_Tick: handle_net_tick,
-    pbd2.CNETMsg_SetConVar: handle_net_setconvar,
-    pbd2.CSVCMsg_CreateStringTable: handle_svc_createstringtable,
-    pbd2.CNETMsg_SignonState: handle_net_signonstate,
-    pbd2.CSVCMsg_SendTable: handle_svc_sendtable,
-    pbd2.CDemoClassInfo: handle_dem_classinfo,
-    pbd2.CSVCMsg_VoiceInit: handle_svc_voiceinit,
-    pbd2.CSVCMsg_GameEventList: handle_svc_gameeventlist,
-    pbd2.CSVCMsg_SetView: handle_svc_setview,
-    pbd2.CSVCMsg_PacketEntities: handle_svc_packetentities,
-    pbd2.CSVCMsg_GameEvent: handle_svc_gameevent,
-    pbd2.CSVCMsg_UserMessage: handle_svc_usermessage,
-    pbd2.CSVCMsg_UpdateStringTable: handle_svc_updatestringtable,
-    pbd2.CSVCMsg_TempEntities: handle_svc_tempentities,
-    pbd2.CSVCMsg_Sounds: handle_svc_sounds,
-    pbd2.CSVCMsg_VoiceData: handle_svc_voicedata,
-    pbd2.CDemoFileInfo: handle_dem_fileinfo
-}

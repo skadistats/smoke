@@ -1,16 +1,25 @@
+# cython: profile=False
+
 from smoke.io.stream cimport generic
+
 from smoke.model.const import PVS
 
 
-cpdef EntityStream mk(str data):
-    return EntityStream(data)
+cdef int Enter = PVS.Enter
+cdef int Preserve = PVS.Preserve
+cdef int Leave = PVS.Leave
+cdef int Delete = PVS.Delete
 
 
-cdef class EntityStream(generic.Stream):
+cpdef Stream mk(str data):
+    return Stream(data)
+
+
+cdef class Stream(generic.Stream):
     def __init__(self, str data):
-        super(EntityStream, self).__init__(data)
+        generic.Stream.__init__(self, data)
 
-    cpdef int read_entity_index(EntityStream self, int base_index):
+    cdef int read_entity_index(Stream self, int base_index):
         cdef int encoded_index = self.read_numeric_bits(6)
         cdef int a, b, i
 
@@ -23,26 +32,28 @@ cdef class EntityStream(generic.Stream):
 
         return base_index + encoded_index + 1
 
-    cpdef int read_entity_pvs(EntityStream self):
+    cdef int read_entity_pvs(Stream self):
         cdef int hi, lo
+        cdef int pvs
 
         hi = self.read_numeric_bits(1)
         lo = self.read_numeric_bits(1)
 
         if lo and not hi:
-            pvs = PVS.Enter
+            pvs = Enter
         elif not (hi or lo):
-            pvs = PVS.Preserve
+            pvs = Preserve
         elif hi:
-            pvs = PVS.Leave
-            pvs = pvs | PVS.Delete if lo else pvs
+            pvs = (Leave | Delete) if lo else Leave
+        else:
+            pvs = -1
 
         return pvs
 
-    cpdef list read_entity_prop_list(self):
-        cdef list prop_list = []
+    cdef object read_entity_prop_list(self):
+        cdef list prop_list = list()
         cdef int cursor = -1
-        cdef int offsest
+        cdef int offset
 
         while True:
             if self.read_numeric_bits(1):

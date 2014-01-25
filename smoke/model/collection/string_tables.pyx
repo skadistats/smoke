@@ -1,3 +1,5 @@
+# cython: profile=False
+
 import copy
 
 
@@ -6,8 +8,8 @@ cpdef StringTablesCollection mk():
 
 
 cdef class StringTablesCollection(object):
-    cdef public object by_index
-    cdef public object by_name
+    cdef public dict by_index
+    cdef public dict by_name
 
     def __init__(self):
         self.by_index = dict()

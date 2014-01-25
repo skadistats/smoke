@@ -1,3 +1,5 @@
+# cython: profile=False
+
 from smoke.model.const import GameEventDescriptor
 
 
@@ -6,8 +8,8 @@ cpdef GameEventDescriptorsCollection mk():
 
 
 cdef class GameEventDescriptorsCollection(object):
-    cdef public object by_eventid
-    cdef public object by_name
+    cdef public dict by_eventid
+    cdef public dict by_name
 
     def __init__(self):
         self.by_eventid = dict()

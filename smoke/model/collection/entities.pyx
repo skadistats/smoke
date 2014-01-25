@@ -1,3 +1,5 @@
+# cython: profile=False
+
 from collections import defaultdict
 from smoke.model.const import Entity, PVS
 
@@ -21,14 +23,14 @@ cdef from_e(int ehandle):
 
 
 cdef class EntitiesCollection(object):
-    cdef public object entry_by_index
-    cdef public object recv_table_by_cls
-    cdef public object _entry_by_ehandle
-    cdef public object _entries_by_cls
+    cdef public dict entry_by_index
+    cdef public dict recv_table_by_cls
+    cdef public dict _entry_by_ehandle
+    cdef public dict _entries_by_cls
 
     def __init__(EntitiesCollection self, object entry_by_index=None, object recv_table_by_cls=None):
-        self.entry_by_index = entry_by_index or {}
-        self.recv_table_by_cls = recv_table_by_cls or {}
+        self.entry_by_index = entry_by_index or dict()
+        self.recv_table_by_cls = recv_table_by_cls or dict()
         self._entry_by_ehandle = None
         self._entries_by_cls = None
 

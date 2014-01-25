@@ -1,36 +1,52 @@
+# cython: profile=False
+
 import struct
 
+from smoke.io.stream cimport generic
+from smoke.replay.decoder.recv_prop cimport abstract
+
 from smoke.model.dt.const import Flag
+
+
+cdef int Coord = Flag.Coord
+cdef int NoScale = Flag.NoScale
+cdef int CellCoord = Flag.CellCoord
+cdef int Normal = Flag.Normal
+cdef int CellCoordIntegral = Flag.CellCoordIntegral
 
 
 cpdef FloatDecoder mk(object prop):
     return FloatDecoder(prop)
 
 
-cdef class FloatDecoder(object):
+cdef class FloatDecoder(abstract.AbstractDecoder):
     def __init__(self, prop):
-        self.prop = prop
-        self._bits = prop.bits
-        self._low = prop.low
-        self._high = prop.high
+        abstract.AbstractDecoder.__init__(self, prop)
+        self.flags = prop.flags
+        self.bits = prop.bits
+        self.low = prop.low
+        self.high = prop.high
 
-        if prop.flags & Flag.Coord:
-            self._fn = self._decode_coord
-        elif prop.flags & Flag.NoScale:
-            self._fn = self._decode_no_scale
-        elif prop.flags & Flag.CellCoord:
-            self._fn = self._decode_cell_coord
-        elif prop.flags & Flag.Normal:
-            self._fn = self._decode_normal
-        elif prop.flags & Flag.CellCoordIntegral:
-            self._fn = self._decode_cell_coord_integral
+    cpdef float decode(self, generic.Stream stream):
+        cdef float value
+        cdef int flags = self.flags
+
+        if flags & Coord:
+            value = self._decode_coord(stream)
+        elif flags & NoScale:
+            value = self._decode_no_scale(stream)
+        elif flags & CellCoord:
+            value = self._decode_cell_coord(stream)
+        elif flags & Normal:
+            value = self._decode_normal(stream)
+        elif flags & CellCoordIntegral:
+            value = self._decode_cell_coord_integral(stream)
         else:
-            self._fn = self._decode_default
+            value = self._decode_default(stream)
 
-    cpdef float decode(self, stream):
-        return self._fn(stream)
+        return value
 
-    cpdef float _decode_coord(self, stream):
+    cdef float _decode_coord(self, generic.Stream stream):
         cdef int _i, _f
         cdef int s, i, f
         cdef float v
@@ -48,10 +64,10 @@ cdef class FloatDecoder(object):
 
         return v * -1 if s else v
 
-    cpdef float _decode_no_scale(self, stream):
+    cdef float _decode_no_scale(self, generic.Stream stream):
         return struct.unpack('f', stream.read_bits(32))[0]
 
-    cpdef float _decode_normal(self, stream):
+    cdef float _decode_normal(self, generic.Stream stream):
         cdef int s, l
         cdef object b
         cdef float v
@@ -69,17 +85,17 @@ cdef class FloatDecoder(object):
 
         return v * -1 if s else v
 
-    cpdef float _decode_cell_coord(self, stream):
+    cdef float _decode_cell_coord(self, generic.Stream stream):
         cdef float v
 
-        v = stream.read_numeric_bits(self._bits)
+        v = stream.read_numeric_bits(self.bits)
         return v + 0.01325 * stream.read_numeric_bits(5)
 
-    cpdef float _decode_cell_coord_integral(self, stream):
+    cdef float _decode_cell_coord_integral(self, generic.Stream stream):
         cdef int v
         cdef float f
 
-        v = stream.read_numeric_bits(self._bits)
+        v = stream.read_numeric_bits(self.bits)
         f = float(v)
 
         if v >> 31:
@@ -87,11 +103,11 @@ cdef class FloatDecoder(object):
 
         return f
 
-    cpdef float _decode_default(self, stream):
+    cdef float _decode_default(self, generic.Stream stream):
         cdef int t
         cdef float f
 
-        t = stream.read_numeric_bits(self._bits)
-        f = float(t) / (1 << self._bits - 1)
+        t = stream.read_numeric_bits(self.bits)
+        f = (t * 1.0) / (1 << self.bits - 1)
 
-        return f * (self._high - self._low) + self._low
+        return f * (self.high - self.low) + self.low

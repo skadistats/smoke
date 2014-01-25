@@ -1,13 +1,17 @@
+# cython: profile=False
+
+from smoke.replay cimport handler as rply_hndlr
+from smoke.io cimport factory as io_fctry
+from smoke.io cimport plexer as io_plxr
+
+from smoke.io import const as io_cnst
 from smoke.protobuf import dota2_palm as pbd2
-from smoke.io import factory as io_fctr
-from smoke.io import plexer as io_plxr
-from smoke.replay import handler as rply_hndlr
 from smoke.replay import match as rply_mtch
 from smoke.replay import ticker as rply_tckr
 from smoke.replay.const import Game
 
 
-cpdef mk(demo_io, parse=Game.All, skip_full=True, match=None):
+cpdef mk(demo_io, int parse=Game.All, int skip_full=True, match=None):
     return Demo(demo_io, parse=parse, skip_full=skip_full, match=match)
 
 
@@ -30,8 +34,8 @@ cdef object EMBED_WHITELIST = set([pbd2.net_Tick, pbd2.net_SetConVar,
 
 
 cpdef calc_deps(int parse):
-    cdef object deps = set()
-    cdef object coll = Game.tuples.copy()
+    cdef set deps = set()
+    cdef dict coll = Game.tuples.copy()
 
     del coll['All']
 
@@ -43,9 +47,9 @@ cpdef calc_deps(int parse):
 
 
 cpdef mk_embed_blacklist(object deps):
-    cdef object embed_blacklist = set()
+    cdef set embed_blacklist = set()
 
-    for embed in io_fctr.EMBED.keys():
+    for embed in io_fctry.EMBED.keys():
         if embed not in deps:
             embed_blacklist.add(embed)
 
@@ -71,7 +75,7 @@ cdef class Demo(object):
             while True:
                 _, pb = self.plexer.read()
                 rply_hndlr.handle(pb, self.match)
-        except io_plxr.DEMSyncTickEncountered:
+        except io_cnst.DEMSyncTickEncountered:
             pass
 
     cpdef play(Demo self):
