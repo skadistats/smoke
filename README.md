@@ -1,4 +1,6 @@
-**WIP: This entire document is very new. Please submit corrections!**
+**This document is a work in progress. Please open an issue for any technical
+or other errors you find.**
+
 
 # smoke
 
@@ -6,12 +8,18 @@ Relatively fast, complete Dota 2 "demo" (aka "replay") parser written in
 cython. Cython is a Python-like language which is processed into C and then
 compiled for execution speed.
 
-On a fast CPU, smoke parses replays at **least** 67x game time. So if a game
-lasted 57 minutes, expect a full replay parse to take 51 seconds or less.
+On a fast CPU, smoke parses replays at **least** 85x game time. So if a game
+lasted 57 minutes, expect a full replay parse to take 36 seconds or less.
 
 If speed is of paramount concern for your use case, or if you prefer Java,
 check out [clarity](https://github.com/skadistats/clarity). It is comically
 fast--cython can't compete.
+
+
+# Halp!
+
+Of course. Join us on quakenet IRC in #dota2replay. But do be patient--if we
+don't answer immediately, we're probably playing Dota 2.
 
 
 # Installation
@@ -82,6 +90,7 @@ duration, and often picks/bans
 
 ✝ **unprocessed**: data is provided as original protobuf message object
 
+
 # Parsing Replay Data
 
 By default, smoke parses everything. This is the slowest parsing option. Here
@@ -95,7 +104,7 @@ is a simple example which parses a demo, doing nothing:
 
     with io.open('37633163.dem', 'rb') as infile:
         # wrap a file IO as a "demo"
-        demo_io = io_wrp_dm.mk(infile)
+        demo_io = io_wrp_dm.Wrap(infile)
 
         # read the header that occurs at demo start
         demo_io.bootstrap() 
@@ -116,9 +125,9 @@ is a simple example which parses a demo, doing nothing:
 
 When run with `time python entity_counter.py`, we get:
 
-    real    0m51.005s
-    user    0m50.730s
-    sys     0m0.255s
+    real    0m35.303s
+    user    0m35.041s
+    sys     0m0.261s
 
 Perhaps you want to be more selective about parsing. We do this by bitmask.
 Here's code similar to the above, but more restrictive about what it parses.
@@ -132,7 +141,7 @@ Consequently, it'll be tons faster:
     from smoke.replay.demo import Game
 
     with io.open('37633163.dem', 'rb') as infile:
-        demo_io = io_wrp_dm.mk(infile)
+        demo_io = io_wrp_dm.Wrap(infile)
         demo_io.bootstrap() 
 
         # it's a bitmask -- see smoke.replay.demo for all options
@@ -148,9 +157,9 @@ Consequently, it'll be tons faster:
 
 When run with `time python with_less_data.py`:
 
-    real    0m38.589s
-    user    0m38.344s
-    sys     0m0.220s
+    real    0m21.925s
+    user    0m21.730s
+    sys     0m0.194s
 
 Finally, if we just want an overview of the game:
 
@@ -162,7 +171,7 @@ Finally, if we just want an overview of the game:
     from smoke.replay.demo import Game
 
     with io.open('37633163.dem', 'rb') as infile:
-        demo_io = io_wrp_dm.mk(infile)
+        demo_io = io_wrp_dm.Wrap(infile)
         overview_offset = demo_io.bootstrap() # returns offset to overview
 
         # we can seek on the raw underlying IO instead of parsing everything
@@ -175,9 +184,9 @@ Finally, if we just want an overview of the game:
 
 When run with `time python overview_only.py':
 
-    real    0m0.147s
-    user    0m0.113s
-    sys     0m0.025s
+    real    0m0.141s
+    user    0m0.115s
+    sys     0m0.024s
 
 If you **only** need `UserMessages` or `GameEvents` (for example), you end up
 with 5 second parses. So parse as little as you can!
