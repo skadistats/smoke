@@ -1,4 +1,3 @@
-# cython: profile=False
 
 
 cdef class StringTable(object):

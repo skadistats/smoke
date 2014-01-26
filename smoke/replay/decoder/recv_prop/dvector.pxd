@@ -1,17 +1,11 @@
 import math
 
-from smoke.io.stream cimport generic
+from smoke.io.stream cimport generic as io_strm_gnrc
 from smoke.replay.decoder.recv_prop cimport abstract
-from smoke.replay.decoder.recv_prop cimport dfloat as dcdr_flt
-
-from smoke.model.dt.const import Flag
 
 
-cpdef VectorDecoder mk(object prop)
-
-
-cdef class VectorDecoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.AbstractDecoder):
     cdef public object decoder
     cdef int normal
 
-    cpdef object decode(VectorDecoder self, generic.Stream stream)
+    cpdef object decode(Decoder self, io_strm_gnrc.Stream stream)

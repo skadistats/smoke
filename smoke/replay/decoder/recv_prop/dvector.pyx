@@ -2,24 +2,20 @@
 
 import math
 
-from smoke.io.stream cimport generic
+from smoke.io.stream cimport generic as io_strm_gnrc
 from smoke.replay.decoder.recv_prop cimport abstract
-from smoke.replay.decoder.recv_prop cimport dfloat as dcdr_flt
+from smoke.replay.decoder.recv_prop cimport dfloat
 
 from smoke.model.dt.const import Flag
 
 
-cpdef VectorDecoder mk(object prop):
-    return VectorDecoder(prop)
-
-
-cdef class VectorDecoder(abstract.AbstractDecoder):
-    def __init__(VectorDecoder self, object prop):
+cdef class Decoder(abstract.AbstractDecoder):
+    def __init__(Decoder self, object prop):
         abstract.AbstractDecoder.__init__(self, prop)
-        self.decoder = dcdr_flt.mk(prop)
+        self.decoder = dfloat.Decoder(prop)
         self.normal = prop.flags & Flag.Normal
 
-    cpdef object decode(VectorDecoder self, generic.Stream stream):
+    cpdef object decode(Decoder self, io_strm_gnrc.Stream stream):
         cdef float x = self.decoder.decode(stream)
         cdef float y = self.decoder.decode(stream)
 

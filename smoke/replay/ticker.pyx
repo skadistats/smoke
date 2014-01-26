@@ -2,17 +2,18 @@
 
 from smoke.replay cimport handler as rply_hndlr
 from smoke.io cimport plexer as io_plxr
+from smoke.replay cimport match as rply_mtch
 
 from smoke.io import const as io_cnst
-from smoke.replay import match as rply_mtch
+
 
 cpdef mk(io_plxr.Plexer plexer, object match):
     return Ticker(plexer, match)
 
 
 cdef class Ticker(object):
-    cdef public object plexer
-    cdef public object match
+    cdef public io_plxr.Plexer plexer
+    cdef public rply_mtch.Match match
 
     def __init__(self, plexer, match):
         self.plexer = plexer

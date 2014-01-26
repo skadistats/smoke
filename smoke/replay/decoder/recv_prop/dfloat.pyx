@@ -2,7 +2,7 @@
 
 import struct
 
-from smoke.io.stream cimport generic
+from smoke.io.stream cimport generic as io_strm_gnrc
 from smoke.replay.decoder.recv_prop cimport abstract
 
 from smoke.model.dt.const import Flag
@@ -15,11 +15,7 @@ cdef int Normal = Flag.Normal
 cdef int CellCoordIntegral = Flag.CellCoordIntegral
 
 
-cpdef FloatDecoder mk(object prop):
-    return FloatDecoder(prop)
-
-
-cdef class FloatDecoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.AbstractDecoder):
     def __init__(self, prop):
         abstract.AbstractDecoder.__init__(self, prop)
         self.flags = prop.flags
@@ -27,7 +23,7 @@ cdef class FloatDecoder(abstract.AbstractDecoder):
         self.low = prop.low
         self.high = prop.high
 
-    cpdef float decode(self, generic.Stream stream):
+    cpdef float decode(self, io_strm_gnrc.Stream stream):
         cdef float value
         cdef int flags = self.flags
 
@@ -46,7 +42,7 @@ cdef class FloatDecoder(abstract.AbstractDecoder):
 
         return value
 
-    cdef float _decode_coord(self, generic.Stream stream):
+    cdef float _decode_coord(self, io_strm_gnrc.Stream stream):
         cdef int _i, _f
         cdef int s, i, f
         cdef float v
@@ -64,10 +60,10 @@ cdef class FloatDecoder(abstract.AbstractDecoder):
 
         return v * -1 if s else v
 
-    cdef float _decode_no_scale(self, generic.Stream stream):
+    cdef float _decode_no_scale(self, io_strm_gnrc.Stream stream):
         return struct.unpack('f', stream.read_bits(32))[0]
 
-    cdef float _decode_normal(self, generic.Stream stream):
+    cdef float _decode_normal(self, io_strm_gnrc.Stream stream):
         cdef int s, l
         cdef object b
         cdef float v
@@ -85,13 +81,13 @@ cdef class FloatDecoder(abstract.AbstractDecoder):
 
         return v * -1 if s else v
 
-    cdef float _decode_cell_coord(self, generic.Stream stream):
+    cdef float _decode_cell_coord(self, io_strm_gnrc.Stream stream):
         cdef float v
 
         v = stream.read_numeric_bits(self.bits)
         return v + 0.01325 * stream.read_numeric_bits(5)
 
-    cdef float _decode_cell_coord_integral(self, generic.Stream stream):
+    cdef float _decode_cell_coord_integral(self, io_strm_gnrc.Stream stream):
         cdef int v
         cdef float f
 
@@ -103,7 +99,7 @@ cdef class FloatDecoder(abstract.AbstractDecoder):
 
         return f
 
-    cdef float _decode_default(self, generic.Stream stream):
+    cdef float _decode_default(self, io_strm_gnrc.Stream stream):
         cdef int t
         cdef float f
 

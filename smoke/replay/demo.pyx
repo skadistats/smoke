@@ -3,10 +3,10 @@
 from smoke.replay cimport handler as rply_hndlr
 from smoke.io cimport factory as io_fctry
 from smoke.io cimport plexer as io_plxr
+from smoke.replay cimport match as rply_mtch
 
 from smoke.io import const as io_cnst
 from smoke.protobuf import dota2_palm as pbd2
-from smoke.replay import match as rply_mtch
 from smoke.replay import ticker as rply_tckr
 from smoke.replay.const import Game
 
@@ -58,17 +58,17 @@ cpdef mk_embed_blacklist(object deps):
 
 cdef class Demo(object):
     cdef public int parse
-    cdef public object plexer
-    cdef public object match
-    cdef public object overview
+    cdef public io_plxr.Plexer plexer
+    cdef public rply_mtch.Match match
+    cdef public dict overview
 
     def __init__(self, d_io, parse=Game.All, skip_full=True, match=None):
         tb = set([pbd2.DEM_FullPacket]) if skip_full else set()
         eb = mk_embed_blacklist(calc_deps(parse))
 
         self.parse = parse
-        self.plexer = io_plxr.mk(d_io, top_blacklist=tb, embed_blacklist=eb)
-        self.match = match or rply_mtch.mk()
+        self.plexer = io_plxr.Plexer(d_io, top_blacklist=tb, embed_blacklist=eb)
+        self.match = match or rply_mtch.Match()
 
     cpdef bootstrap(Demo self):
         try:

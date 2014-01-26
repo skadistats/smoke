@@ -1,14 +1,7 @@
 # cython: profile=False
 
 
-def mk(*args):
-    return RecvTablesCollection(*args)
-
-
-cdef class RecvTablesCollection(object):
-    cdef public object by_cls
-    cdef public object by_dt
-
+cdef class Collection(object):
     def __init__(self, recv_table_by_cls):
         cdef dict by_cls = recv_table_by_cls
         cdef dict by_dt = dict()

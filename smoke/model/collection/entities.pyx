@@ -7,10 +7,6 @@ from smoke.model.const import Entity, PVS
 cdef int MAX_EDICT_BITS = 11
 
 
-cpdef EntitiesCollection mk(object entry_by_index=None, object recv_table_by_cls=None):
-    return EntitiesCollection(entry_by_index, recv_table_by_cls)
-
-
 cdef to_e(int index, int serial):
     return (serial << MAX_EDICT_BITS) | index
 
@@ -22,13 +18,8 @@ cdef from_e(int ehandle):
     return index, serial
 
 
-cdef class EntitiesCollection(object):
-    cdef public dict entry_by_index
-    cdef public dict recv_table_by_cls
-    cdef public dict _entry_by_ehandle
-    cdef public dict _entries_by_cls
-
-    def __init__(EntitiesCollection self, object entry_by_index=None, object recv_table_by_cls=None):
+cdef class Collection(object):
+    def __init__(Collection self, object entry_by_index=None, object recv_table_by_cls=None):
         self.entry_by_index = entry_by_index or dict()
         self.recv_table_by_cls = recv_table_by_cls or dict()
         self._entry_by_ehandle = None
@@ -37,7 +28,7 @@ cdef class EntitiesCollection(object):
     def __len__(self):
         return len(self.entry_by_index)
 
-    cpdef apply(EntitiesCollection self, object patch, object baselines):
+    cdef void apply(Collection self, list patch, dict baselines):
         entry_by_index = self.entry_by_index
 
         for pvs, e in patch:

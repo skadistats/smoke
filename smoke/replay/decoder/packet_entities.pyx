@@ -1,7 +1,7 @@
 # cython: profile=False
 
-from smoke.io.stream cimport entity
-from smoke.replay.decoder cimport dt as dcdr_dt
+from smoke.io.stream cimport entity as io_strm_ntt
+from smoke.replay.decoder cimport dt as rply_dcdr_dt
 
 from smoke.model.const import Entity, PVS
 
@@ -12,47 +12,45 @@ cdef int Leave = PVS.Leave
 cdef int Delete = PVS.Delete
 
 
-cpdef PacketEntitiesDecoder mk(recv_tables):
-    return PacketEntitiesDecoder(recv_tables)
-
-
-cdef class PacketEntitiesDecoder(object):
-    def __init__(PacketEntitiesDecoder self, object recv_tables):
+cdef class Decoder(object):
+    def __init__(Decoder self, object recv_tables, int class_bits):
         self.recv_tables = recv_tables
         self.class_bits = len(recv_tables.by_cls).bit_length()
         self.decoders = dict()
 
-    cpdef fetch_decoder(PacketEntitiesDecoder self, int cls):
-        cdef dcdr_dt.DTDecoder decoder
+    cdef rply_dcdr_dt.Decoder fetch_decoder(Decoder self, int cls):
+        cdef rply_dcdr_dt.Decoder decoder
 
         if cls in self.decoders:
             return self.decoders[cls]
 
-        decoder = dcdr_dt.mk(self.recv_tables.by_cls[cls])
+        decoder = rply_dcdr_dt.Decoder(self.recv_tables.by_cls[cls])
         self.decoders[cls] = decoder
 
         return decoder
 
-    cpdef object decode(PacketEntitiesDecoder self, entity.Stream stream, int is_delta, int count, object world):
+    cdef list decode(Decoder self, object pb, mdl_cllctn_ntts.Collection entities):
         cdef int index = -1
         cdef list patch = list()
+        cdef io_strm_ntt.Stream stream = io_strm_ntt.Stream(pb.entity_data)
+        cdef int count = pb.updated_entries
 
         while len(patch) < count:
-            pvs, entry = self._decode_diff(stream, index, world)
+            pvs, entry = self._decode_diff(stream, index, entities)
             index = entry.index
             patch.append((pvs, entry))
 
-        if is_delta:
+        if pb.is_delta:
             patch += self._decode_deletion_diffs(stream)
 
         return patch
 
-    cdef _decode_diff(PacketEntitiesDecoder self, entity.Stream stream, int i, object entities):
+    cdef tuple _decode_diff(Decoder self, io_strm_ntt.Stream stream, int i, mdl_cllctn_ntts.Collection entities):
         cdef int diff_index = stream.read_entity_index(i)
         cdef int pvs = stream.read_entity_pvs()
         cdef list prop_list
         cdef dict state
-        cdef dcdr_dt.DTDecoder decoder
+        cdef rply_dcdr_dt.Decoder decoder
 
         if pvs == Enter:
             cls = stream.read_numeric_bits(self.class_bits)
@@ -71,7 +69,7 @@ cdef class PacketEntitiesDecoder(object):
 
         return pvs, Entity(diff_index, serial, cls, state)
 
-    cdef _decode_deletion_diffs(PacketEntitiesDecoder self, entity.Stream stream):
+    cdef list _decode_deletion_diffs(Decoder self, io_strm_ntt.Stream stream):
         cdef int deletion_index
         cdef list deletions = list()
 

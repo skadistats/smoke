@@ -2,21 +2,23 @@
 
 import warnings
 
-from smoke.io.stream cimport entity
+from smoke.io.stream cimport entity as io_strm_ntt
 from smoke.model cimport string_table as mdl_strngtbl
-from smoke.replay.decoder cimport packet_entities
+from smoke.model.collection cimport entities as mdl_cllctn_ntts
+from smoke.model.collection cimport game_event_descriptors as mdl_cllctn_gmvntdscrptrs
+from smoke.model.collection cimport string_tables as mdl_cllctn_strngtbl
+from smoke.model.dt cimport send_table as mdl_dt_sndtbl
+from smoke.replay cimport match as rply_mtch
+from smoke.replay.decoder cimport dt as rply_dcdr_dt
+from smoke.replay.decoder cimport packet_entities as rply_dcdr_pcktntts
+from smoke.replay.decoder cimport string_table as rply_dcdr_strngtbl
+from smoke.replay.decoder cimport temp_entities as rply_dcdr_tmpntts
 from smoke.replay.decoder.recv_prop cimport abstract
 from smoke.replay.decoder.recv_prop cimport factory
-from smoke.replay.decoder cimport string_table as rply_dcdr_strngtbl
-
 
 from collections import defaultdict
-from smoke.model.collection import entities as mdl_cllctn_ntts
-from smoke.model.collection import game_event_descriptors as mdl_cllctn_gmvntdscrptrs
-from smoke.model.collection import string_tables as mdl_cllctn_strngtbl
-from smoke.model.collection.game_event_descriptors import GameEventDescriptor
+from smoke.model.const import GameEventDescriptor
 from smoke.model.dt.const import Prop, Type
-from smoke.model.dt.send_table import SendTable
 from smoke.model.const import Entity, PVS, String
 from smoke.protobuf import dota2_palm as pbd2
 
@@ -91,7 +93,7 @@ cdef object USER_MESSAGE_BY_KIND = {
 }
 
 
-cpdef handle(pb, match):
+cdef handle(object pb, rply_mtch.Match match):
     cdef object t = type(pb)
 
     if t == CDemoFileHeader:
@@ -136,7 +138,7 @@ cpdef handle(pb, match):
         raise RuntimeError(t)
 
 
-cdef void _handle_dem_fileheader(pb, match):
+cdef void _handle_dem_fileheader(object pb, rply_mtch.Match match):
     file_header = {
         'demo_file_stamp': pb.get('demo_file_stamp'),
         'network_protocol': pb.get('network_protocol'),
@@ -152,7 +154,7 @@ cdef void _handle_dem_fileheader(pb, match):
     match.file_header = file_header
 
 
-cdef void _handle_svc_serverinfo(pb, match):
+cdef void _handle_svc_serverinfo(object pb, rply_mtch.Match match):
     server_info = {
         'server_count': pb.get('server_count'),
         'is_dedicated': pb.get('is_dedicated'),
@@ -175,12 +177,12 @@ cdef void _handle_svc_serverinfo(pb, match):
     match.server_info = server_info
 
 
-cdef void _handle_net_tick(pb, match):
+cdef void _handle_net_tick(object pb, rply_mtch.Match match):
     match.tick = pb.tick
     match.reset_transient_state()
 
 
-cdef void _handle_net_setconvar(pb, match):
+cdef void _handle_net_setconvar(object pb, rply_mtch.Match match):
     con_vars = match.con_vars or dict()
 
     for cvar in pb.convars.cvars:
@@ -190,10 +192,12 @@ cdef void _handle_net_setconvar(pb, match):
     match.con_vars = con_vars
 
 
-cdef void _handle_svc_createstringtable(pb, match):
-    cdef mdl_strngtbl.StringTable string_table
+cdef void _handle_svc_createstringtable(object pb, rply_mtch.Match match):
+    match.string_tables = match.string_tables or mdl_cllctn_strngtbl.Collection()
 
-    string_tables = match.string_tables or mdl_cllctn_strngtbl.mk()
+    cdef mdl_strngtbl.StringTable string_table
+    cdef string_tables = <mdl_cllctn_strngtbl.Collection>match.string_tables
+
     index = len(string_tables.by_index)
     string_table = rply_dcdr_strngtbl.decode_and_create(pb)
 
@@ -203,8 +207,9 @@ cdef void _handle_svc_createstringtable(pb, match):
     match.string_tables = string_tables
 
 
-cdef void _handle_net_signonstate(pb, match):
-    cdef entity.Stream ntt_stream
+cdef void _handle_net_signonstate(object pb, rply_mtch.Match match):
+    cdef rply_dcdr_pcktntts.Decoder ped
+    cdef io_strm_ntt.Stream stream
 
     signon_state = {
         'signon_state': pb.signon_state,
@@ -219,15 +224,17 @@ cdef void _handle_net_signonstate(pb, match):
         match.flatten_send_tables()
         match.check_sanity()
 
+        ped = <rply_dcdr_pcktntts.Decoder>match.packet_entities_decoder
+
         # populate instance baselines
         instance_baselines = match.string_tables.by_name['instancebaseline']
 
         for string in instance_baselines.by_index.values():
             cls = int(string.name)
-            ntt_stream = entity.Stream(string.value)
-            prop_list = ntt_stream.read_entity_prop_list()
-            decoder = match.packet_entities_decoder.fetch_decoder(cls)
-            match._instance_baseline_cache[cls] = decoder.decode(ntt_stream, prop_list)
+            stream = io_strm_ntt.Stream(string.value)
+            prop_list = stream.read_entity_prop_list()
+            match._instance_baseline_cache[cls] = \
+                ped.fetch_decoder(cls).decode(stream, prop_list)
 
         active_modifiers = match.string_tables.by_name['ActiveModifiers']
         modifiers = defaultdict(dict)
@@ -242,7 +249,7 @@ cdef void _handle_net_signonstate(pb, match):
         match.modifiers = modifiers
 
 
-cdef void _handle_svc_sendtable(pb, match):
+cdef void _handle_svc_sendtable(object pb, rply_mtch.Match match):
     send_tables = match.send_tables or dict()
     send_props = list()
 
@@ -268,18 +275,18 @@ cdef void _handle_svc_sendtable(pb, match):
 
     try:
         send_tables[pb.net_table_name] = \
-            SendTable(pb.get('net_table_name'), send_props, needs_decoder)
+            mdl_dt_sndtbl.SendTable(pb.get('net_table_name'), send_props, needs_decoder)
     except Exception, e:
         assert pb.is_end
 
     match.send_tables = send_tables
 
 
-cdef void _handle_dem_classinfo(pb, match):
+cdef void _handle_dem_classinfo(object pb, rply_mtch.Match match):
     match.class_info = {i.table_name:int(i.class_id) for i in pb.classes}
 
 
-cdef void _handle_svc_voiceinit(pb, match):
+cdef void _handle_svc_voiceinit(object pb, rply_mtch.Match match):
     voice_init = {
         'quality': pb.quality,
         'codec': pb.codec,
@@ -289,8 +296,8 @@ cdef void _handle_svc_voiceinit(pb, match):
     match.voice_init = voice_init
 
 
-cdef void _handle_svc_gameeventlist(pb, match):
-    game_event_descriptors = mdl_cllctn_gmvntdscrptrs.mk()
+cdef void _handle_svc_gameeventlist(object pb, rply_mtch.Match match):
+    cdef mdl_cllctn_gmvntdscrptrs.Collection game_event_descriptors = mdl_cllctn_gmvntdscrptrs.Collection()
 
     for desc in pb.descriptors:
         eventid, name = desc.eventid, desc.name
@@ -302,23 +309,21 @@ cdef void _handle_svc_gameeventlist(pb, match):
     match.game_event_descriptors = game_event_descriptors
 
 
-cdef void _handle_svc_setview(pb, match):
+cdef void _handle_svc_setview(object pb, rply_mtch.Match match):
     match.view = { 'entity_index': pb.entity_index }
 
 
-cdef void _handle_svc_packetentities(pb, match):
-    match.entities = match.entities or mdl_cllctn_ntts.mk()
+cdef void _handle_svc_packetentities(object pb, rply_mtch.Match match):
+    match.entities = match.entities or mdl_cllctn_ntts.Collection()
 
-    cdef entity.Stream ntt_stream = entity.Stream(pb.entity_data)
-    cdef int d = pb.is_delta
-    cdef int n = pb.updated_entries
-    cdef object patch
+    cdef rply_dcdr_pcktntts.Decoder ped = <rply_dcdr_pcktntts.Decoder>match.packet_entities_decoder
+    cdef mdl_cllctn_ntts.Collection e = <mdl_cllctn_ntts.Collection>match.entities
+    cdef list patch = ped.decode(pb, match.entities)
 
-    patch = match.packet_entities_decoder.decode(ntt_stream, d, n, match.entities)
-    match.entities.apply(patch, match._instance_baseline_cache)
+    e.apply(patch, match._instance_baseline_cache)
 
 
-cdef void _handle_svc_gameevent(pb, match):
+cdef void _handle_svc_gameevent(object pb, rply_mtch.Match match):
     attrs = []
     ged = match.game_event_descriptors.by_eventid[pb.eventid]
 
@@ -345,7 +350,7 @@ cdef void _handle_svc_gameevent(pb, match):
     match.game_events[pb.eventid].append(attrs)
 
 
-cdef void _handle_svc_usermessage(pb, match):
+cdef void _handle_svc_usermessage(object pb, rply_mtch.Match match):
     kind = pb.msg_type
 
     if kind == 106: # one-off?
@@ -364,11 +369,12 @@ cdef void _handle_svc_usermessage(pb, match):
     match.user_messages[kind].append(pb)
 
 
-cdef void _handle_svc_updatestringtable(pb, match):
-    cdef entity.Stream ntt_stream
-    cdef mdl_strngtbl.StringTable string_table
-
-    string_table = match.string_tables.by_index[pb.table_id]
+cdef void _handle_svc_updatestringtable(object pb, rply_mtch.Match match):
+    cdef rply_dcdr_pcktntts.Decoder ped =<rply_dcdr_pcktntts.Decoder>match.packet_entities_decoder
+    cdef mdl_strngtbl.StringTable string_table = <mdl_strngtbl.StringTable>match.string_tables.by_index[pb.table_id]
+    cdef io_strm_ntt.Stream stream
+    cdef rply_dcdr_dt.Decoder dt_decoder
+ 
     update = rply_dcdr_strngtbl.decode_update(pb, string_table)
 
     for string in update:
@@ -377,10 +383,10 @@ cdef void _handle_svc_updatestringtable(pb, match):
     if string_table.name == 'instancebaseline':
         for string in update:
             cls = int(string.name)
-            ntt_stream = entity.Stream(string.value)
-            prop_list = ntt_stream.read_entity_prop_list()
-            decoder = match.packet_entities_decoder.fetch_decoder(cls)
-            match._instance_baseline_cache[cls] = decoder.decode(ntt_stream, prop_list)
+            stream = io_strm_ntt.Stream(string.value)
+            prop_list = stream.read_entity_prop_list()
+            dt_decoder = ped.fetch_decoder(cls)
+            match._instance_baseline_cache[cls] = dt_decoder.decode(stream, prop_list)
 
     if string_table.name == 'ActiveModifiers':
         for string in update:
@@ -405,39 +411,21 @@ cdef void _handle_svc_updatestringtable(pb, match):
                     pass
 
 
-cdef void _handle_svc_tempentities(pb, match):
-    cdef entity.Stream ntt_stream
+cdef void _handle_svc_tempentities(object pb, rply_mtch.Match match):
+    cdef rply_dcdr_tmpntts.Decoder ted = <rply_dcdr_tmpntts.Decoder>match.temp_entities_decoder
 
-    match.temp_entities = match.temp_entities or defaultdict(list)
-
-    class_bits = match.packet_entities_decoder.class_bits
-    ntt_stream = entity.Stream(pb.entity_data)
-    i = 0
-
-    while i < pb.num_entries:
-        mystery = ntt_stream.read_numeric_bits(1) # always 0?
-        new_cls = ntt_stream.read_numeric_bits(1)
-
-        if new_cls:
-            cls = ntt_stream.read_numeric_bits(class_bits)
-
-        prop_list = ntt_stream.read_entity_prop_list()
-
-        decoder = match.packet_entities_decoder.fetch_decoder(cls-1)
-        state = decoder.decode(ntt_stream, prop_list)
-        match.temp_entities[cls].append(Entity(0, 0, PVS.Enter, state))
-        i += 1
+    match.temp_entities = ted.decode(pb)
 
 
-cdef void _handle_svc_sounds(pb, match):
+cdef void _handle_svc_sounds(object pb, rply_mtch.Match match):
     match.sounds = pb
 
 
-cdef void _handle_svc_voicedata(pb, match):
+cdef void _handle_svc_voicedata(object pb, rply_mtch.Match match):
     match.voice_data.append(pb)
 
 
-cdef void _handle_dem_fileinfo(pb, match):
+cdef void _handle_dem_fileinfo(object pb, rply_mtch.Match match):
     game_info = pb.game_info.dota
 
     players = []

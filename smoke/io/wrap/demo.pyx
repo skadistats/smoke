@@ -14,28 +14,20 @@ cdef int LEN_HEADER = 8
 cdef int LEN_OFFSET = 4
 
 
-cpdef DemoIO mk(object handle):
-    return DemoIO(handle)
-
-
-cdef object InvalidHeaderError(RuntimeError):
-    pass
-
-
-cdef class DemoIO(object):
-    def __init__(DemoIO self, object handle):
+cdef class Wrap(object):
+    def __init__(Wrap self, object handle):
         self.handle = handle
 
-    cpdef int bootstrap(DemoIO self) except -1:
+    cpdef int bootstrap(Wrap self) except -1:
         header = self.handle.read(LEN_HEADER)
         offset = self.handle.read(LEN_OFFSET)
 
         if header != 'PBUFDEM\0':
-            raise InvalidHeaderError('header invalid')
+            raise RuntimeError('header invalid')
 
         return struct.unpack('I', bytearray(offset))[0]
 
-    cpdef object read(DemoIO self):
+    cpdef tuple read(Wrap self):
         cdef int kind = io_utl.read_varint(self.handle)
         cdef int comp = bool(kind & COMPRESSED_MASK)
         cdef int tick, size

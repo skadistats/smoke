@@ -4,31 +4,32 @@ import collections
 import warnings
 
 from smoke.io cimport factory
-from smoke.io.wrap cimport embed
+from smoke.io.wrap cimport embed as io_wrp_mbd
 
 from smoke.protobuf import dota2_palm as pbd2
 from smoke.io.const import Action, DEMSyncTickEncountered, DEMStopEncountered
 
 
-cpdef mk(object demo_io, top_blacklist=None, embed_blacklist=None):
-    return Plexer(demo_io, top_blacklist=top_blacklist, embed_blacklist=embed_blacklist)
+cdef int Enqueue = Action.Enqueue
+cdef int Ignore = Action.Ignore
+cdef int Inline = Action.Inline
 
 
 cdef dict OPERATIONS = {
-    pbd2.DEM_ClassInfo:           Action.Enqueue,
-    pbd2.DEM_ConsoleCmd:          Action.Ignore,
-    pbd2.DEM_CustomData:          Action.Ignore,
-    pbd2.DEM_CustomDataCallbacks: Action.Ignore,
-    pbd2.DEM_FileHeader:          Action.Enqueue,
-    pbd2.DEM_FileInfo:            Action.Enqueue,
-    pbd2.DEM_FullPacket:          Action.Enqueue,
-    pbd2.DEM_Packet:              Action.Inline,
-    pbd2.DEM_SendTables:          Action.Inline,
-    pbd2.DEM_SignonPacket:        Action.Inline,
-    pbd2.DEM_StringTables:        Action.Ignore,
-    pbd2.DEM_Stop:                Action.Enqueue,
-    pbd2.DEM_SyncTick:            Action.Enqueue,
-    pbd2.DEM_UserCmd:             Action.Ignore
+    pbd2.DEM_ClassInfo:           Enqueue,
+    pbd2.DEM_ConsoleCmd:          Ignore,
+    pbd2.DEM_CustomData:          Ignore,
+    pbd2.DEM_CustomDataCallbacks: Ignore,
+    pbd2.DEM_FileHeader:          Enqueue,
+    pbd2.DEM_FileInfo:            Enqueue,
+    pbd2.DEM_FullPacket:          Enqueue,
+    pbd2.DEM_Packet:              Inline,
+    pbd2.DEM_SendTables:          Inline,
+    pbd2.DEM_SignonPacket:        Inline,
+    pbd2.DEM_StringTables:        Ignore,
+    pbd2.DEM_Stop:                Enqueue,
+    pbd2.DEM_SyncTick:            Enqueue,
+    pbd2.DEM_UserCmd:             Ignore
 }
 
 
@@ -37,20 +38,22 @@ cdef set TOP_WHITELIST = set([pbd2.DEM_FileHeader, pbd2.DEM_ClassInfo,
 
 
 cdef class Plexer(object):
-    def __init__(self, demo_io, top_blacklist=None, embed_blacklist=None):
+    def __init__(self, wrap, top_blacklist=None, embed_blacklist=None):
+        cdef set tb, eb
+
         tb = top_blacklist or set()
         tb = set(tb) - TOP_WHITELIST
 
         eb = embed_blacklist or set()
         eb = set(eb) | set([pbd2.svc_ClassInfo])
 
-        self.demo_io = demo_io
+        self.wrap = wrap
         self.queue = collections.deque()
         self.top_blacklist = tb
         self.embed_blacklist = eb
         self.stopped = False
 
-    cpdef object read(self):
+    cdef tuple read(self):
         peek, pb = self.lookahead()
 
         self.queue.popleft()
@@ -60,7 +63,7 @@ cdef class Plexer(object):
 
         return peek, pb
 
-    cpdef object read_tick(self):
+    cdef list read_tick(self):
         if self.stopped:
             raise DEMStopEncountered()
 
@@ -85,10 +88,11 @@ cdef class Plexer(object):
         cdef object peek
         cdef str message
         cdef int op, kind
-        cdef object embed_io
+        cdef io_wrp_mbd.Wrap wrap
+        cdef object pb
 
         while len(self.queue) == 0:
-            peek, message = self.demo_io.read()
+            peek, message = self.wrap.read()
             kind = peek.kind
 
             try:
@@ -105,11 +109,11 @@ cdef class Plexer(object):
                     continue
 
                 # otherwise, inline embedded messages:
-                embed_io = embed.mk(pb.data, peek.tick)
+                wrap = io_wrp_mbd.Wrap(pb.data, peek.tick)
 
                 try:
                     while True:
-                        peek, message = embed_io.read()
+                        peek, message = wrap.read()
 
                         if peek.kind in self.embed_blacklist:
                             continue

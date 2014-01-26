@@ -18,23 +18,23 @@ cdef int t_vector = Type.Vector
 cdef int t_vectorxy = Type.VectorXY
 
 
-cpdef mk(prop):
+cdef mk(object prop):
     cdef int t = prop.type
 
     if t == t_array:
         # array props have an embedded prop describing the in-array type
-        return darray.mk(prop, mk(prop.array_prop))
+        return darray.Decoder(prop, mk(prop.array_prop))
     elif t == t_float:
-        return dfloat.mk(prop)
+        return dfloat.Decoder(prop)
     elif t == t_int:
-        return dint.mk(prop)
+        return dint.Decoder(prop)
     elif t == t_int64:
-        return dint64.mk(prop)
+        return dint64.Decoder(prop)
     elif t == t_string:
-        return dstring.mk(prop)
+        return dstring.Decoder(prop)
     elif t == t_vector:
-        return dvector.mk(prop)
+        return dvector.Decoder(prop)
     elif t == t_vectorxy:
-        return dvectorxy.mk(prop)
+        return dvectorxy.Decoder(prop)
 
     raise NotImplementedError()

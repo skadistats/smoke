@@ -1,15 +1,12 @@
-from smoke.io.stream cimport generic
+from smoke.io.stream cimport generic as io_strm_gnrc
 
 from smoke.model.dt.const import Flag
 from smoke.replay.decoder.recv_prop cimport abstract
 
 
-cpdef IntDecoder mk(object prop)
-
-
-cdef class IntDecoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.AbstractDecoder):
     cdef int bits
     cdef long eat
     cdef long unsign
 
-    cpdef int decode(IntDecoder self, generic.Stream stream)
+    cpdef int decode(Decoder self, io_strm_gnrc.Stream stream)

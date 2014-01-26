@@ -3,20 +3,13 @@
 import copy
 
 
-cpdef StringTablesCollection mk():
-    return StringTablesCollection()
-
-
-cdef class StringTablesCollection(object):
-    cdef public dict by_index
-    cdef public dict by_name
-
+cdef class Collection(object):
     def __init__(self):
         self.by_index = dict()
         self.by_name = dict()
 
     def __add__(self, other):
-        cdef StringTablesCollection new = copy.copy(self)
+        cdef Collection new = copy.copy(self)
 
         new.by_index.update(other.by_index)
         new.by_name.update(other.by_name)
@@ -24,7 +17,7 @@ cdef class StringTablesCollection(object):
         return new
 
     def __copy__(self):
-        cdef StringTablesCollection new = StringTablesCollection()
+        cdef Collection new = Collection()
         
         new.by_index = self.by_index.copy()
         new.by_name = self.by_name.copy()

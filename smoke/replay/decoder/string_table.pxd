@@ -1,5 +1,3 @@
-# cython: profile=False
-
 import math
 
 from smoke.io.stream cimport generic

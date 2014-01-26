@@ -6,7 +6,7 @@ cdef int VI_SHIFT = 7
 cdef int VI_MASK = (1 << 32) - 1
 
 
-cpdef int read_varint(object handle) except -1:
+cdef int read_varint(object handle) except -1:
     cdef int size, value, shift
     cdef str byte
 

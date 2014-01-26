@@ -38,9 +38,9 @@ cdef dict EMBED = {
 }
 
 
-cpdef object mk_top(object peek, str message):
+cdef object mk_top(object peek, str message):
     return TOP[peek.kind](message)
 
 
-cpdef object mk_embed(object peek, str message):
+cdef object mk_embed(object peek, str message):
     return EMBED[peek.kind](message)

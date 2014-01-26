@@ -45,6 +45,7 @@ setup(
         "smoke/model/string_table.pyx",
         "smoke/replay/decoder/dt.pyx",
         "smoke/replay/decoder/packet_entities.pyx",
+        "smoke/replay/decoder/temp_entities.pyx",
         "smoke/replay/decoder/recv_prop/abstract.pyx",
         "smoke/replay/decoder/recv_prop/darray.pyx",
         "smoke/replay/decoder/recv_prop/dfloat.pyx",

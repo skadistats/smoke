@@ -1,15 +1,15 @@
-cpdef mk(object demo_io, top_blacklist=?, embed_blacklist=?)
+from smoke.io.wrap cimport demo as io_wrp_dm
 
 
 cdef class Plexer(object):
-    cdef object demo_io
+    cdef io_wrp_dm.Wrap wrap
     cdef object queue
     cdef set top_blacklist
     cdef set embed_blacklist
     cdef object stopped
 
-    cpdef object read(self)
+    cdef tuple read(self)
 
-    cpdef object read_tick(self)
+    cdef list read_tick(self)
 
     cdef object lookahead(self)
