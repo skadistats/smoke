@@ -10,9 +10,8 @@ cdef from_e(int ehandle)
 
 
 cdef class Collection(object):
-    cdef public dict entry_by_index
-    cdef public dict recv_table_by_cls
-    cdef public dict _entry_by_ehandle
-    cdef public dict _entries_by_cls
+    cdef public object by_index
+    cdef object _by_ehandle
+    cdef object _by_cls
 
-    cdef void apply(Collection self, list patch, dict baselines)
+    cdef void invalidate_views(self)

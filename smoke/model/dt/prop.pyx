@@ -13,7 +13,7 @@ from smoke.replay.decoder.recv_prop cimport dvectorxy
 
 
 cdef class Prop(object):
-    def __cinit__(self, src, name, _type, flags, pri, _len, bits, dt, low, high, array_prop):
+    def __cinit__(self, unicode src, unicode name, int _type, int flags, int pri, int _len, int bits, unicode dt, float low, float high, Prop array_prop):
         self.src = src
         self.name = name
         self.type = _type

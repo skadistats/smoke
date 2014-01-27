@@ -1,8 +1,7 @@
 # cython: profile=False
 
 from smoke.io.stream cimport generic as io_strm_gnrc
-
-from smoke.model.dt.const import Flag
+from smoke.model.dt cimport prop as mdl_dt_prp
 from smoke.replay.decoder.recv_prop cimport abstract
 
 
@@ -10,9 +9,9 @@ cdef class Decoder(abstract.Decoder):
     def __init__(Decoder self, object prop):
         abstract.Decoder.__init__(self, prop)
 
-        assert prop.flags ^ Flag.EncodedAgainstTickcount
+        assert prop.flags ^ mdl_dt_prp.ENCODEDAGAINSTTICKCOUNT
 
-        self.unsign = prop.flags & Flag.Unsigned
+        self.unsign = prop.flags & mdl_dt_prp.UNSIGNED
         self.bits = prop.bits
 
     cpdef int decode(Decoder self, io_strm_gnrc.Stream stream):

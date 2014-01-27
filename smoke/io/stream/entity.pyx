@@ -1,14 +1,7 @@
 # cython: profile=False
 
 from smoke.io.stream cimport generic
-
-from smoke.model.const import PVS
-
-
-cdef int Enter = PVS.Enter
-cdef int Preserve = PVS.Preserve
-cdef int Leave = PVS.Leave
-cdef int Delete = PVS.Delete
+from smoke.model cimport entity as mdl_ntt
 
 
 cdef class Stream(generic.Stream):
@@ -36,11 +29,11 @@ cdef class Stream(generic.Stream):
         lo = self.read_numeric_bits(1)
 
         if lo and not hi:
-            pvs = Enter
+            pvs = mdl_ntt.ENTER
         elif not (hi or lo):
-            pvs = Preserve
+            pvs = mdl_ntt.PRESERVE
         elif hi:
-            pvs = (Leave | Delete) if lo else Leave
+            pvs = (mdl_ntt.LEAVE | mdl_ntt.DELETE) if lo else mdl_ntt.LEAVE
         else:
             pvs = -1
 

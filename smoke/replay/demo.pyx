@@ -82,7 +82,7 @@ cdef class Demo(object):
             pass
 
     cpdef play(Demo self):
-        return rply_tckr.mk(self.plexer, self.match)
+        return rply_tckr.Ticker(self.plexer, self.match)
 
     cpdef finish(Demo self):
         try:

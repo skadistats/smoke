@@ -1,7 +1,6 @@
 # cython: profile=False
 
 from collections import defaultdict
-from smoke.model.const import Entity, PVS
 
 
 cdef int MAX_EDICT_BITS = 11
@@ -19,56 +18,30 @@ cdef from_e(int ehandle):
 
 
 cdef class Collection(object):
-    def __init__(Collection self, object entry_by_index=None, object recv_table_by_cls=None):
-        self.entry_by_index = entry_by_index or dict()
-        self.recv_table_by_cls = recv_table_by_cls or dict()
-        self._entry_by_ehandle = None
-        self._entries_by_cls = None
+    def __init__(Collection self, object by_index=None):
+        self.by_index = by_index or defaultdict(None)
+        self._by_ehandle = None
+        self._by_cls = None
 
     def __len__(self):
-        return len(self.entry_by_index)
+        return len(self.by_index)
 
-    cdef void apply(Collection self, list patch, dict baselines):
-        entry_by_index = self.entry_by_index
+    cdef void invalidate_views(self):
+        self._by_ehandle = None
+        self._by_cls = None
 
-        for pvs, e in patch:
-            if pvs == PVS.Enter:
-                state = baselines[e.cls].copy()
-                state.update(e.state)
-                e = Entity(e.index, e.serial, e.cls, state)
-                entry_by_index[e.index] = (PVS.Enter, e)
-            elif pvs == PVS.Preserve:
-                assert e.index in entry_by_index
-                peek, entry = entry_by_index[e.index]
-                entry.state.update(e.state)
-            elif pvs == PVS.Leave:
-                _, entry = entry_by_index[e.index]
-                entry_by_index[entry.index] = (PVS.Leave, entry)
-            elif pvs == PVS.Delete and e.index in entry_by_index:
-                del entry_by_index[e.index]
-
-    property entries_by_cls:
+    property by_ehandle:
         def __get__(self):
-            cdef object _entries_by_cls = defaultdict(list)
+            if self._by_ehandle is None:
+                # FIXME: Generate.
+                pass
 
-            if not self._entries_by_cls:
-                for _, entry in self.entry_by_index.items():
-                    pvs, entity = entry
-                    _entries_by_cls[entity.cls] = entry
+            return self._by_ehandle
 
-                self._entries_by_cls = _entries_by_cls
-
-            return self._entries_by_cls
-
-    property entry_by_ehandle:
+    property by_cls:
         def __get__(self):
-            cdef object _entry_by_ehandle = dict()
+            if self._by_cls is None:
+                # FIXME: Generate.
+                pass
 
-            if not self._entry_by_ehandle:
-                for _, entry in self.entry_by_index.items():
-                    pvs, entity = entry
-                    _entry_by_ehandle[to_e(entity.index, entity.serial)] = entry
-
-                self._entry_by_ehandle = _entry_by_ehandle
-
-            return self._entry_by_ehandle
+            return self._by_cls

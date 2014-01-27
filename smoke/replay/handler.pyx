@@ -3,7 +3,9 @@
 import warnings
 
 from smoke.io.stream cimport entity as io_strm_ntt
+from smoke.model cimport entity as mdl_ntt
 from smoke.model cimport string_table as mdl_strngtbl
+from smoke.model.collection cimport dt_decoders as mdl_cllctn_dtdcdrs
 from smoke.model.collection cimport entities as mdl_cllctn_ntts
 from smoke.model.collection cimport game_event_descriptors as mdl_cllctn_gmvntdscrptrs
 from smoke.model.collection cimport string_tables as mdl_cllctn_strngtbl
@@ -11,13 +13,11 @@ from smoke.model.dt cimport prop as mdl_dt_prp
 from smoke.model.dt cimport send_table as mdl_dt_sndtbl
 from smoke.replay cimport match as rply_mtch
 from smoke.replay.decoder cimport dt as rply_dcdr_dt
-from smoke.replay.decoder cimport packet_entities as rply_dcdr_pcktntts
 from smoke.replay.decoder cimport string_table as rply_dcdr_strngtbl
-from smoke.replay.decoder cimport temp_entities as rply_dcdr_tmpntts
 
 from collections import defaultdict
 from smoke.model.const import GameEventDescriptor
-from smoke.model.const import Entity, PVS, String
+from smoke.model.const import String
 from smoke.protobuf import dota2_palm as pbd2
 
 
@@ -45,7 +45,7 @@ cdef object CSVCMsg_VoiceData = pbd2.CSVCMsg_VoiceData
 cdef object CDemoFileInfo = pbd2.CDemoFileInfo
 
 
-cdef object USER_MESSAGE_BY_KIND = {
+cdef dict USER_MESSAGE_BY_KIND = {
     1: 'AchievementEvent',          2: 'CloseCaption',
     3: 'CloseCaptionDirect',        4: 'CurrentTimescale',
     5: 'DesiredTimescale',          6: 'Fade',
@@ -207,7 +207,6 @@ cdef void _handle_svc_createstringtable(object pb, rply_mtch.Match match):
 
 
 cdef void _handle_net_signonstate(object pb, rply_mtch.Match match):
-    cdef rply_dcdr_pcktntts.Decoder ped
     cdef io_strm_ntt.Stream stream
 
     signon_state = {
@@ -222,18 +221,6 @@ cdef void _handle_net_signonstate(object pb, rply_mtch.Match match):
     if signon_state['signon_state'] == 5:
         match.flatten_send_tables()
         match.check_sanity()
-
-        ped = <rply_dcdr_pcktntts.Decoder>match.packet_entities_decoder
-
-        # populate instance baselines
-        instance_baselines = match.string_tables.by_name['instancebaseline']
-
-        for string in instance_baselines.by_index.values():
-            cls = int(string.name)
-            stream = io_strm_ntt.Stream(string.value)
-            prop_list = stream.read_entity_prop_list()
-            match._instance_baseline_cache[cls] = \
-                ped.fetch_decoder(cls).decode(stream, prop_list)
 
         active_modifiers = match.string_tables.by_name['ActiveModifiers']
         modifiers = defaultdict(dict)
@@ -315,11 +302,51 @@ cdef void _handle_svc_setview(object pb, rply_mtch.Match match):
 cdef void _handle_svc_packetentities(object pb, rply_mtch.Match match):
     match.entities = match.entities or mdl_cllctn_ntts.Collection()
 
-    cdef rply_dcdr_pcktntts.Decoder ped = <rply_dcdr_pcktntts.Decoder>match.packet_entities_decoder
-    cdef mdl_cllctn_ntts.Collection e = <mdl_cllctn_ntts.Collection>match.entities
-    cdef list patch = ped.decode(pb, match.entities)
+    cdef mdl_strngtbl.StringTable ibst = \
+        <mdl_strngtbl.StringTable>match.string_tables.by_name['instancebaseline']
+    cdef io_strm_ntt.Stream baseline_stream
+    cdef io_strm_ntt.Stream stream = io_strm_ntt.Stream(pb.entity_data)
+    cdef mdl_cllctn_dtdcdrs.Collection dt_decoders = \
+        <mdl_cllctn_dtdcdrs.Collection>match.dt_decoders
+    cdef mdl_ntt.Entity entity
+    cdef mdl_ntt.State state
 
-    e.apply(patch, match._instance_baseline_cache)
+    cdef int index = -1
+    cdef int i
+
+    for i in range(pb.updated_entries):
+        index = stream.read_entity_index(index)
+        pvs = stream.read_entity_pvs()
+
+        if pvs == mdl_ntt.ENTER:
+            cls = stream.read_numeric_bits(match.class_bits)
+            serial = stream.read_numeric_bits(10)
+            prop_list = stream.read_entity_prop_list()
+            decoder = dt_decoders.get(cls)
+            baseline_stream = io_strm_ntt.Stream(ibst.by_name[str(cls)].value)
+            state = decoder.decode_baseline(baseline_stream)
+            state.merge(decoder.decode(stream, prop_list))
+            match.entities.by_index[index] = mdl_ntt.Entity(pvs, index, serial, cls, state)
+        elif pvs == mdl_ntt.PRESERVE:
+            entity = match.entities.by_index[index]
+            prop_list = stream.read_entity_prop_list()
+            decoder = dt_decoders.get(entity.cls)
+            entity.state.merge(decoder.decode(stream, prop_list))
+        elif pvs == mdl_ntt.LEAVE:
+            entity = match.entities.by_index[index]
+            entity.pvs = pvs
+        elif pvs == mdl_ntt.DELETE:
+            del match.entities.by_index[index]
+
+    if pb.is_delta:
+        while stream.read_numeric_bits(1):
+            index = stream.read_numeric_bits(11) # max is 2^11-1, or 2047
+            try:
+                del match.entities.by_index[index]
+            except KeyError:
+                pass
+
+    match.entities.invalidate_views()
 
 
 cdef void _handle_svc_gameevent(object pb, rply_mtch.Match match):
@@ -369,7 +396,6 @@ cdef void _handle_svc_usermessage(object pb, rply_mtch.Match match):
 
 
 cdef void _handle_svc_updatestringtable(object pb, rply_mtch.Match match):
-    cdef rply_dcdr_pcktntts.Decoder ped =<rply_dcdr_pcktntts.Decoder>match.packet_entities_decoder
     cdef mdl_strngtbl.StringTable string_table = <mdl_strngtbl.StringTable>match.string_tables.by_index[pb.table_id]
     cdef io_strm_ntt.Stream stream
     cdef rply_dcdr_dt.Decoder dt_decoder
@@ -378,14 +404,6 @@ cdef void _handle_svc_updatestringtable(object pb, rply_mtch.Match match):
 
     for string in update:
         string_table.update(string)
-
-    if string_table.name == 'instancebaseline':
-        for string in update:
-            cls = int(string.name)
-            stream = io_strm_ntt.Stream(string.value)
-            prop_list = stream.read_entity_prop_list()
-            dt_decoder = ped.fetch_decoder(cls)
-            match._instance_baseline_cache[cls] = dt_decoder.decode(stream, prop_list)
 
     if string_table.name == 'ActiveModifiers':
         for string in update:
@@ -411,9 +429,28 @@ cdef void _handle_svc_updatestringtable(object pb, rply_mtch.Match match):
 
 
 cdef void _handle_svc_tempentities(object pb, rply_mtch.Match match):
-    cdef rply_dcdr_tmpntts.Decoder ted = <rply_dcdr_tmpntts.Decoder>match.temp_entities_decoder
+    cdef mdl_cllctn_dtdcdrs.Collection dt_decoders = \
+        <mdl_cllctn_dtdcdrs.Collection>match.dt_decoders
 
-    match.temp_entities = ted.decode(pb)
+    cdef io_strm_ntt.Stream stream = io_strm_ntt.Stream(pb.entity_data)
+    cdef object temp_entities = defaultdict(list)
+    cdef int i, cls, mystery, new_cls
+    cdef list prop_list
+    cdef mdl_ntt.State state
+
+    for i in range(pb.num_entries):
+        mystery = stream.read_numeric_bits(1) # always 0?
+        new_cls = stream.read_numeric_bits(1)
+
+        if new_cls:
+            cls = stream.read_numeric_bits(match.class_bits) - 1
+
+        prop_list = stream.read_entity_prop_list()
+        state = dt_decoders.get(cls).decode(stream, prop_list)
+
+        temp_entities[cls].append(mdl_ntt.Entity(mdl_ntt.ENTER, 0, 0, 0, state))
+
+    match.temp_entities = temp_entities
 
 
 cdef void _handle_svc_sounds(object pb, rply_mtch.Match match):

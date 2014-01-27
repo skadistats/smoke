@@ -1,8 +1,6 @@
 # cython: profile=False
 
 from smoke.model.dt cimport recv_table as mdl_dt_rcvtbl
-from smoke.replay.decoder cimport packet_entities as rply_dcdr_pcktntts
-from smoke.replay.decoder cimport temp_entities as rply_dcdr_tmpntts
 
 from collections import defaultdict
 from smoke.model.collection import recv_tables as mdl_cllctn_rcvtbls
@@ -23,10 +21,8 @@ cdef class Match(object):
         self.voice_init = None
         self.game_event_descriptors = None
         self.view = None
-        self._class_bits = None
-        self._instance_baseline_cache = dict()
-        self._packet_entities_decoder = None
-        self._temp_entities_decoder = None
+        self._class_bits = 0
+        self._dt_decoders = None
 
         # data properties
         self.tick = None
@@ -43,26 +39,17 @@ cdef class Match(object):
 
     property class_bits:
         def __get__(self):
-            if not self._class_bits:
+            if self._class_bits == 0:
                 self._class_bits = len(self.recv_tables.by_cls).bit_length()
 
             return self._class_bits
 
-    property packet_entities_decoder:
+    property dt_decoders:
         def __get__(self):
-            if not self._packet_entities_decoder:
-                self._packet_entities_decoder = \
-                    rply_dcdr_pcktntts.Decoder(self.recv_tables, self.class_bits)
+            if self._dt_decoders is None:
+                self._dt_decoders = mdl_cllctn_dtdcdrs.Collection(self.recv_tables)
 
-            return self._packet_entities_decoder
-
-    property temp_entities_decoder:
-        def __get__(self):
-            if not self._temp_entities_decoder:
-                self._temp_entities_decoder = \
-                    rply_dcdr_tmpntts.Decoder(self.packet_entities_decoder)
-
-            return self._temp_entities_decoder
+            return self._dt_decoders
 
     cdef flatten_send_tables(self):
         recv_tables = dict()
@@ -84,7 +71,7 @@ cdef class Match(object):
             self.voice_init and self.game_event_descriptors and self.view
 
     cdef reset_transient_state(self):
-        self.temp_entities = None # TBD: what collection to use here?
+        self.temp_entities = defaultdict(list)
         self.game_events = defaultdict(list)
         self.user_messages = defaultdict(list)
         self.sounds = None

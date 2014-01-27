@@ -3,16 +3,8 @@
 import struct
 
 from smoke.io.stream cimport generic as io_strm_gnrc
+from smoke.model.dt cimport prop as mdl_dt_prp
 from smoke.replay.decoder.recv_prop cimport abstract
-
-from smoke.model.dt.const import Flag
-
-
-cdef int Coord = Flag.Coord
-cdef int NoScale = Flag.NoScale
-cdef int CellCoord = Flag.CellCoord
-cdef int Normal = Flag.Normal
-cdef int CellCoordIntegral = Flag.CellCoordIntegral
 
 
 cdef class Decoder(abstract.Decoder):
@@ -27,15 +19,15 @@ cdef class Decoder(abstract.Decoder):
         cdef float value
         cdef int flags = self.flags
 
-        if flags & Coord:
+        if flags & mdl_dt_prp.COORD:
             value = self._decode_coord(stream)
-        elif flags & NoScale:
+        elif flags & mdl_dt_prp.NOSCALE:
             value = self._decode_no_scale(stream)
-        elif flags & CellCoord:
+        elif flags & mdl_dt_prp.CELLCOORD:
             value = self._decode_cell_coord(stream)
-        elif flags & Normal:
+        elif flags & mdl_dt_prp.NORMAL:
             value = self._decode_normal(stream)
-        elif flags & CellCoordIntegral:
+        elif flags & mdl_dt_prp.CELLCOORDINTEGRAL:
             value = self._decode_cell_coord_integral(stream)
         else:
             value = self._decode_default(stream)

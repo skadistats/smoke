@@ -1,7 +1,7 @@
 # cython: profile=False
 
 from collections import defaultdict
-from smoke.model.dt.const import Flag
+from smoke.model.dt cimport prop as mdl_dt_prp
 
 
 cdef class RecvTable(object):
@@ -20,7 +20,7 @@ cdef class RecvTable(object):
 
             while cursor < len(recv_props):
                 recv_prop = recv_props[cursor]
-                flagged_changes_often = recv_prop.flags & Flag.ChangesOften
+                flagged_changes_often = recv_prop.flags & mdl_dt_prp.CHANGESOFTEN
                 changes_often = flagged_changes_often and priority is 64
 
                 if changes_often or recv_prop.pri == priority:
