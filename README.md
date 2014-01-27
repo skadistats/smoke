@@ -8,8 +8,8 @@ Relatively fast, complete Dota 2 "demo" (aka "replay") parser written in
 cython. Cython is a Python-like language which is processed into C and then
 compiled for execution speed.
 
-On a fast CPU, smoke parses replays at **least** 85x game time. So if a game
-lasted 57 minutes, expect a full replay parse to take 36 seconds or less.
+On a fast CPU, smoke parses replays at **least** 117x game time. So if a game
+lasted 57 minutes, expect a full replay parse to take 29 seconds or less.
 
 If speed is of paramount concern for your use case, or if you prefer Java,
 check out [clarity](https://github.com/skadistats/clarity). It is comically
@@ -110,7 +110,7 @@ is a simple example which parses a demo, doing nothing:
         demo_io.bootstrap() 
 
         # create a demo with our IO object
-        demo = rply_dm.mk(demo_io)
+        demo = rply_dm.Demo(demo_io)
 
         # read essential pre-match data from the demo
         demo.bootstrap() 
@@ -125,9 +125,9 @@ is a simple example which parses a demo, doing nothing:
 
 When run with `time python entity_counter.py`, we get:
 
-    real    0m35.303s
-    user    0m35.041s
-    sys     0m0.261s
+    real    0m28.869s
+    user    0m28.687s
+    sys     0m0.179s
 
 Perhaps you want to be more selective about parsing. We do this by bitmask.
 Here's code similar to the above, but more restrictive about what it parses.
@@ -138,15 +138,15 @@ Consequently, it'll be tons faster:
 
     from smoke.io.wrap import demo as io_wrp_dm
     from smoke.replay import demo as rply_dm
-    from smoke.replay.demo import Game
+    from smoke.replay.const import Data
 
     with io.open('37633163.dem', 'rb') as infile:
         demo_io = io_wrp_dm.Wrap(infile)
         demo_io.bootstrap() 
 
         # it's a bitmask -- see smoke.replay.demo for all options
-        parse = Game.All ^ (Game.UserMessages | Game.GameEvents | Game.VoiceData | Game.TempEntities)
-        demo = rply_dm.mk(demo_io, parse=parse)
+        parse = Data.All ^ (Data.UserMessages | Data.GameEvents | Data.VoiceData | Data.TempEntities)
+        demo = rply_dm.Demo(demo_io, parse=parse)
         demo.bootstrap() 
 
         for match in demo.play():
@@ -157,9 +157,9 @@ Consequently, it'll be tons faster:
 
 When run with `time python with_less_data.py`:
 
-    real    0m21.925s
-    user    0m21.730s
-    sys     0m0.194s
+    real    0m17.629s
+    user    0m17.468s
+    sys     0m0.157s
 
 Finally, if we just want an overview of the game:
 
@@ -168,7 +168,7 @@ Finally, if we just want an overview of the game:
 
     from smoke.io.wrap import demo as io_wrp_dm
     from smoke.replay import demo as rply_dm
-    from smoke.replay.demo import Game
+    from smoke.replay.demo import Data
 
     with io.open('37633163.dem', 'rb') as infile:
         demo_io = io_wrp_dm.Wrap(infile)
@@ -177,15 +177,15 @@ Finally, if we just want an overview of the game:
         # we can seek on the raw underlying IO instead of parsing everything
         infile.seek(overview_offset)
 
-        demo = rply_dm.mk(demo_io, parse=Game.Overview)
+        demo = rply_dm.Demo(demo_io)
         demo.finish()
 
         print demo.match.overview
 
 When run with `time python overview_only.py':
 
-    real    0m0.141s
-    user    0m0.115s
+    real    0m0.140s
+    user    0m0.113s
     sys     0m0.024s
 
 If you **only** need `UserMessages` or `GameEvents` (for example), you end up
