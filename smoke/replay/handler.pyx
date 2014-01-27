@@ -7,18 +7,16 @@ from smoke.model cimport string_table as mdl_strngtbl
 from smoke.model.collection cimport entities as mdl_cllctn_ntts
 from smoke.model.collection cimport game_event_descriptors as mdl_cllctn_gmvntdscrptrs
 from smoke.model.collection cimport string_tables as mdl_cllctn_strngtbl
+from smoke.model.dt cimport prop as mdl_dt_prp
 from smoke.model.dt cimport send_table as mdl_dt_sndtbl
 from smoke.replay cimport match as rply_mtch
 from smoke.replay.decoder cimport dt as rply_dcdr_dt
 from smoke.replay.decoder cimport packet_entities as rply_dcdr_pcktntts
 from smoke.replay.decoder cimport string_table as rply_dcdr_strngtbl
 from smoke.replay.decoder cimport temp_entities as rply_dcdr_tmpntts
-from smoke.replay.decoder.recv_prop cimport abstract
-from smoke.replay.decoder.recv_prop cimport factory
 
 from collections import defaultdict
 from smoke.model.const import GameEventDescriptor
-from smoke.model.dt.const import Prop, Type
 from smoke.model.const import Entity, PVS, String
 from smoke.protobuf import dota2_palm as pbd2
 
@@ -255,24 +253,24 @@ cdef void _handle_svc_sendtable(object pb, rply_mtch.Match match):
     send_props = list()
 
     for sp in pb.props:
-        # for send props of type Type.Array, the previous property stored is
+        # for send props of type ARRAY, the previous property stored is
         # the "template" for each of the items in the array.
-        array_prop = send_props[-1] if sp.type is Type.Array else None
+        array_prop = send_props[-1] if sp.type is mdl_dt_prp.ARRAY else None
 
-        num_elements = sp.get('num_elements')
-        num_bits = sp.get('num_bits')
-        dt_name = sp.get('dt_name')
-        low_value = sp.get('low_value')
-        high_value = sp.get('high_value')
+        num_elements = sp.get('num_elements', default=0)
+        num_bits = sp.get('num_bits', default=0)
+        dt_name = sp.get('dt_name', default=u'')
+        low_value = sp.get('low_value', default=0.0)
+        high_value = sp.get('high_value', default=0.0)
 
-        send_prop = Prop(
+        send_prop = mdl_dt_prp.Prop(
             pb.net_table_name,
             sp.var_name, sp.type, sp.flags, sp.priority, num_elements,
             num_bits, dt_name, low_value, high_value, array_prop)
 
         send_props.append(send_prop)
 
-    needs_decoder = pb.get('needs_decoder')
+    needs_decoder = pb.get('needs_decoder', default=False)
 
     try:
         send_tables[pb.net_table_name] = \

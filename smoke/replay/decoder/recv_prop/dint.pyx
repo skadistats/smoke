@@ -6,9 +6,9 @@ from smoke.model.dt.const import Flag
 from smoke.replay.decoder.recv_prop cimport abstract
 
 
-cdef class Decoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.Decoder):
     def __init__(Decoder self, object prop):
-        abstract.AbstractDecoder.__init__(self, prop)
+        abstract.Decoder.__init__(self, prop)
         self.bits = prop.bits
         self.eat = prop.flags & Flag.EncodedAgainstTickcount
         self.unsign = prop.flags & 1

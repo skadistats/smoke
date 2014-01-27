@@ -1,4 +1,4 @@
 
 
-cdef class AbstractDecoder(object):
+cdef class Decoder(object):
     cdef public object prop

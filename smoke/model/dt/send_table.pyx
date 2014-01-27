@@ -1,7 +1,8 @@
 # cython: profile=False
 
+from smoke.model.dt cimport prop as mdl_dt_prp
+
 from itertools import chain, imap
-from smoke.model.dt.const import Prop, Flag, Type
 
 
 cdef class SendTable(object):
@@ -17,14 +18,14 @@ cdef class SendTable(object):
 
     property all_exclusions:
         def __get__(SendTable self):
-            gen = (sp for sp in self.send_props if sp.flags & Flag.Exclude)
+            gen = (sp for sp in self.send_props if sp.flags & mdl_dt_prp.EXCLUDE)
             return imap(lambda sp: (sp.dt, sp.name), gen)
 
     property all_non_exclusions:
         def __get__(SendTable self):
-            return (sp for sp in self.send_props if sp.flags ^ Flag.Exclude)
+            return (sp for sp in self.send_props if sp.flags ^ mdl_dt_prp.EXCLUDE)
 
     property all_relations:
         def __get__(SendTable self):
             non_exclusions = self.all_non_exclusions
-            return (sp for sp in non_exclusions if sp.type is Type.DataTable)
+            return (sp for sp in non_exclusions if sp.type is mdl_dt_prp.DATATABLE)

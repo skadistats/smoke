@@ -4,7 +4,7 @@ from smoke.model.dt.const import Flag
 from smoke.replay.decoder.recv_prop cimport abstract
 
 
-cdef class Decoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.Decoder):
     cdef int bits
     cdef long eat
     cdef long unsign

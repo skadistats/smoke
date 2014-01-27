@@ -1,3 +1,0 @@
-
-
-cdef mk(object prop)

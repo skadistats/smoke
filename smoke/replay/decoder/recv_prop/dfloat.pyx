@@ -15,9 +15,9 @@ cdef int Normal = Flag.Normal
 cdef int CellCoordIntegral = Flag.CellCoordIntegral
 
 
-cdef class Decoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.Decoder):
     def __init__(self, prop):
-        abstract.AbstractDecoder.__init__(self, prop)
+        abstract.Decoder.__init__(self, prop)
         self.flags = prop.flags
         self.bits = prop.bits
         self.low = prop.low

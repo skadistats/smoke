@@ -5,7 +5,7 @@ from smoke.replay.decoder.recv_prop cimport abstract
 from smoke.replay.decoder.recv_prop cimport dfloat
 
 
-cdef class Decoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.Decoder):
     cdef public dfloat.Decoder decoder
 
     cpdef object decode(Decoder self, io_strm_gnrc.Stream stream)

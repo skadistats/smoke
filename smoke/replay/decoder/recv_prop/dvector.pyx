@@ -9,9 +9,9 @@ from smoke.replay.decoder.recv_prop cimport dfloat
 from smoke.model.dt.const import Flag
 
 
-cdef class Decoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.Decoder):
     def __init__(Decoder self, object prop):
-        abstract.AbstractDecoder.__init__(self, prop)
+        abstract.Decoder.__init__(self, prop)
         self.decoder = dfloat.Decoder(prop)
         self.normal = prop.flags & Flag.Normal
 

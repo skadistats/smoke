@@ -30,7 +30,6 @@ setup(
     ],
     ext_modules=cythonize([
         "smoke/io/const.pyx",
-        "smoke/io/factory.pyx",
         "smoke/io/peek.pyx",
         "smoke/io/plexer.pyx",
         "smoke/io/util.pyx",
@@ -42,6 +41,7 @@ setup(
         "smoke/model/collection/game_event_descriptors.pyx",
         "smoke/model/collection/recv_tables.pyx",
         "smoke/model/collection/string_tables.pyx",
+        "smoke/model/dt/prop.pyx",
         "smoke/model/dt/recv_table.pyx",
         "smoke/model/dt/send_table.pyx",
         "smoke/model/string_table.pyx",

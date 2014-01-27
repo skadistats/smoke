@@ -7,10 +7,6 @@ from smoke.replay cimport match as rply_mtch
 from smoke.io import const as io_cnst
 
 
-cpdef mk(io_plxr.Plexer plexer, object match):
-    return Ticker(plexer, match)
-
-
 cdef class Ticker(object):
     cdef public io_plxr.Plexer plexer
     cdef public rply_mtch.Match match

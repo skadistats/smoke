@@ -4,9 +4,9 @@ from smoke.io.stream cimport generic as io_strm_gnrc
 from smoke.replay.decoder.recv_prop cimport abstract
 
 
-cdef class Decoder(abstract.AbstractDecoder):
+cdef class Decoder(abstract.Decoder):
     def __init__(Decoder self, object prop, object array_prop_decoder):
-        abstract.AbstractDecoder.__init__(self, prop)
+        abstract.Decoder.__init__(self, prop)
 
         shift, bits = prop.len, 0
 
