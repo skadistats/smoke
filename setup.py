@@ -29,7 +29,9 @@ setup(
         "Topic :: Database"
     ],
     ext_modules=cythonize([
+        "smoke/io/const.pyx",
         "smoke/io/factory.pyx",
+        "smoke/io/peek.pyx",
         "smoke/io/plexer.pyx",
         "smoke/io/util.pyx",
         "smoke/io/wrap/demo.pyx",

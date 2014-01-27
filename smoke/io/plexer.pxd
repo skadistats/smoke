@@ -1,3 +1,4 @@
+from smoke.io cimport peek as io_pk
 from smoke.io.wrap cimport demo as io_wrp_dm
 
 
@@ -8,7 +9,7 @@ cdef class Plexer(object):
     cdef set embed_blacklist
     cdef object stopped
 
-    cdef tuple read(self)
+    cdef io_pk.Peek read(self)
 
     cdef list read_tick(self)
 

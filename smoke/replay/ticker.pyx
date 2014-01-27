@@ -22,8 +22,8 @@ cdef class Ticker(object):
     def __iter__(self):
         try:
             while True:
-                for _, pb in self.plexer.read_tick():
-                    rply_hndlr.handle(pb, self.match)
+                for peek in self.plexer.read_tick():
+                    rply_hndlr.handle(peek, self.match)
 
                 yield self.match
         except io_cnst.DEMStopEncountered:

@@ -1,3 +1,4 @@
+from smoke.io cimport peek as io_pk
 
 
 cdef class Wrap(object):
@@ -5,4 +6,4 @@ cdef class Wrap(object):
 
     cpdef int bootstrap(Wrap self) except -1
 
-    cpdef tuple read(Wrap self)
+    cpdef io_pk.Peek read(Wrap self)

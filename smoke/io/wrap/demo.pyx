@@ -5,8 +5,7 @@ import snappy
 import struct
 
 from smoke.io cimport util as io_utl
-
-from smoke.io.const import Peek
+from smoke.io cimport peek as io_pk
 
 
 cdef int COMPRESSED_MASK = 0b01110000
@@ -27,18 +26,16 @@ cdef class Wrap(object):
 
         return struct.unpack('I', bytearray(offset))[0]
 
-    cpdef tuple read(Wrap self):
+    cpdef io_pk.Peek read(Wrap self):
         cdef int kind = io_utl.read_varint(self.handle)
         cdef int comp = bool(kind & COMPRESSED_MASK)
-        cdef int tick, size
-        cdef str message
+        cdef int tick = io_utl.read_varint(self.handle)
+        cdef int size = io_utl.read_varint(self.handle)
+        cdef str message = self.handle.read(size)
 
         kind = (kind & ~COMPRESSED_MASK) if comp else kind
-        tick = io_utl.read_varint(self.handle)
-        size = io_utl.read_varint(self.handle)
-        message = self.handle.read(size)
 
         if comp:
             message = snappy.uncompress(message)
 
-        return Peek(comp, kind, tick, size), message
+        return io_pk.Peek(comp, False, kind, tick, size, message)

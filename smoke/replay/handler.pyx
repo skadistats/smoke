@@ -93,7 +93,8 @@ cdef object USER_MESSAGE_BY_KIND = {
 }
 
 
-cdef handle(object pb, rply_mtch.Match match):
+cdef handle(io_pk.Peek peek, rply_mtch.Match match):
+    cdef object pb = peek.mk()
     cdef object t = type(pb)
 
     if t == CDemoFileHeader:

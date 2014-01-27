@@ -3,7 +3,7 @@
 import io
 
 from smoke.io cimport util as io_utl
-from smoke.io.const import Peek
+from smoke.io cimport peek as io_pk
 
 
 cdef class Wrap(object):
@@ -11,11 +11,10 @@ cdef class Wrap(object):
         self.handle = io.BytesIO(data)
         self.tick = tick
 
-    cpdef tuple read(self):
-        cdef int kind = io_utl.read_varint(self.handle)
-        cdef int size = io_utl.read_varint(self.handle)
+    cpdef io_pk.Peek read(self):
+        cdef object handle = self.handle
+        cdef int kind = io_utl.read_varint(handle)
+        cdef int size = io_utl.read_varint(handle)
         cdef str message = self.handle.read(size)
 
-        # assert len(message) == size
-
-        return Peek(False, kind, self.tick, size), message
+        return io_pk.Peek(False, True, kind, self.tick, size, message)

@@ -1,7 +1,8 @@
+from smoke.io cimport peek as io_pk
 from smoke.replay cimport match as rply_mtch
 
 
-cdef handle(object pb, rply_mtch.Match match)
+cdef handle(io_pk.Peek peek, rply_mtch.Match match)
 
 cdef void _handle_dem_fileheader(object pb, rply_mtch.Match match)
 cdef void _handle_svc_serverinfo(object pb, rply_mtch.Match match)
