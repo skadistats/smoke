@@ -1,36 +1,38 @@
 # cython: profile=False
 
-from smoke.io.stream cimport generic
-from smoke.replay.decoder.recv_prop cimport factory
+from libc cimport stdlib
+from python_ref cimport PyObject, Py_DECREF, Py_INCREF
+
+from smoke.io.stream cimport generic as io_strm_gnrc
+from smoke.replay.decoder.recv_prop cimport factory as dcdr_rcvprp_fctry
 
 from smoke.model.dt.const import Prop
 
 
 cdef class Decoder(object):
     def __init__(Decoder self, object recv_table):
+        cdef int bytesize = len(recv_table) * sizeof(void *)
+        cdef object decoder
+
         self.recv_table = recv_table
-        self.by_index = list()
-        self.by_recv_prop = dict()
-        self.cache = dict()
+        self._decoders = <void **>stdlib.malloc(bytesize)
 
-        for recv_prop in recv_table:
-            if recv_prop not in self.cache:
-                self.cache[recv_prop] = factory.mk(recv_prop)
-            recv_prop_decoder = self.cache[recv_prop]
+        for i, recv_prop in enumerate(recv_table):
+            decoder = dcdr_rcvprp_fctry.mk(recv_prop)
+            Py_INCREF(decoder)
+            self._decoders[i] = <void *>decoder
 
-            self.by_index.append(recv_prop_decoder)
-            self.by_recv_prop[recv_prop] = recv_prop_decoder
+    def __dealloc__(self):
+        if self._decoders != NULL:
+            for i in range(len(self.recv_table)):
+                Py_DECREF(<object>self._decoders[i])
+            stdlib.free(self._decoders)
 
-    def __iter__(Decoder self):
-        for recv_prop, recv_prop_decoder in self.by_recv_prop.items():
-            yield recv_prop, recv_prop_decoder
-
-        raise StopIteration()
-
-    cdef dict decode(Decoder self, generic.Stream stream, list prop_list):
+    cdef dict decode(Decoder self, io_strm_gnrc.Stream stream, list prop_list):
         cdef dict attrs = dict()
 
         for i in prop_list:
-            attrs[i] = self.by_index[i].decode(stream)
+            decoder = <object>self._decoders[i]
+            attrs[i] = decoder.decode(stream)
 
         return attrs
