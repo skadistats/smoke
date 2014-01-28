@@ -1,38 +1,58 @@
 # cython: profile=False
 
+from cpython cimport Py_XINCREF, Py_XDECREF
+from cpython.ref cimport PyObject
+from libc.stdlib cimport calloc, free
 from smoke.model cimport entity as mdl_ntt
 from smoke.model.dt cimport prop as mdl_dt_prp
 from smoke.model.dt cimport recv_table as mdl_dt_rcvtbl
-from smoke.io.stream cimport generic as io_strm_gnrc
+from smoke.io.stream cimport entity as io_strm_ntt
+from smoke.replay.decoder.recv_prop cimport abstract as rply_dcdr_rcvprp_bstrct
 
 
 cdef class Decoder(object):
-    def __init__(Decoder self, object recv_table):
-        cdef int bytesize = len(recv_table) * sizeof(void *)
-        cdef object decoder
-        cdef mdl_dt_prp.Prop _recv_prop
+    def __cinit__(Decoder self, object recv_table):
+        cdef mdl_dt_prp.Prop recv_prop
+        cdef rply_dcdr_rcvprp_bstrct.Decoder prop_decoder
 
         self.recv_table = recv_table
-        self.decoders = dict()
+        self._length = len(recv_table)
+        self._store = <PyObject **>calloc(self._length, sizeof(PyObject *))
 
-        for i, recv_prop in enumerate(recv_table):
-            _recv_prop = <mdl_dt_prp.Prop>recv_prop
-            self.decoders[i] = _recv_prop.mk()
+        for i, _recv_prop in enumerate(recv_table):
+            recv_prop = <mdl_dt_prp.Prop>_recv_prop
+            prop_decoder = recv_prop.mk()
+            Py_XINCREF(<PyObject *>prop_decoder)
+            self._store[i] = <PyObject *>prop_decoder
 
-    cdef mdl_ntt.State decode_baseline(Decoder self, io_strm_gnrc.Stream stream):
-        cdef int length = len(self.recv_table)
-        cdef mdl_ntt.State baseline = mdl_ntt.State(length)
+    def __dealloc__(self):
+        cdef int i
 
-        for i in range(length):
-            baseline.put(i, self.decoders[i].decode(stream))
+        if self._store != NULL:
+            for i in range(self._length):
+                Py_XDECREF(<PyObject *>self._store[i])
+            free(self._store)
+
+    cdef mdl_ntt.State decode_baseline(Decoder self, io_strm_ntt.Stream stream):
+        cdef mdl_ntt.State baseline = mdl_ntt.State(self._length)
+        cdef rply_dcdr_rcvprp_bstrct.Decoder decoder
+        cdef object value
+
+        for i in range(self._length):
+            decoder = <rply_dcdr_rcvprp_bstrct.Decoder>self._store[i]
+            value = decoder.decode(stream)
+            baseline.put(i, value)
 
         return baseline
 
-    cdef mdl_ntt.State decode(Decoder self, io_strm_gnrc.Stream stream, list prop_list):
-        cdef int length = len(self.recv_table)
-        cdef mdl_ntt.State patch = mdl_ntt.State(length)
+    cdef mdl_ntt.State decode(Decoder self, io_strm_ntt.Stream stream, list prop_list):
+        cdef mdl_ntt.State patch = mdl_ntt.State(self._length)
+        cdef rply_dcdr_rcvprp_bstrct.Decoder decoder
+        cdef object value
 
         for i in prop_list:
-            patch.put(i, self.decoders[i].decode(stream))
+            decoder = <rply_dcdr_rcvprp_bstrct.Decoder>self._store[i]
+            value = decoder.decode(stream)
+            patch.put(i, value)
 
         return patch

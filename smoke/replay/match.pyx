@@ -1,10 +1,11 @@
 # cython: profile=False
 
+from smoke.model.collection cimport entities as mdl_cllctn_ntts
+from smoke.model.collection cimport recv_tables as mdl_cllctn_rcvtbls
 from smoke.model.dt cimport recv_table as mdl_dt_rcvtbl
+from smoke.replay cimport flattening
 
 from collections import defaultdict
-from smoke.model.collection import recv_tables as mdl_cllctn_rcvtbls
-from smoke.replay import flattening
 
 
 cdef class Match(object):
@@ -23,11 +24,14 @@ cdef class Match(object):
         self.view = None
         self._class_bits = 0
         self._dt_decoders = None
+        self._ibst = None
 
         # data properties
+        self.entities = mdl_cllctn_ntts.Collection()
+        self.modifiers = defaultdict(dict)
+
+        # data properties (transient--reset every tick)
         self.tick = None
-        self.entities = None
-        self.modifiers = None
         self.temp_entities = None
         self.game_events = None
         self.user_messages = None
@@ -50,6 +54,13 @@ cdef class Match(object):
                 self._dt_decoders = mdl_cllctn_dtdcdrs.Collection(self.recv_tables)
 
             return self._dt_decoders
+
+    property ibst:
+        def __get__(self):
+            if self._ibst is None:
+                self._ibst = self.string_tables.by_name['instancebaseline']
+
+            return self._ibst
 
     cdef flatten_send_tables(self):
         recv_tables = dict()

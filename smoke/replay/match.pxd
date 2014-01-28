@@ -1,3 +1,4 @@
+from smoke.model cimport string_table as mdl_strngtbl
 from smoke.model.collection cimport recv_tables as mdl_cllctn_rcvtbls
 from smoke.model.collection cimport dt_decoders as mdl_cllctn_dtdcdrs
 from smoke.model.collection cimport entities as mdl_cllctn_ntts
@@ -17,10 +18,12 @@ cdef class Match(object):
     cdef public object view
     cdef int _class_bits
     cdef mdl_cllctn_dtdcdrs.Collection _dt_decoders
+    cdef mdl_strngtbl.StringTable _ibst
 
-    cdef public object tick
     cdef public mdl_cllctn_ntts.Collection entities
     cdef public object modifiers
+
+    cdef public object tick
     cdef public object temp_entities
     cdef public object game_events
     cdef public object user_messages

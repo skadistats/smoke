@@ -1,6 +1,9 @@
+from cpython.ref cimport PyObject
+from smoke.model cimport entity as mdl_ntt
 
 
-cdef int MAX_EDICT_BITS
+cdef int ENTITY_BITS
+cdef int ENTITY_LIMIT
 
 
 cdef to_e(int index, int serial)
@@ -10,8 +13,15 @@ cdef from_e(int ehandle)
 
 
 cdef class Collection(object):
-    cdef public object by_index
-    cdef object _by_ehandle
-    cdef object _by_cls
+    cdef PyObject **_store
+    cdef dict _by_index
+    cdef dict _by_ehandle
+    cdef dict _by_cls
 
-    cdef void invalidate_views(self)
+    cdef mdl_ntt.Entity get(Collection self, int index)
+
+    cdef put(Collection self, int index, mdl_ntt.Entity entity)
+
+    cdef delete(Collection self, int index)
+
+    cdef invalidate_views(Collection self)

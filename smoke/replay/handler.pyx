@@ -223,16 +223,13 @@ cdef void _handle_net_signonstate(object pb, rply_mtch.Match match):
         match.check_sanity()
 
         active_modifiers = match.string_tables.by_name['ActiveModifiers']
-        modifiers = defaultdict(dict)
 
         for string in active_modifiers.by_index.values():
             if len(string.value) == 0:
                 continue
             _pb = pbd2.CDOTAModifierBuffTableEntry(string.value)
             assert _pb.entry_type == pbd2.DOTA_MODIFIER_ENTRY_TYPE_ACTIVE
-            modifiers[_pb.parent][_pb.index] = _pb
-
-        match.modifiers = modifiers
+            match.modifiers[_pb.parent][_pb.index] = _pb
 
 
 cdef void _handle_svc_sendtable(object pb, rply_mtch.Match match):
@@ -300,21 +297,23 @@ cdef void _handle_svc_setview(object pb, rply_mtch.Match match):
 
 
 cdef void _handle_svc_packetentities(object pb, rply_mtch.Match match):
-    match.entities = match.entities or mdl_cllctn_ntts.Collection()
+    cdef:
+        mdl_cllctn_ntts.Collection entities = match.entities
+        mdl_strngtbl.StringTable ibst = <mdl_strngtbl.StringTable>match.ibst
+        io_strm_ntt.Stream stream = io_strm_ntt.Stream(pb.entity_data)
+        mdl_cllctn_dtdcdrs.Collection dt_decoders = <mdl_cllctn_dtdcdrs.Collection>match.dt_decoders
+        io_strm_ntt.Stream baseline_stream
+        int updated_entries = pb.updated_entries
 
-    cdef mdl_strngtbl.StringTable ibst = \
-        <mdl_strngtbl.StringTable>match.string_tables.by_name['instancebaseline']
-    cdef io_strm_ntt.Stream baseline_stream
-    cdef io_strm_ntt.Stream stream = io_strm_ntt.Stream(pb.entity_data)
-    cdef mdl_cllctn_dtdcdrs.Collection dt_decoders = \
-        <mdl_cllctn_dtdcdrs.Collection>match.dt_decoders
-    cdef mdl_ntt.Entity entity
-    cdef mdl_ntt.State state
+        mdl_ntt.Entity entity
+        mdl_ntt.State state
+        mdl_ntt.State patch
+        int index = -1
+        int i
+        int cls
+        list prop_list
 
-    cdef int index = -1
-    cdef int i
-
-    for i in range(pb.updated_entries):
+    for i in range(updated_entries):
         index = stream.read_entity_index(index)
         pvs = stream.read_entity_pvs()
 
@@ -323,30 +322,33 @@ cdef void _handle_svc_packetentities(object pb, rply_mtch.Match match):
             serial = stream.read_numeric_bits(10)
             prop_list = stream.read_entity_prop_list()
             decoder = dt_decoders.get(cls)
-            baseline_stream = io_strm_ntt.Stream(ibst.by_name[str(cls)].value)
+            baseline = ibst.by_name[str(cls)]
+            baseline_stream = io_strm_ntt.Stream(baseline.value)
             state = decoder.decode_baseline(baseline_stream)
-            state.merge(decoder.decode(stream, prop_list))
-            match.entities.by_index[index] = mdl_ntt.Entity(pvs, index, serial, cls, state)
+            patch = decoder.decode(stream, prop_list)
+            state.merge(patch)
+            entity = mdl_ntt.Entity(pvs, index, serial, cls, state)
+            entities.put(index, entity)
         elif pvs == mdl_ntt.PRESERVE:
-            entity = match.entities.by_index[index]
+            entity = entities.get(index)
             prop_list = stream.read_entity_prop_list()
             decoder = dt_decoders.get(entity.cls)
             entity.state.merge(decoder.decode(stream, prop_list))
         elif pvs == mdl_ntt.LEAVE:
-            entity = match.entities.by_index[index]
+            entity = entities.get(index)
             entity.pvs = pvs
         elif pvs == mdl_ntt.DELETE:
-            del match.entities.by_index[index]
+            entities.delete(index)
 
     if pb.is_delta:
         while stream.read_numeric_bits(1):
             index = stream.read_numeric_bits(11) # max is 2^11-1, or 2047
             try:
-                del match.entities.by_index[index]
-            except KeyError:
+                entities.delete(index)
+            except ValueError:
                 pass
 
-    match.entities.invalidate_views()
+    entities.invalidate_views()
 
 
 cdef void _handle_svc_gameevent(object pb, rply_mtch.Match match):
