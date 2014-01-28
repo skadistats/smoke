@@ -1,3 +1,4 @@
+# cython: profile=False
 
 
 cdef class Decoder(object):

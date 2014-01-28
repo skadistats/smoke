@@ -18,6 +18,6 @@ cdef class Decoder(abstract.Decoder):
         self.bits = bits
         self.decoder = array_prop_decoder
 
-    cpdef object decode(Decoder self, io_strm_gnrc.Stream stream):
+    cpdef list decode(Decoder self, io_strm_gnrc.Stream stream):
         cdef int count = stream.read_numeric_bits(self.bits)
         return [self.decoder.decode(stream) for _ in range(count)]

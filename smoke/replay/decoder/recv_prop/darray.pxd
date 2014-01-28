@@ -6,4 +6,4 @@ cdef class Decoder(abstract.Decoder):
     cdef public object decoder
     cdef int bits
 
-    cpdef object decode(Decoder self, io_strm_gnrc.Stream stream)
+    cpdef list decode(Decoder self, io_strm_gnrc.Stream stream)
