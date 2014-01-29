@@ -4,16 +4,31 @@ or other errors you find.**
 
 # smoke
 
-Relatively fast, complete Dota 2 "demo" (aka "replay") parser written in
-cython. Cython is a Python-like language which is processed into C and then
-compiled for execution speed.
+Fast, complete Dota 2 "demo" (aka "replay") parser written in cython. Cython
+is a Python-like language which is processed into C and then compiled for
+execution speed.
 
-On a fast CPU, smoke parses replays at **least** 117x game time. So if a game
-lasted 57 minutes, expect a full replay parse to take 29 seconds or less.
+You can interact with the smoke library like a normal python library*.
 
-If speed is of paramount concern for your use case, or if you prefer Java,
-check out [clarity](https://github.com/skadistats/clarity). It is comically
-fast--cython can't compete.
+\* The installation process might be a bit more involved.
+
+
+# Speed
+
+On a fast CPU, smoke parses pro game replays with spectators and commentators
+at ~117x game time. A _full_ parse on a 57 minute-long TI game replay takes
+~29 seconds.
+
+For a normal "pub" game of 47 minutes, a _full_ parse takes ~16 seconds, or
+around ~176x game time.
+
+You can always omit data you don't need for faster parses. Voice data is a
+good place to start (see below). The numbers above are upper bounds.
+
+Smoke is heavily optimized, but if speed is of utmost concern for you, or if
+you prefer Java, check out [clarity](https://github.com/skadistats/clarity).
+It is 2-5x faster than smoke.
+
 
 
 # Halp!
