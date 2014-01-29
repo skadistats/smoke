@@ -17,7 +17,6 @@ from smoke.replay.decoder cimport string_table as rply_dcdr_strngtbl
 
 from collections import defaultdict
 from smoke.model.const import GameEventDescriptor
-from smoke.model.const import String
 from smoke.protobuf import dota2_palm as pbd2
 
 

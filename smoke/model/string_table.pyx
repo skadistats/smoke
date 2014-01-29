@@ -2,7 +2,12 @@
 
 import math
 
-from smoke.model.const import String
+
+cdef class String(object):
+    def __cinit__(String self, int index, str name, str value):
+        self.index = index
+        self.name = name
+        self.value = value
 
 
 cdef class StringTable(object):
@@ -15,7 +20,7 @@ cdef class StringTable(object):
         self.by_name = dict()
         self.by_index = dict()
 
-    cdef update(StringTable self, object string):
+    cdef update(StringTable self, String string):
         if string.index in self.by_index:
             name = self.by_index[string.index].name
             string = String(string.index, name, string.value)

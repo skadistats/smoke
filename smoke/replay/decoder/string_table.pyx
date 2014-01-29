@@ -6,7 +6,6 @@ from smoke.io.stream cimport generic
 from smoke.model cimport string_table as mdl_strngtbl
 
 from collections import deque
-from smoke.model.const import String
 
 
 cdef int MAX_NAME_LENGTH = 0x400
@@ -42,11 +41,11 @@ cdef list _deserialize(int num_entries, str string_data, mdl_strngtbl.StringTabl
     cdef list diff = list()
     cdef str name, value
 
-    while len(diff) < num_entries:
+    for i in range(num_entries):
         index = _deserialize_index(stream, index, string_table)
         name = _deserialize_name(stream, mystery_flag, key_history)
         value = _deserialize_value(stream, string_table)
-        diff.append(String(index, name, value))
+        diff.append(mdl_strngtbl.String(index, name, value))
 
     return diff
 
