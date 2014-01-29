@@ -1,3 +1,5 @@
+# cython: profile=False
+
 from cpython cimport Py_XINCREF, Py_XDECREF
 from cpython.ref cimport PyObject
 from libc.stdlib cimport calloc, free

@@ -1,14 +1,14 @@
 # cython: profile=False
 
-from smoke.replay cimport handler as rply_hndlr
 from smoke.io cimport peek as io_pk
 from smoke.io cimport plexer as io_plxr
 from smoke.replay cimport match as rply_mtch
 
+from smoke.replay import dispatch as rply_dsptch
+from smoke.replay import ticker as rply_tckr
 from smoke.io import const as io_cnst
 from smoke.protobuf import dota2_palm as pbd2
 from smoke.replay.const import Data
-from smoke.replay import ticker as rply_tckr
 
 
 cdef dict DATA_DEPENDENCIES = {
@@ -37,7 +37,7 @@ cdef set EMBED_WHITELIST = set([io_pk.net_Tick, io_pk.net_SetConVar,
     io_pk.svc_VoiceInit, io_pk.svc_GameEventList])
 
 
-cpdef set calc_deps(int parse):
+cdef set calc_deps(int parse):
     cdef set deps = set()
 
     for key, value in DATA_DEPENDENCIES.items():
@@ -47,7 +47,7 @@ cpdef set calc_deps(int parse):
     return deps | EMBED_WHITELIST
 
 
-cpdef set mk_embed_blacklist(object deps):
+cdef set mk_embed_blacklist(object deps):
     cdef set embed_blacklist = set()
 
     for embed in ALL_EMBEDS:
@@ -58,11 +58,6 @@ cpdef set mk_embed_blacklist(object deps):
 
 
 cdef class Demo(object):
-    cdef public int parse
-    cdef public io_plxr.Plexer plexer
-    cdef public rply_mtch.Match match
-    cdef public dict overview
-
     def __init__(self, d_io, parse=Data.All, skip_full=True, match=None):
         tb = set([io_pk.DEM_FullPacket]) if skip_full else set()
         eb = mk_embed_blacklist(calc_deps(parse))
@@ -77,7 +72,7 @@ cdef class Demo(object):
         try:
             while True:
                 peek = self.plexer.read()
-                rply_hndlr.handle(peek, self.match)
+                rply_dsptch.dispatch(peek, self.match)
         except io_cnst.DEMSyncTickEncountered:
             pass
 
@@ -88,6 +83,6 @@ cdef class Demo(object):
         try:
             while True:
                 peek = self.plexer.read()
-                rply_hndlr.handle(peek, self.match)
+                rply_dsptch.dispatch(peek, self.match)
         except EOFError:
             pass
