@@ -4,7 +4,7 @@
 cpdef handle(object pb, rply_mtch.Match match):
     game_info = pb.game_info.dota
 
-    players = []
+    players = list()
     for player_details in game_info.player_info:
         entry = {
             'hero_name': player_details.get('hero_name'),
@@ -15,7 +15,7 @@ cpdef handle(object pb, rply_mtch.Match match):
         }
         players.append(entry)
 
-    picks_bans = []
+    picks_bans = list()
     for hero_selection_details in game_info.picks_bans:
         entry = {
             'is_pick': hero_selection_details.get('is_pick'),

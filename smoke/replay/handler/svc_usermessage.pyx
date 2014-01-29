@@ -5,7 +5,7 @@ import warnings
 from smoke.protobuf import dota2_palm as pbd2
 
 
-DOTA_UM_ID_BASE = 64
+cdef int DOTA_UM_ID_BASE = 64
 
 
 cdef dict USER_MESSAGE_BY_KIND = {
@@ -55,18 +55,22 @@ cdef dict USER_MESSAGE_BY_KIND = {
 
 
 cpdef handle(object pb, rply_mtch.Match match):
-    kind = pb.msg_type
+    cdef:
+        int kind = pb.msg_type
+        str user_message = USER_MESSAGE_BY_KIND[kind]
+        str cls
+        str infix
 
     if kind == 106: # one-off?
         cls = 'CDOTA_UM_GamerulesStateChanged'
     else:
         infix = 'DOTA' if kind >= DOTA_UM_ID_BASE else ''
-        cls = 'C{0}UserMsg_{1}'.format(infix, USER_MESSAGE_BY_KIND[kind])
+        cls = 'C' + infix + 'UserMsg_' + user_message
 
     try:
         pb = getattr(pbd2, cls)(pb.msg_data)
     except AttributeError, e:
-        err = '! protobuf {0}: open issue at github.com/onethirtyfive/smoke'
+        err = 'protobuf {0}: open issue at github.com/onethirtyfive/smoke'
         warnings.warn(err.format(cls))
         return
 

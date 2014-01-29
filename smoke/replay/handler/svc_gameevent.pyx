@@ -1,27 +1,35 @@
 # cython: profile=False
 
+from smoke.model.collection cimport game_event_descriptors as mdl_cllctn_gmvntdscrptrs
+
 
 cpdef handle(object pb, rply_mtch.Match match):
-    attrs = []
-    ged = match.game_event_descriptors.by_eventid[pb.eventid]
+    cdef:
+        game_event_descriptor = match.game_event_descriptors.by_eventid[pb.eventid]
+        list attrs = list()
+        tuple key
+        object pbkey, value
+        int _type
+        unicode name
 
-    for i, (k_type, k_name) in enumerate(ged.keys):
-        key = pb.keys[i]
+    for i in range(len(game_event_descriptor.keys)):
+        _type, name = game_event_descriptor.keys[i]
+        pbkey = pb.keys[i]
 
-        if k_type == 1:
-            value = key.val_string
-        elif k_type == 2:
-            value = key.val_float
-        elif k_type == 3:
-            value = key.val_long
-        elif k_type == 4:
-            value = key.val_short
-        elif k_type == 5:
-            value = key.val_byte
-        elif k_type == 6:
-            value = key.val_bool
-        elif k_type == 7:
-            value = key.val_uint64
+        if _type == 1:
+            value = pbkey.val_string
+        elif _type == 2:
+            value = pbkey.val_float
+        elif _type == 3:
+            value = pbkey.val_long
+        elif _type == 4:
+            value = pbkey.val_short
+        elif _type == 5:
+            value = pbkey.val_byte
+        elif _type == 6:
+            value = pbkey.val_bool
+        elif _type == 7:
+            value = pbkey.val_uint64
 
         attrs.append(value)
 

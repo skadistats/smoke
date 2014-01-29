@@ -13,4 +13,4 @@ cdef class Plexer(object):
 
     cdef list read_tick(self)
 
-    cdef object lookahead(self)
+    cdef io_pk.Peek lookahead(self)

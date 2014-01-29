@@ -6,7 +6,7 @@ from smoke.replay.decoder.recv_prop cimport abstract
 
 
 cdef class Decoder(abstract.Decoder):
-    def __init__(Decoder self, object prop):
+    def __init__(Decoder self, mdl_dt_prp.Prop prop):
         abstract.Decoder.__init__(self, prop)
         self.bits = prop.bits
         self.eat = prop.flags & mdl_dt_prp.ENCODEDAGAINSTTICKCOUNT

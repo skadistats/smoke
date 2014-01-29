@@ -49,6 +49,10 @@ cdef class Plexer(object):
         return peek
 
     cdef list read_tick(self):
+        cdef:
+            list collection
+            io_pk.Peek tick_peek, next_peek, peek
+
         if self.stopped:
             raise DEMStopEncountered()
 
@@ -69,12 +73,13 @@ cdef class Plexer(object):
 
         return collection
 
-    cdef object lookahead(self):
-        cdef io_pk.Peek peek
-        cdef str message
-        cdef Action action = NONE
-        cdef io_wrp_mbd.Wrap wrap
-        cdef object pb
+    cdef io_pk.Peek lookahead(self):
+        cdef:
+            io_pk.Peek peek
+            str message
+            int action = NONE
+            io_wrp_mbd.Wrap wrap
+            object pb
 
         while len(self.queue) == 0:
 

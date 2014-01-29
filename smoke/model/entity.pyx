@@ -32,7 +32,7 @@ cdef class State(object):
 
     cdef object get(State self, int i):
         if not (0 <= i < self.length):
-            raise ValueError('index {} > {}'.format(i, self.length))
+            raise ValueError('index out of bounds'.format(i, self.length))
 
         if self._store[i]:
             return <object>self._store[i]
@@ -41,7 +41,7 @@ cdef class State(object):
 
     cdef void put(State self, int i, object value):
         if not (0 <= i < self.length):
-            raise ValueError('index {} > {}'.format(i, self.length))
+            raise ValueError('index out of bounds'.format(i, self.length))
 
         Py_XINCREF(<PyObject *>value)
         Py_XDECREF(self._store[i])
