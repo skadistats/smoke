@@ -18,10 +18,10 @@ cdef class Collection(object):
     cdef dict _by_ehandle
     cdef dict _by_cls
 
-    cdef mdl_ntt.Entity get(Collection self, int index)
+    cpdef mdl_ntt.Entity get(Collection self, int index)
 
-    cdef put(Collection self, int index, mdl_ntt.Entity entity)
+    cpdef put(Collection self, int index, mdl_ntt.Entity entity)
 
-    cdef delete(Collection self, int index)
+    cpdef delete(Collection self, int index)
 
     cdef invalidate_views(Collection self)

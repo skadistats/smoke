@@ -12,9 +12,9 @@ cdef class State(object):
     cdef public int length
     cdef PyObject **_store
 
-    cdef object get(State self, int i)
+    cpdef object get(State self, int i)
 
-    cdef void put(State self, int i, object value)
+    cpdef put(State self, int i, object value)
 
     cdef void merge(State self, State other)
 

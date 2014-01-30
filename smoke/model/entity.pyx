@@ -30,7 +30,7 @@ cdef class State(object):
             if property is not None:
                yield i, self.get(i)
 
-    cdef object get(State self, int i):
+    cpdef object get(State self, int i):
         if not (0 <= i < self.length):
             raise ValueError('index out of bounds'.format(i, self.length))
 
@@ -39,7 +39,7 @@ cdef class State(object):
 
         return None
 
-    cdef void put(State self, int i, object value):
+    cpdef put(State self, int i, object value):
         if not (0 <= i < self.length):
             raise ValueError('index out of bounds'.format(i, self.length))
 

@@ -37,7 +37,7 @@ cdef class Collection(object):
                 Py_XDECREF(self._store[i])
             free(self._store)
 
-    cdef mdl_ntt.Entity get(Collection self, int i):
+    cpdef mdl_ntt.Entity get(Collection self, int i):
         if not (0 <= i < ENTITY_LIMIT):
             raise ValueError('index out of bounds'.format(i, ENTITY_LIMIT))
 
@@ -46,7 +46,7 @@ cdef class Collection(object):
 
         return <mdl_ntt.Entity>self._store[i]
 
-    cdef put(Collection self, int i, mdl_ntt.Entity entity):
+    cpdef put(Collection self, int i, mdl_ntt.Entity entity):
         if not (0 <= i < ENTITY_LIMIT):
             raise ValueError('index out of bounds'.format(i, ENTITY_LIMIT))
 
@@ -55,7 +55,7 @@ cdef class Collection(object):
 
         self._store[i] = <PyObject *>entity
 
-    cdef delete(Collection self, int i):
+    cpdef delete(Collection self, int i):
         if not (0 <= i < ENTITY_LIMIT):
             raise ValueError('index out of bounds'.format(i, ENTITY_LIMIT))
 
