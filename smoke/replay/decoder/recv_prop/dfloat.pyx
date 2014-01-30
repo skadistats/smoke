@@ -30,8 +30,6 @@ cdef class Decoder(abstract.Decoder):
         self.bits = prop.bits
         self.low = prop.low
         self.high = prop.high
-        self.good = 0
-        self.bad = 0
 
     cpdef float decode(Decoder self, io_strm_gnrc.Stream stream):
         cdef float value
