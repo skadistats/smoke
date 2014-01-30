@@ -15,6 +15,7 @@ cdef enum Top:
     DEM_CustomDataCallbacks = 11
     DEM_UserCmd = 12
     DEM_FullPacket = 13
+    DEM_SaveGame = 14
     DEM_IsCompressed = 112
 
 

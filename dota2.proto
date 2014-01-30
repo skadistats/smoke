@@ -574,6 +574,11 @@ enum Activity {
 	ACT_DOTA_CAST_ABILITY_2_ES_ROLL_START = 573;
 	ACT_DOTA_CAST_ABILITY_2_ES_ROLL = 574;
 	ACT_DOTA_CAST_ABILITY_2_ES_ROLL_END = 575;
+	ACT_DOTA_NIAN_PIN_START = 576;
+	ACT_DOTA_NIAN_PIN_LOOP = 577;
+	ACT_DOTA_NIAN_PIN_END = 578;
+	ACT_DOTA_LEAP_STUN = 579;
+	ACT_DOTA_LEAP_SWIPE = 580;
 }
 
 
@@ -594,7 +599,8 @@ enum EDemoCommands {
 	DEM_CustomDataCallbacks = 11;
 	DEM_UserCmd = 12;
 	DEM_FullPacket = 13;
-	DEM_Max = 14;
+	DEM_SaveGame = 14;
+	DEM_Max = 15;
 	DEM_IsCompressed = 112;
 }
 
@@ -658,6 +664,13 @@ message CDemoPacket {
 message CDemoFullPacket {
 	optional CDemoStringTables string_table = 1;
 	optional CDemoPacket packet = 2;
+}
+
+message CDemoSaveGame {
+	optional bytes data = 1;
+	optional fixed64 steam_id = 2;
+	optional fixed64 signature = 3;
+	optional int32 version = 4;
 }
 
 message CDemoSyncTick {
@@ -936,6 +949,11 @@ enum EDotaUserMessages {
 	DOTA_UM_CustomMsg = 115;
 	DOTA_UM_CoachHUDPing = 116;
 	DOTA_UM_ClientLoadGridNav = 117;
+	DOTA_UM_AbilityPing = 118;
+	DOTA_UM_ShowGenericPopup = 119;
+	DOTA_UM_VoteStart = 120;
+	DOTA_UM_VoteUpdate = 121;
+	DOTA_UM_VoteEnd = 122;
 }
 
 enum DOTA_CHAT_MESSAGE {
@@ -1005,6 +1023,14 @@ enum DOTA_CHAT_MESSAGE {
 	CHAT_MESSAGE_ABANDON_LIMITED_HERO = 62;
 	CHAT_MESSAGE_ABANDON_LIMITED_HERO_EXPLANATION = 63;
 	CHAT_MESSAGE_DISCONNECT_LIMITED_HERO = 64;
+	CHAT_MESSAGE_LOW_PRIORITY_COMPLETED_EXPLANATION = 65;
+	CHAT_MESSAGE_RECRUITMENT_DROP_RATE_BONUS = 66;
+	CHAT_MESSAGE_FROSTIVUS_SHINING_BOOSTER_ACTIVE = 67;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_RANKED = 68;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_RANKED = 69;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_EARLY_RANKED = 70;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_AFK_RANKED = 71;
+	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_AFK_EARLY_RANKED = 72;
 }
 
 enum DOTA_NO_BATTLE_POINTS_REASONS {
@@ -1015,7 +1041,16 @@ enum DOTA_NO_BATTLE_POINTS_REASONS {
 }
 
 enum DOTA_CHAT_INFORMATIONAL {
-	COOP_BATTLE_POINTS_RULES = 1;
+	INFO_COOP_BATTLE_POINTS_RULES = 1;
+	INFO_FROSTIVUS_ABANDON_REMINDER = 2;
+	INFO_RANKED_REMINDER = 3;
+	INFO_COOP_LOW_PRIORITY_PASSIVE_REMINDER = 4;
+}
+
+enum DOTA_ABILITY_PING_TYPE {
+	ABILITY_PING_READY = 1;
+	ABILITY_PING_MANA = 2;
+	ABILITY_PING_COOLDOWN = 3;
 }
 
 enum DOTA_COMBATLOG_TYPES {
@@ -1504,6 +1539,37 @@ message CDOTAUserMsg_CoachHUDPing {
 message CDOTAUserMsg_ClientLoadGridNav {
 }
 
+message CDOTAUserMsg_AbilityPing {
+	optional uint32 player_id = 1;
+	optional uint32 ability_id = 2;
+	optional DOTA_ABILITY_PING_TYPE type = 3 [default = ABILITY_PING_READY];
+	optional uint32 cooldown_seconds = 4;
+}
+
+message CDOTAUserMsg_ShowGenericPopup {
+	required string header = 1;
+	required string body = 2;
+	optional string param1 = 3;
+	optional string param2 = 4;
+	optional bool tint_screen = 5;
+	optional bool show_no_other_dialogs = 6;
+}
+
+message CDOTAUserMsg_VoteStart {
+	optional string title = 1;
+	optional float duration = 2;
+	optional int32 choice_count = 3;
+	repeated string choices = 4;
+}
+
+message CDOTAUserMsg_VoteUpdate {
+	repeated int32 choice_counts = 1;
+}
+
+message CDOTAUserMsg_VoteEnd {
+	optional int32 selected_choice = 1;
+}
+
 
 
 
@@ -1695,6 +1761,7 @@ message CSVCMsg_ServerInfo {
 	optional string map_name = 15;
 	optional string sky_name = 16;
 	optional string host_name = 17;
+	optional string addon_name = 18;
 }
 
 message CSVCMsg_ClassInfo {
@@ -1984,6 +2051,7 @@ message CUserMsg_CloseCaption {
 	optional fixed32 hash = 1;
 	optional float duration = 2;
 	optional bool from_player = 3;
+	optional int32 ent_index = 4;
 }
 
 message CUserMsg_CurrentTimescale {

@@ -41,6 +41,8 @@ cdef class Peek(object):
             value = pbd2.CDemoStop(self.message)
         elif self.kind == DEM_FileInfo:
             value = pbd2.CDemoFileInfo(self.message)
+        elif self.kind == DEM_SaveGame:
+            value = pbd2.CDemoSaveGame(self.message)
 
         assert value is not None
 

@@ -19,7 +19,7 @@ cdef enum Action:
 
 cdef set TOP_WHITELIST = set([io_pk.DEM_FileHeader, io_pk.DEM_ClassInfo,
     io_pk.DEM_SignonPacket, io_pk.DEM_SyncTick, io_pk.DEM_Packet,
-    io_pk.DEM_Stop, io_pk.DEM_FileInfo])
+    io_pk.DEM_Stop, io_pk.DEM_FileInfo, io_pk.DEM_SaveGame])
 
 
 cdef class Plexer(object):
@@ -112,6 +112,8 @@ cdef class Plexer(object):
             elif peek.kind == io_pk.DEM_Stop:
                 action = ENQUEUE
             elif peek.kind == io_pk.DEM_SyncTick:
+                action = ENQUEUE
+            elif peek.kind == io_pk.DEM_SaveGame:
                 action = ENQUEUE
 
             assert action != NONE
