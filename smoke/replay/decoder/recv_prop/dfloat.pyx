@@ -1,6 +1,5 @@
 # cython: profile=False
 
-import math
 import struct
 
 from smoke.io.stream cimport generic as io_strm_gnrc
@@ -31,6 +30,8 @@ cdef class Decoder(abstract.Decoder):
         self.bits = prop.bits
         self.low = prop.low
         self.high = prop.high
+        self.good = 0
+        self.bad = 0
 
     cpdef float decode(Decoder self, io_strm_gnrc.Stream stream):
         cdef float value
@@ -95,12 +96,12 @@ cdef class Decoder(abstract.Decoder):
             i = stream.read_numeric_bits(1)
             if i:
                 sign = stream.read_numeric_bits(1)
-                v = stream.read_numeric_bits(COORD_INTEGER_BITS_MP if in_bounds else (COORD_INTEGER_BITS + 1))
+                v = stream.read_numeric_bits((COORD_INTEGER_BITS_MP if in_bounds else COORD_INTEGER_BITS) + 1)
         else:
             i = stream.read_numeric_bits(1)
             sign = stream.read_numeric_bits(1)
             if i:
-                i = stream.read_numeric_bits(COORD_INTEGER_BITS_MP if in_bounds else (COORD_INTEGER_BITS + 1))
+                i = stream.read_numeric_bits((COORD_INTEGER_BITS_MP if in_bounds else COORD_INTEGER_BITS) + 1)
             f = stream.read_numeric_bits(COORD_FRACTIONAL_BITS_MP_LOWPRECISION if low_precision else COORD_FRACTIONAL_BITS)
             v = i + <float>f * (COORD_RESOLUTION_LOWPRECISION if low_precision else COORD_RESOLUTION)
 
@@ -125,7 +126,5 @@ cdef class Decoder(abstract.Decoder):
         return <float>stream.read_numeric_bits(self.bits)
 
     cdef float _decode_default(Decoder self, io_strm_gnrc.Stream stream):
-        cdef:
-            float v = <float>stream.read_numeric_bits(self.bits) / <float>((1 << self.bits) - 1)
-
+        cdef float v = <float>stream.read_numeric_bits(self.bits) / <float>((1 << self.bits) - 1)
         return v * (self.high - self.low) + self.low
