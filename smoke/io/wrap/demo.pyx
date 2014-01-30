@@ -24,7 +24,7 @@ cdef class Wrap(object):
         if header != 'PBUFDEM\0':
             raise RuntimeError('header invalid')
 
-        return struct.unpack('I', bytearray(offset))[0]
+        return struct.unpack('I', offset)[0]
 
     cpdef io_pk.Peek read(Wrap self):
         cdef int kind = io_utl.read_varint(self.handle)
