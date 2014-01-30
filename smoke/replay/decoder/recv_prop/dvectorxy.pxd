@@ -6,4 +6,4 @@ from smoke.replay.decoder.recv_prop cimport dfloat
 cdef class Decoder(abstract.Decoder):
     cdef public dfloat.Decoder decoder
 
-    cpdef object decode(Decoder self, io_strm_gnrc.Stream stream)
+    cpdef tuple decode(Decoder self, io_strm_gnrc.Stream stream)

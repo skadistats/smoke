@@ -10,7 +10,7 @@ cdef class Decoder(abstract.Decoder):
         abstract.Decoder.__init__(self, prop)
         self.bits = prop.bits
         self.eat = prop.flags & mdl_dt_prp.ENCODEDAGAINSTTICKCOUNT
-        self.unsign = prop.flags & 1
+        self.unsign = prop.flags & mdl_dt_prp.UNSIGNED
 
     cpdef int decode(Decoder self, io_strm_gnrc.Stream stream):
         cdef long v, s
@@ -21,9 +21,9 @@ cdef class Decoder(abstract.Decoder):
             if self.unsign:
                 return v # as is -- why?
 
-            return (-(v & 1)) ^ (v >> 1)
+            return (-(v & mdl_dt_prp.UNSIGNED)) ^ (v >> mdl_dt_prp.UNSIGNED)
 
         v = stream.read_numeric_bits(self.bits)
-        s = (0x80000000 >> (32 - self.bits)) & (self.unsign - 1)
+        s = (0x80000000 >> (32 - self.bits)) & (self.unsign - mdl_dt_prp.UNSIGNED)
 
         return (v ^ s) - s

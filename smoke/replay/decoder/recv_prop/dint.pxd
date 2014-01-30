@@ -3,8 +3,9 @@ from smoke.replay.decoder.recv_prop cimport abstract
 
 
 cdef class Decoder(abstract.Decoder):
-    cdef int bits
-    cdef long eat
-    cdef long unsign
+    cdef:
+        int bits
+        long eat
+        long unsign
 
     cpdef int decode(Decoder self, io_strm_gnrc.Stream stream)

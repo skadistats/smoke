@@ -1,16 +1,17 @@
 # cython: profile=False
 
 from smoke.io.stream cimport generic as io_strm_gnrc
+from smoke.model.dt cimport prop as mdl_dt_prp
 from smoke.replay.decoder.recv_prop cimport abstract
 
 
 cdef class Decoder(abstract.Decoder):
-    def __init__(Decoder self, object prop, object array_prop_decoder):
+    def __init__(Decoder self, mdl_dt_prp.Prop prop, object array_prop_decoder):
         abstract.Decoder.__init__(self, prop)
 
         shift, bits = prop.len, 0
 
-        # there is probably a more concise way to do this
+        # this is really a bitlength count
         while shift:
             shift >>= 1
             bits += 1

@@ -1,4 +1,5 @@
+from smoke.model.dt cimport prop as mdl_dt_prp
 
 
 cdef class Decoder(object):
-    cdef public object prop
+    cdef public mdl_dt_prp.Prop prop

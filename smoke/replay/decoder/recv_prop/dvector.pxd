@@ -3,7 +3,8 @@ from smoke.replay.decoder.recv_prop cimport abstract
 
 
 cdef class Decoder(abstract.Decoder):
-    cdef public object decoder
-    cdef int normal
+    cdef:
+        public object decoder
+        int normal
 
-    cpdef object decode(Decoder self, io_strm_gnrc.Stream stream)
+    cpdef tuple decode(Decoder self, io_strm_gnrc.Stream stream)

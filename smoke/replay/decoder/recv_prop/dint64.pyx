@@ -6,7 +6,7 @@ from smoke.replay.decoder.recv_prop cimport abstract
 
 
 cdef class Decoder(abstract.Decoder):
-    def __init__(Decoder self, object prop):
+    def __init__(Decoder self, mdl_dt_prp.Prop prop):
         abstract.Decoder.__init__(self, prop)
 
         assert prop.flags ^ mdl_dt_prp.ENCODEDAGAINSTTICKCOUNT
@@ -15,23 +15,20 @@ cdef class Decoder(abstract.Decoder):
         self.bits = prop.bits
 
     cpdef int decode(Decoder self, io_strm_gnrc.Stream stream):
-        cdef long l, r, v
-        cdef int negate
-        cdef int remainder
+        cdef:
+            long l, r, v
+            bint negate
+            int remainder
 
-        negate = 0
+        negate = False
         remainder = self.bits - 32
 
         if not self.unsign:
             remainder -= 1
-            if stream.read_numeric_bits(1):
-                negate = 1
+            negate = stream.read_numeric_bits(1)
 
         l = stream.read_numeric_bits(32)
         r = stream.read_numeric_bits(remainder)
         v = (l << 32) | r
 
-        if negate:
-            v *= -1
-
-        return v
+        return -v if negate else v
