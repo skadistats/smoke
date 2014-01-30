@@ -2,8 +2,8 @@
 
 import io
 
-from smoke.io cimport util as io_utl
 from smoke.io cimport peek as io_pk
+from smoke.io cimport util as io_utl
 
 
 cdef class Wrap(object):

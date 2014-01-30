@@ -4,8 +4,8 @@ import io
 import snappy
 import struct
 
-from smoke.io cimport util as io_utl
 from smoke.io cimport peek as io_pk
+from smoke.io cimport util as io_utl
 
 
 cdef int COMPRESSED_MASK = 0b01110000

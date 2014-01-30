@@ -1,4 +1,9 @@
-from smoke.util import enum
+
+
+def enum(**enums):
+    _enum = type('Enum', (), enums)
+    _enum.tuples = enums
+    return _enum
 
 
 Data = enum(Entities     = 1 << 0, TempEntities = 1 << 1, Modifiers = 1 << 2,
