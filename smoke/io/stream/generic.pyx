@@ -59,7 +59,7 @@ cdef class Stream(object):
         return ret
 
     cdef str read_bits(Stream self, int bitlength):
-        cdef bytearray data = bytearray()
+        cdef object data = bytearray()
         cdef int i, remainder
 
         i = 0
@@ -77,7 +77,7 @@ cdef class Stream(object):
         return str(data)
 
     cdef str read_string(Stream self, int bytelength):
-        cdef bytearray data = bytearray()
+        cdef object data = bytearray()
         cdef int i = 0
         cdef unsigned char c
         cdef int remainder = bytelength * 8
