@@ -64,6 +64,7 @@ setup(
         "smoke/replay/handler/dem_classinfo.pyx",
         "smoke/replay/handler/dem_fileheader.pyx",
         "smoke/replay/handler/dem_fileinfo.pyx",
+        "smoke/replay/handler/dem_stringtables.pyx",
         "smoke/replay/handler/net_setconvar.pyx",
         "smoke/replay/handler/net_signonstate.pyx",
         "smoke/replay/handler/net_tick.pyx",

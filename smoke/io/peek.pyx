@@ -27,7 +27,7 @@ cdef class Peek(object):
             value = pbd2.CDemoPacket(self.message)
         elif self.kind == DEM_SendTables:
             value = pbd2.CDemoSendTables(self.message)
-        elif self.kind == DEM_FileHeader:
+        elif self.kind == DEM_StringTables:
             value = pbd2.CDemoStringTables(self.message)
         elif self.kind == DEM_ClassInfo:
             value = pbd2.CDemoClassInfo(self.message)
