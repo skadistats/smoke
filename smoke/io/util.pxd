@@ -1,7 +1,9 @@
+from libc.stdint cimport uint64_t
 
 
-cdef int VI_MAX_BYTES
-cdef int VI_SHIFT
-cdef int VI_MASK
+cdef:
+    int VI_MAX_BYTES
+    int VI_SHIFT
+    uint64_t VI_MASK
 
-cdef int read_varint(object handle) except -1
+cdef uint64_t read_varint(object handle) except -1

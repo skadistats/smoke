@@ -1,14 +1,19 @@
 # cython: profile=False
 
-
-cdef int VI_MAX_BYTES = 5
-cdef int VI_SHIFT = 7
-cdef int VI_MASK = (1 << 32) - 1
+from libc.stdint cimport uint64_t
 
 
-cdef int read_varint(object handle) except -1:
-    cdef int size, value, shift
-    cdef str byte
+cdef:
+    int VI_MAX_BYTES = 5
+    int VI_SHIFT = 7
+    uint64_t VI_MASK = (1 << 32) - 1
+
+
+cdef uint64_t read_varint(object handle) except -1:
+    cdef:
+        int size, shift
+        str byte
+        uint64_t value
 
     size = value = shift = 0
 

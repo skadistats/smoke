@@ -1,5 +1,6 @@
 # cython: profile=False
 
+from libc.stdint cimport int64_t, uint64_t
 from smoke.io.stream cimport generic as io_strm_gnrc
 from smoke.model.dt cimport prop as mdl_dt_prp
 from smoke.replay.decoder.recv_prop cimport abstract
@@ -11,12 +12,12 @@ cdef class Decoder(abstract.Decoder):
 
         assert prop.flags ^ mdl_dt_prp.ENCODEDAGAINSTTICKCOUNT
 
-        self.unsign = prop.flags & mdl_dt_prp.UNSIGNED
+        self.unsign = bool(prop.flags & mdl_dt_prp.UNSIGNED)
         self.bits = prop.bits
 
-    cpdef int decode(Decoder self, io_strm_gnrc.Stream stream):
+    cpdef int64_t decode(Decoder self, io_strm_gnrc.Stream stream):
         cdef:
-            long l, r, v
+            uint64_t l, r, v
             bint negate
             int remainder
 
