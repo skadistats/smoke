@@ -11,3 +11,6 @@ cdef class Collection(object):
 
         self.by_cls = by_cls
         self.by_dt = by_dt
+
+    def __iter__(Collection self):
+        return iter(self.by_dt.values())
