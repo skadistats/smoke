@@ -10,25 +10,29 @@ execution speed.
 
 You can interact with the smoke library like a normal python library*.
 
-\* The installation process might be a bit more involved.
+Python 3 support might be possible, if our
+[protobuf library](https://github.com/bumptech/palm) is compatible. Figuring
+this out is not a priority for us, but feel free to conduct your own
+investigation. Happy to accept pull requests.
+
+\* The installation process is a hair more involved.
 
 
 # Speed
 
 On a fast CPU, smoke parses pro game replays with spectators and commentators
-at ~117x game time. A _full_ parse on a 57 minute-long TI game replay takes
-~29 seconds.
+at ~103x game time. A _full_ parse on a 57 minute-long TI game replay takes
+~33 seconds.
 
-For a normal "pub" game of 47 minutes, a _full_ parse takes ~16 seconds, or
-around ~176x game time.
+For a normal "pub" game of 47 minutes, a _full_ parse takes ~19 seconds, or
+around ~148x game time.
 
 You can always omit data you don't need for faster parses. Voice data is a
 good place to start (see below). The numbers above are upper bounds.
 
-Smoke is heavily optimized, but if speed is of utmost concern for you, or if
+smoke is heavily optimized, but if speed is of utmost concern for you, or if
 you prefer Java, check out [clarity](https://github.com/skadistats/clarity).
 It is 2-5x faster than smoke.
-
 
 
 # Halp!
@@ -57,12 +61,18 @@ manager like Homebrew or MacPorts. Ubuntu users may want to install the
 You will need the `snappy` development libraries. Mac OS X users can get this
 easily with Homebrew or MacPorts. With Homebrew, for example:
 
-    brew install snappy
-    brew install protobuf
+    $ brew install snappy
+    $ brew install protobuf
 
 In Ubuntu, you might install dependencies thusly:
 
-    sudo apt-get install libsnappy-dev libsnappy libprotobuf-dev libprotobuf
+    $ sudo apt-get install libsnappy-dev libprotobuf-dev python-dev
+
+And the python libraries, preferably in your virtualenv:
+
+    $ pip install cython # http://bit.ly/1dd0JRI for problems with virtualenv
+    $ pip install palm
+    $ pip install python-snappy
 
 Next, you must install palm 0.1.9 from source--it's not in PyPI, so you can't
 get it with pip:
@@ -77,10 +87,26 @@ Finally, install smoke by cloning it:
 
 That's it! You're good to go.
 
-\* Python 3 support might be possible, if our
-[protobuf library](https://github.com/bumptech/palm) is compatible. Figuring
-this out is not a priority for us, but feel free to conduct your own
-investigation. Happy to accept pull requests for Python 3 support.
+
+# Hacking
+
+If you want to hack on smoke, you might consider doing this instead of the
+second line in the last section above:
+
+    $ python setup.py build_ext --inplace # no system install
+    $ export PYTHONPATH=$PWD
+
+If you hack on smoke, you might occasionally get persistent build failures
+that have nothing to do with your code (this only applies to --inplace). It's
+a bit kludgy, but you can reset the build thusly from within your project dir:
+
+    $ find . -name \*.so -delete
+    $ find . -name \*.h -delete
+    $ find . -name \*.c -delete
+    $ find . -name \*.pyc -delete
+    $ rm -rf build
+
+If you have compile or runtime problems _after_ this, it's not Cython.
 
 
 # Replay Data
@@ -140,9 +166,9 @@ is a simple example which parses a demo, doing nothing:
 
 When run with `time python entity_counter.py`, we get:
 
-    real    0m28.869s
-    user    0m28.687s
-    sys     0m0.179s
+    real    0m32.689s
+    user    0m32.411s
+    sys     0m0.242s
 
 Perhaps you want to be more selective about parsing. We do this by bitmask.
 Here's code similar to the above, but more restrictive about what it parses.
@@ -172,9 +198,9 @@ Consequently, it'll be tons faster:
 
 When run with `time python with_less_data.py`:
 
-    real    0m17.629s
-    user    0m17.468s
-    sys     0m0.157s
+    real    0m20.116s
+    user    0m19.904s
+    sys     0m0.196s
 
 Finally, if we just want an overview of the game:
 
@@ -199,9 +225,9 @@ Finally, if we just want an overview of the game:
 
 When run with `time python overview_only.py':
 
-    real    0m0.140s
-    user    0m0.113s
-    sys     0m0.024s
+    real    0m0.189s
+    user    0m0.124s
+    sys     0m0.034s
 
 If you **only** need `UserMessages` or `GameEvents` (for example), you end up
 with 5 second parses. So parse as little as you can!
