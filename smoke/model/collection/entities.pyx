@@ -37,6 +37,15 @@ cdef class Collection(object):
                 Py_XDECREF(self._store[i])
             free(self._store)
 
+    def __len__(Collection self):
+        cdef int i
+
+        for i in range(ENTITY_LIMIT):
+            if self._store[i] != NULL:
+                i += 1
+
+        return i
+
     cpdef mdl_ntt.Entity get(Collection self, int i):
         if not (0 <= i < ENTITY_LIMIT):
             raise ValueError('index out of bounds'.format(i, ENTITY_LIMIT))
