@@ -35,6 +35,17 @@ you prefer Java, check out [clarity](https://github.com/skadistats/clarity).
 It is 2-5x faster than smoke.
 
 
+# Platforms
+
+We've successfully compiled and run smoke on these platforms:
+
+* gcc 4.8.1 (Fedora 19 64-bit, Ubuntu 13.10 32- and 64-bit)
+* gcc 4.8.2 (Fedora 20 64-bit)
+* clang-500.2.79 (Mac OS X 10.9)
+
+It probably doesn't have any serious portability issues at this point.
+
+
 # Halp!
 
 Of course. Join us on quakenet IRC in #dota2replay. But do be patient--if we
