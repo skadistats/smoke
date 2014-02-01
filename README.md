@@ -69,6 +69,10 @@ manager like Homebrew or MacPorts. Ubuntu users may want to install the
 
     sudo apt-get install build-essential
 
+You will also need `python-dev`:
+
+    sudo apt-get install python-dev
+
 You will need the `snappy` development libraries. Mac OS X users can get this
 easily with Homebrew or MacPorts. With Homebrew, for example:
 
@@ -85,13 +89,13 @@ And the python libraries, preferably in your virtualenv:
     $ pip install palm
     $ pip install python-snappy
 
-Next, you must install palm 0.1.9 from source--it's not in PyPI, so you can't
+Next, you must install `palm` 0.1.9 from source--it's not in PyPI, so you can't
 get it with pip:
 
     $ git clone https://github.com/bumptech/palm.git && cd palm
     $ python setup.py install
 
-Finally, install smoke by cloning it:
+Finally, install `smoke` by cloning it:
 
     $ git clone https://github.com/skadistats/smoke.git && cd smoke
     $ python setup.py install
