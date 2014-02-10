@@ -49,8 +49,8 @@ cdef class RecvTable(object):
             if self._by_identifier is None:
                 by_identifier = OrderedDict()
 
-                for recv_prop in self:
-                    by_identifier[(recv_prop.src, recv_prop.name)] = recv_prop
+                for i, recv_prop in enumerate(self):
+                    by_identifier[(recv_prop.src, recv_prop.name)] = i
 
                 self._by_identifier = by_identifier
 
