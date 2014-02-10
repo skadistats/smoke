@@ -46,6 +46,9 @@ cdef class Collection(object):
 
         return i
 
+    def __contains__(Collection self, int i):
+        return self._store[i] != NULL
+
     cpdef mdl_ntt.Entity get(Collection self, int i):
         if not (0 <= i < ENTITY_LIMIT):
             raise ValueError('index out of bounds'.format(i, ENTITY_LIMIT))
