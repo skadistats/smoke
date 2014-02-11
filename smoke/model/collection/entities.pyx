@@ -3,6 +3,7 @@
 from cpython cimport Py_XINCREF, Py_XDECREF
 from cpython.ref cimport PyObject
 from libc.stdlib cimport calloc, free
+from smoke.model cimport entity
 
 from collections import defaultdict
 
@@ -82,24 +83,59 @@ cdef class Collection(object):
 
     property by_index:
         def __get__(self):
-            if self._by_index is None:
-                # FIXME: Generate.
-                pass
+            cdef:
+                int i
+                entity.Entity ent
+
+            lookup = dict()
+
+            for i in range(ENTITY_LIMIT):
+                if self._store[i] == NULL:
+                    continue
+
+                ent = <entity.Entity>self._store[i]
+                lookup[ent.index] = ent
+
+            self._by_index = lookup
 
             return self._by_index
 
     property by_ehandle:
         def __get__(self):
+            cdef:
+                int i
+                entity.Entity ent
+
             if self._by_ehandle is None:
-                # FIXME: Generate.
-                pass
+                lookup = dict()
+
+                for i in range(ENTITY_LIMIT):
+                    if self._store[i] == NULL:
+                        continue
+
+                    ent = <entity.Entity>self._store[i]
+                    lookup[to_e(ent.index, ent.serial)] = ent
+
+                self._by_ehandle = lookup
 
             return self._by_ehandle
 
     property by_cls:
         def __get__(self):
+            cdef:
+                int i
+                entity.Entity ent
+
             if self._by_cls is None:
-                # FIXME: Generate.
-                pass
+                lookup = defaultdict(list)
+
+                for i in range(ENTITY_LIMIT):
+                    if self._store[i] == NULL:
+                        continue
+
+                    ent = <entity.Entity>self._store[i]
+                    lookup[ent.cls].append(ent)
+
+                self._by_cls = lookup
 
             return self._by_cls

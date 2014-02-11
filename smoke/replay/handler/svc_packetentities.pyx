@@ -25,6 +25,8 @@ cpdef handle(object pb, rply_mtch.Match match):
         int cls
         list prop_list
 
+        bint views_stale = False
+
     for i in range(updated_entries):
         index = stream.read_entity_index(index)
         pvs = stream.read_entity_pvs()
@@ -49,8 +51,10 @@ cpdef handle(object pb, rply_mtch.Match match):
             state.merge(patch)
             entity = mdl_ntt.Entity(pvs, index, serial, cls, state)
             entities.put(index, entity)
+            views_stale = True
         elif pvs == mdl_ntt.DELETE:
             entities.delete(index)
+            views_stale = True
         elif pvs == mdl_ntt.LEAVE:
             entity = entities.get(index)
             entity.pvs = pvs
@@ -60,7 +64,9 @@ cpdef handle(object pb, rply_mtch.Match match):
             index = stream.read_numeric_bits(11) # max is 2^11-1, or 2047
             try:
                 entities.delete(index)
+                views_stale = True
             except ValueError:
                 pass
 
-    entities.invalidate_views()
+    if views_stale:
+        entities.invalidate_views()

@@ -16,7 +16,7 @@ cdef class Collection(object):
     cdef PyObject **_store
     cdef dict _by_index
     cdef dict _by_ehandle
-    cdef dict _by_cls
+    cdef object _by_cls
 
     cpdef mdl_ntt.Entity get(Collection self, int index)
 
