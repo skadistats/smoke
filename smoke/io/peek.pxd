@@ -49,6 +49,6 @@ cdef class Peek(object):
         public int size
         public str message
 
-    cdef object mk(Peek self)
+    cpdef object mk(Peek self)
     cdef object _mk_top(Peek self)
     cdef object _mk_embed(Peek self)

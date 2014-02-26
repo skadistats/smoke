@@ -38,7 +38,7 @@ cdef class Plexer(object):
         self.embed_blacklist = eb
         self.stopped = False
 
-    cdef io_pk.Peek read(self):
+    cpdef io_pk.Peek read(self):
         cdef io_pk.Peek peek = self.lookahead()
 
         self.queue.popleft()
@@ -48,7 +48,7 @@ cdef class Plexer(object):
 
         return peek
 
-    cdef list read_tick(self):
+    cpdef list read_tick(self):
         cdef:
             list collection
             io_pk.Peek tick_peek, next_peek, peek

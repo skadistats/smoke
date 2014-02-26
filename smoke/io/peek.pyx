@@ -12,7 +12,7 @@ cdef class Peek(object):
         self.size = size
         self.message = message
 
-    cdef object mk(Peek self):
+    cpdef object mk(Peek self):
         if self.embedded:
             return self._mk_embed()
 

@@ -9,8 +9,8 @@ cdef class Plexer(object):
     cdef set embed_blacklist
     cdef object stopped
 
-    cdef io_pk.Peek read(self)
+    cpdef io_pk.Peek read(self)
 
-    cdef list read_tick(self)
+    cpdef list read_tick(self)
 
     cdef io_pk.Peek lookahead(self)
