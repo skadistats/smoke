@@ -33,10 +33,10 @@ cdef class RecvTable(object):
 
         self.dt = dt
         self.recv_props = recv_props
-        self._by_identifier = None
+        self._by_name = None
 
     def __init__(RecvTable self, unicode dt, list recv_props):
-        self._by_identifier = None
+        self._by_name = None
 
     def __len__(RecvTable self):
         return len(self.recv_props)
@@ -44,14 +44,14 @@ cdef class RecvTable(object):
     def __iter__(RecvTable self):
         return iter(self.recv_props)
 
-    property by_identifier:
+    property by_name:
         def __get__(RecvTable self):
-            if self._by_identifier is None:
-                by_identifier = OrderedDict()
+            if self._by_name is None:
+                by_name = OrderedDict()
 
                 for i, recv_prop in enumerate(self):
-                    by_identifier[(recv_prop.src, recv_prop.name)] = i
+                    by_name[recv_prop.name] = i
 
-                self._by_identifier = by_identifier
+                self._by_name = by_name
 
-            return self._by_identifier
+            return self._by_name
