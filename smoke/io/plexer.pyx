@@ -57,7 +57,8 @@ cdef class Plexer(object):
             raise DEMStopEncountered()
 
         tick_peek = self.read()
-        assert tick_peek.kind == io_pk.net_Tick, tick_peek.kind
+        # Apparently this isn't always true 100% of the time:
+        # assert tick_peek.kind == io_pk.net_Tick, tick_peek.kind
         collection = [tick_peek]
 
         next_peek = self.lookahead()
