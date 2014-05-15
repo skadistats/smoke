@@ -79,6 +79,11 @@ easily with Homebrew or MacPorts. With Homebrew, for example:
     $ brew install snappy
     $ brew install protobuf
 
+@jptaylor helpfully points out that OS X Mavericks users need to set some compiler options via environment variables, like so:
+
+    export CFLAGS=-Qunused-arguments
+    export CPPFLAGS=-Qunused-arguments
+
 In Ubuntu, you might install dependencies thusly:
 
     $ sudo apt-get install libsnappy-dev libprotobuf-dev python-dev
