@@ -579,9 +579,28 @@ enum Activity {
 	ACT_DOTA_NIAN_PIN_END = 578;
 	ACT_DOTA_LEAP_STUN = 579;
 	ACT_DOTA_LEAP_SWIPE = 580;
+	ACT_DOTA_NIAN_INTRO_LEAP = 581;
+	ACT_DOTA_AREA_DENY = 582;
+	ACT_DOTA_NIAN_PIN_TO_STUN = 583;
+	ACT_DOTA_RAZE_1 = 584;
+	ACT_DOTA_RAZE_2 = 585;
+	ACT_DOTA_RAZE_3 = 586;
+	ACT_DOTA_UNDYING_DECAY = 587;
+	ACT_DOTA_UNDYING_SOUL_RIP = 588;
+	ACT_DOTA_UNDYING_TOMBSTONE = 589;
+	ACT_DOTA_WHIRLING_AXES_RANGED = 590;
+	ACT_DOTA_SHALLOW_GRAVE = 591;
+	ACT_DOTA_COLD_FEET = 592;
+	ACT_DOTA_ICE_VORTEX = 593;
+	ACT_DOTA_CHILLING_TOUCH = 594;
+	ACT_DOTA_ENFEEBLE = 595;
+	ACT_DOTA_FATAL_BONDS = 596;
+	ACT_DOTA_MIDNIGHT_PULSE = 597;
+	ACT_DOTA_ANCESTRAL_SPIRIT = 598;
+	ACT_DOTA_THUNDER_STRIKE = 599;
+	ACT_DOTA_KINETIC_FIELD = 600;
+	ACT_DOTA_STATIC_STORM = 601;
 }
-
-
 
 enum EDemoCommands {
 	DEM_Error = -1;
@@ -635,9 +654,9 @@ message CGameInfo {
 		optional uint32 match_id = 1;
 		optional int32 game_mode = 2;
 		optional int32 game_winner = 3;
-		repeated CPlayerInfo player_info = 4;
+		repeated CDotaGameInfo.CPlayerInfo player_info = 4;
 		optional uint32 leagueid = 5;
-		repeated CHeroSelectEvent picks_bans = 6;
+		repeated CDotaGameInfo.CHeroSelectEvent picks_bans = 6;
 		optional uint32 radiant_team_id = 7;
 		optional uint32 dire_team_id = 8;
 		optional string radiant_team_tag = 9;
@@ -727,9 +746,6 @@ message CDemoUserCmd {
 	optional bytes data = 2;
 }
 
-
-
-
 enum EDOTAChatWheelMessage {
 	k_EDOTA_CW_Ok = 0;
 	k_EDOTA_CW_Care = 1;
@@ -803,6 +819,7 @@ enum EDOTAChatWheelMessage {
 	k_EDOTA_CW_Regret = 69;
 	k_EDOTA_CW_Relax = 70;
 	k_EDOTA_CW_MissingHero = 71;
+	k_EDOTA_CW_ReturnedHero = 72;
 }
 
 enum EDOTAStatPopupTypes {
@@ -851,9 +868,6 @@ message CDOTAMsg_CoachHUDPing {
 	optional string tgtpath = 3;
 }
 
-
-
-
 enum DOTA_MODIFIER_ENTRY_TYPE {
 	DOTA_MODIFIER_ENTRY_TYPE_ACTIVE = 1;
 	DOTA_MODIFIER_ENTRY_TYPE_REMOVED = 2;
@@ -889,11 +903,6 @@ message CDOTAModifierBuffTableEntry {
 	optional int32 dd_modifier_index = 27;
 	optional int32 dd_ability_index = 28;
 }
-
-
-
-
-
 
 enum EDotaUserMessages {
 	DOTA_UM_AddUnitToSelection = 64;
@@ -954,6 +963,11 @@ enum EDotaUserMessages {
 	DOTA_UM_VoteStart = 120;
 	DOTA_UM_VoteUpdate = 121;
 	DOTA_UM_VoteEnd = 122;
+	DOTA_UM_BoosterState = 123;
+	DOTA_UM_WillPurchaseAlert = 124;
+	DOTA_UM_TutorialMinimapPosition = 125;
+	DOTA_UM_PlayerMMR = 126;
+	DOTA_UM_AbilitySteal = 127;
 }
 
 enum DOTA_CHAT_MESSAGE {
@@ -978,7 +992,7 @@ enum DOTA_CHAT_MESSAGE {
 	CHAT_MESSAGE_DISCONNECT_TIME_REMAINING = 17;
 	CHAT_MESSAGE_DISCONNECT_TIME_REMAINING_PLURAL = 18;
 	CHAT_MESSAGE_RECONNECT = 19;
-	CHAT_MESSAGE_ABANDON = 20;
+	CHAT_MESSAGE_PLAYER_LEFT = 20;
 	CHAT_MESSAGE_SAFE_TO_LEAVE = 21;
 	CHAT_MESSAGE_RUNE_PICKUP = 22;
 	CHAT_MESSAGE_RUNE_BOTTLE = 23;
@@ -998,7 +1012,6 @@ enum DOTA_CHAT_MESSAGE {
 	CHAT_MESSAGE_AUTO_UNPAUSED = 37;
 	CHAT_MESSAGE_YOUPAUSED = 38;
 	CHAT_MESSAGE_CANTUNPAUSETEAM = 39;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER = 40;
 	CHAT_MESSAGE_VOICE_TEXT_BANNED = 41;
 	CHAT_MESSAGE_SPECTATORS_WATCHING_THIS_GAME = 42;
 	CHAT_MESSAGE_REPORT_REMINDER = 43;
@@ -1006,7 +1019,6 @@ enum DOTA_CHAT_MESSAGE {
 	CHAT_MESSAGE_TAUNT = 45;
 	CHAT_MESSAGE_RANDOM = 46;
 	CHAT_MESSAGE_RD_TURN = 47;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_EARLY = 48;
 	CHAT_MESSAGE_DROP_RATE_BONUS = 49;
 	CHAT_MESSAGE_NO_BATTLE_POINTS = 50;
 	CHAT_MESSAGE_DENIED_AEGIS = 51;
@@ -1018,19 +1030,25 @@ enum DOTA_CHAT_MESSAGE {
 	CHAT_MESSAGE_HOLDOUT_TOWER_DESTROYED = 57;
 	CHAT_MESSAGE_HOLDOUT_WALL_DESTROYED = 58;
 	CHAT_MESSAGE_HOLDOUT_WALL_FINISHED = 59;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_AFK = 60;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_AFK_EARLY = 61;
-	CHAT_MESSAGE_ABANDON_LIMITED_HERO = 62;
+	CHAT_MESSAGE_PLAYER_LEFT_LIMITED_HERO = 62;
 	CHAT_MESSAGE_ABANDON_LIMITED_HERO_EXPLANATION = 63;
 	CHAT_MESSAGE_DISCONNECT_LIMITED_HERO = 64;
 	CHAT_MESSAGE_LOW_PRIORITY_COMPLETED_EXPLANATION = 65;
 	CHAT_MESSAGE_RECRUITMENT_DROP_RATE_BONUS = 66;
 	CHAT_MESSAGE_FROSTIVUS_SHINING_BOOSTER_ACTIVE = 67;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_RANKED = 68;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_RANKED = 69;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_EARLY_RANKED = 70;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_AFK_RANKED = 71;
-	CHAT_MESSAGE_SAFE_TO_LEAVE_ABANDONER_AFK_EARLY_RANKED = 72;
+	CHAT_MESSAGE_PLAYER_LEFT_AFK = 73;
+	CHAT_MESSAGE_PLAYER_LEFT_DISCONNECTED_TOO_LONG = 74;
+	CHAT_MESSAGE_PLAYER_ABANDONED = 75;
+	CHAT_MESSAGE_PLAYER_ABANDONED_AFK = 76;
+	CHAT_MESSAGE_PLAYER_ABANDONED_DISCONNECTED_TOO_LONG = 77;
+	CHAT_MESSAGE_WILL_NOT_BE_SCORED = 78;
+	CHAT_MESSAGE_WILL_NOT_BE_SCORED_RANKED = 79;
+	CHAT_MESSAGE_WILL_NOT_BE_SCORED_NETWORK = 80;
+	CHAT_MESSAGE_WILL_NOT_BE_SCORED_NETWORK_RANKED = 81;
+	CHAT_MESSAGE_CAN_QUIT_WITHOUT_ABANDON = 82;
+	CHAT_MESSAGE_RANKED_GAME_STILL_SCORED_LEAVERS_GET_LOSS = 83;
+	CHAT_MESSAGE_ABANDON_RANKED_BEFORE_FIRST_BLOOD_PARTY = 84;
+	CHAT_MESSAGE_COMPENDIUM_LEVEL = 85;
 }
 
 enum DOTA_NO_BATTLE_POINTS_REASONS {
@@ -1167,7 +1185,7 @@ message CDOTAUserMsg_MiniKillCamInfo {
 
 		optional uint32 attacker = 1;
 		optional int32 total_damage = 2;
-		repeated Ability abilities = 3;
+		repeated Attacker.Ability abilities = 3;
 	}
 
 	repeated Attacker attackers = 1;
@@ -1191,6 +1209,11 @@ message CDOTAUserMsg_LocationPing {
 message CDOTAUserMsg_ItemAlert {
 	optional uint32 player_id = 1;
 	optional CDOTAMsg_ItemAlert item_alert = 2;
+}
+
+message CDOTAUserMsg_WillPurchaseAlert {
+	optional int32 itemid = 1;
+	optional int32 player_id = 2;
 }
 
 message CDOTAUserMsg_MinimapEvent {
@@ -1220,6 +1243,8 @@ message CDOTAUserMsg_CreateLinearProjectile {
 	optional int32 entindex = 4;
 	optional int32 particle_index = 5;
 	optional int32 handle = 6;
+	optional CMsgVector2D acceleration = 7;
+	optional float max_speed = 8;
 }
 
 message CDOTAUserMsg_DestroyLinearProjectile {
@@ -1228,6 +1253,7 @@ message CDOTAUserMsg_DestroyLinearProjectile {
 
 message CDOTAUserMsg_DodgeTrackingProjectiles {
 	required int32 entindex = 1;
+	optional bool attacks_only = 2;
 }
 
 message CDOTAUserMsg_SpectatorPlayerClick {
@@ -1280,7 +1306,7 @@ message CDOTAResponseQuerySerialized {
 		optional string val_string = 4;
 	}
 
-	repeated Fact facts = 1;
+	repeated CDOTAResponseQuerySerialized.Fact facts = 1;
 }
 
 message CDOTASpeechMatchOnClient {
@@ -1446,6 +1472,9 @@ message CDOTAUserMsg_TutorialFinish {
 	optional bool success = 4;
 }
 
+message CDOTAUserMsg_TutorialMinimapPosition {
+}
+
 message CDOTAUserMsg_SendGenericToolTip {
 	optional string title = 1;
 	optional string text = 2;
@@ -1570,8 +1599,27 @@ message CDOTAUserMsg_VoteEnd {
 	optional int32 selected_choice = 1;
 }
 
+message CDOTAUserMsg_BoosterStatePlayer {
+	optional uint32 player_id = 1;
+	optional float bonus = 2;
+	optional float event_bonus = 3;
+	optional uint32 bonus_item_id = 4;
+	optional uint32 event_bonus_item_id = 5;
+}
 
+message CDOTAUserMsg_BoosterState {
+	repeated CDOTAUserMsg_BoosterStatePlayer boosted_players = 1;
+}
 
+message CDOTAUserMsg_PlayerMMR {
+	repeated sint32 mmr = 1;
+}
+
+message CDOTAUserMsg_AbilitySteal {
+	optional uint32 player_id = 1;
+	optional uint32 ability_id = 2;
+	optional uint32 ability_level = 3;
+}
 
 enum NET_Messages {
 	net_NOP = 0;
@@ -1648,7 +1696,7 @@ message CNETMsg_NOP {
 }
 
 message CNETMsg_Disconnect {
-	optional string text = 1;
+	optional ENetworkDisconnectionReason reason = 2 [default = NETWORK_DISCONNECT_INVALID];
 }
 
 message CNETMsg_File {
@@ -1664,8 +1712,9 @@ message CNETMsg_SplitScreenUser {
 
 message CNETMsg_Tick {
 	optional uint32 tick = 1;
-	optional uint32 host_frametime = 2;
-	optional uint32 host_frametime_std_deviation = 3;
+	optional uint32 host_computationtime = 4;
+	optional uint32 host_computationtime_std_deviation = 5;
+	optional uint32 host_framestarttime_std_deviation = 6;
 }
 
 message CNETMsg_StringCmd {
@@ -1936,7 +1985,61 @@ message CSVCMsg_PacketReliable {
 	optional int32 messagessize = 2;
 }
 
+/*
+extend .google.protobuf.EnumValueOptions {
+	optional string network_connection_token = 50500;
+}
+*/
 
+enum ENetworkDisconnectionReason {
+	NETWORK_DISCONNECT_INVALID = 0;
+	NETWORK_DISCONNECT_SHUTDOWN = 1;
+	NETWORK_DISCONNECT_DISCONNECT_BY_USER = 2;
+	NETWORK_DISCONNECT_DISCONNECT_BY_SERVER = 3;
+	NETWORK_DISCONNECT_LOST = 4;
+	NETWORK_DISCONNECT_OVERFLOW = 5;
+	NETWORK_DISCONNECT_STEAM_BANNED = 6;
+	NETWORK_DISCONNECT_STEAM_INUSE = 7;
+	NETWORK_DISCONNECT_STEAM_TICKET = 8;
+	NETWORK_DISCONNECT_STEAM_LOGON = 9;
+	NETWORK_DISCONNECT_STEAM_AUTHCANCELLED = 10;
+	NETWORK_DISCONNECT_STEAM_AUTHALREADYUSED = 11;
+	NETWORK_DISCONNECT_STEAM_AUTHINVALID = 12;
+	NETWORK_DISCONNECT_STEAM_VACBANSTATE = 13;
+	NETWORK_DISCONNECT_STEAM_LOGGED_IN_ELSEWHERE = 14;
+	NETWORK_DISCONNECT_STEAM_VAC_CHECK_TIMEDOUT = 15;
+	NETWORK_DISCONNECT_STEAM_DROPPED = 16;
+	NETWORK_DISCONNECT_STEAM_OWNERSHIP = 17;
+	NETWORK_DISCONNECT_SERVERINFO_OVERFLOW = 18;
+	NETWORK_DISCONNECT_TICKMSG_OVERFLOW = 19;
+	NETWORK_DISCONNECT_STRINGTABLEMSG_OVERFLOW = 20;
+	NETWORK_DISCONNECT_DELTAENTMSG_OVERFLOW = 21;
+	NETWORK_DISCONNECT_TEMPENTMSG_OVERFLOW = 22;
+	NETWORK_DISCONNECT_SOUNDSMSG_OVERFLOW = 23;
+	NETWORK_DISCONNECT_SNAPSHOTOVERFLOW = 24;
+	NETWORK_DISCONNECT_SNAPSHOTERROR = 25;
+	NETWORK_DISCONNECT_RELIABLEOVERFLOW = 26;
+	NETWORK_DISCONNECT_BADDELTATICK = 27;
+	NETWORK_DISCONNECT_NOMORESPLITS = 28;
+	NETWORK_DISCONNECT_TIMEDOUT = 29;
+	NETWORK_DISCONNECT_DISCONNECTED = 30;
+	NETWORK_DISCONNECT_LEAVINGSPLIT = 31;
+	NETWORK_DISCONNECT_DIFFERENTCLASSTABLES = 32;
+	NETWORK_DISCONNECT_BADRELAYPASSWORD = 33;
+	NETWORK_DISCONNECT_BADSPECTATORPASSWORD = 34;
+	NETWORK_DISCONNECT_HLTVRESTRICTED = 35;
+	NETWORK_DISCONNECT_NOSPECTATORS = 36;
+	NETWORK_DISCONNECT_HLTVUNAVAILABLE = 37;
+	NETWORK_DISCONNECT_HLTVSTOP = 38;
+	NETWORK_DISCONNECT_KICKED = 39;
+	NETWORK_DISCONNECT_BANADDED = 40;
+	NETWORK_DISCONNECT_KICKBANADDED = 41;
+	NETWORK_DISCONNECT_HLTVDIRECT = 42;
+	NETWORK_DISCONNECT_PURESERVER_CLIENTEXTRA = 43;
+	NETWORK_DISCONNECT_PURESERVER_MISMATCH = 44;
+	NETWORK_DISCONNECT_USERCMD = 45;
+	NETWORK_DISCONNECT_REJECTED_BY_GAME = 46;
+}
 
 enum SIGNONSTATE {
 	SIGNONSTATE_NONE = 0;
@@ -2005,9 +2108,6 @@ message CSVCMsgList_UserMessages {
 
 	repeated usermsg_t usermsgs = 1;
 }
-
-
-
 
 enum EBaseUserMessages {
 	UM_AchievementEvent = 1;

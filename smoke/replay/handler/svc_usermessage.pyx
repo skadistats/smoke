@@ -50,7 +50,12 @@ cdef dict USER_MESSAGE_BY_KIND = {
   110: 'SendStatPopup',           111: 'TutorialFinish',
   112: 'SendRoshanPopup',         113: 'SendGenericToolTip',
   114: 'SendFinalGold',           115: 'CustomMsg',
-  116: 'CoachHUDPing',            117: 'ClientLoadGridNav'
+  116: 'CoachHUDPing',            117: 'ClientLoadGridNav',
+  118: 'AbilityPing',             119: 'ShowGenericPopup',
+  120: 'VoteStart',               121: 'VoteUpdate',
+  122: 'VoteEnd',                 123: 'BoosterState',
+  124: 'WillPurchaseAlert',       125: 'TutorialMinimapPosition',
+  126: 'PlayerMMR',               127: 'AbilitySteal',
 }
 
 
