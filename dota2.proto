@@ -968,6 +968,7 @@ enum EDotaUserMessages {
 	DOTA_UM_TutorialMinimapPosition = 125;
 	DOTA_UM_PlayerMMR = 126;
 	DOTA_UM_AbilitySteal = 127;
+	DOTA_UM_CourierKilledAlert = 128;
 }
 
 enum DOTA_CHAT_MESSAGE {
@@ -1077,6 +1078,8 @@ enum DOTA_COMBATLOG_TYPES {
 	DOTA_COMBATLOG_MODIFIER_ADD = 2;
 	DOTA_COMBATLOG_MODIFIER_REMOVE = 3;
 	DOTA_COMBATLOG_DEATH = 4;
+	DOTA_COMBATLOG_ABILITY = 5;
+	DOTA_COMBATLOG_ITEM = 6;
 }
 
 enum EDotaEntityMessages {
@@ -1214,6 +1217,13 @@ message CDOTAUserMsg_ItemAlert {
 message CDOTAUserMsg_WillPurchaseAlert {
 	optional int32 itemid = 1;
 	optional int32 player_id = 2;
+}
+
+message CDOTAUserMsg_CourierKilledAlert {
+	optional uint32 team = 1;
+	optional uint32 gold_value = 2;
+	optional int32 entity_handle = 3;
+	optional int32 timestamp = 4;
 }
 
 message CDOTAUserMsg_MinimapEvent {
@@ -1475,6 +1485,11 @@ message CDOTAUserMsg_TutorialFinish {
 message CDOTAUserMsg_TutorialMinimapPosition {
 }
 
+message CDOTAUserMsg_TournamentDrop {
+	optional string winner_name = 1;
+	optional int32 event_type = 2;
+}
+
 message CDOTAUserMsg_SendGenericToolTip {
 	optional string title = 1;
 	optional string text = 2;
@@ -1485,11 +1500,6 @@ message CDOTAUserMsg_SendGenericToolTip {
 message CDOTAUserMsg_WorldLine {
 	optional int32 player_id = 1;
 	optional CDOTAMsg_WorldLine worldline = 2;
-}
-
-message CDOTAUserMsg_TournamentDrop {
-	optional string winner_name = 1;
-	optional int32 event_type = 2;
 }
 
 message CDOTAUserMsg_ChatWheel {
@@ -1509,6 +1519,8 @@ message CDOTAUserMsg_ShowSurvey {
 	optional int32 survey_id = 1;
 	optional uint32 match_id = 2;
 	optional string response_style = 3;
+	optional uint32 teammate_hero_id = 4;
+	optional string teammate_name = 5;
 }
 
 message CDOTAUserMsg_UpdateSharedContent {
@@ -1676,6 +1688,7 @@ enum SVC_Messages {
 	svc_GameEventList = 30;
 	svc_GetCvarValue = 31;
 	svc_PacketReliable = 32;
+	svc_FullFrameSplit = 33;
 }
 
 enum ESplitScreenMessageType {
@@ -1946,6 +1959,7 @@ message CSVCMsg_PacketEntities {
 	optional int32 baseline = 5;
 	optional int32 delta_from = 6;
 	optional bytes entity_data = 7;
+	optional bool pending_full_frame = 8;
 }
 
 message CSVCMsg_TempEntities {
@@ -1983,6 +1997,13 @@ message CSVCMsg_VoiceData {
 message CSVCMsg_PacketReliable {
 	optional int32 tick = 1;
 	optional int32 messagessize = 2;
+}
+
+message CSVCMsg_FullFrameSplit {
+	optional int32 tick = 1;
+	optional int32 section = 2;
+	optional int32 total = 3;
+	optional bytes data = 4;
 }
 
 /*
@@ -2140,6 +2161,7 @@ enum EBaseUserMessages {
 	UM_VoiceMask = 28;
 	UM_VoiceSubtitle = 29;
 	UM_SendAudio = 30;
+	UM_CameraTransition = 31;
 	UM_MAX_BASE = 63;
 }
 
@@ -2305,5 +2327,16 @@ message CUserMsg_SayTextChannel {
 message CUserMsg_MessageText {
 	optional uint32 color = 1;
 	optional string text = 2;
+}
+
+message CUserMsg_CameraTransition {
+	message Transition_DataDriven {
+		optional string filename = 1;
+		optional int32 attach_ent_index = 2;
+	}
+
+	optional uint32 camera_type = 1;
+	optional float duration = 2;
+	optional Transition_DataDriven params_data_driven = 3;
 }
 

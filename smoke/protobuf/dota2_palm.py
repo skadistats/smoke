@@ -1576,9 +1576,11 @@ DOTA_UM_PlayerMMR = 126
 
 DOTA_UM_AbilitySteal = 127
 
+DOTA_UM_CourierKilledAlert = 128
+
 TYPE_EDotaUserMessages = ProtoBase.TYPE_int32
 
-_EDotaUserMessages__map = {95: 'DOTA_UM_CharacterSpeakConcept', 66: 'DOTA_UM_ChatEvent', 83: 'DOTA_UM_OverheadEvent', 67: 'DOTA_UM_CombatHeroPositions', 118: 'DOTA_UM_AbilityPing', 126: 'DOTA_UM_PlayerMMR', 93: 'DOTA_UM_Ping', 119: 'DOTA_UM_ShowGenericPopup', 88: 'DOTA_UM_UnitEvent', 110: 'DOTA_UM_SendStatPopup', 98: 'DOTA_UM_TournamentDrop', 84: 'DOTA_UM_SetNextAutobuyItem', 100: 'DOTA_UM_HalloweenDrops', 96: 'DOTA_UM_SwapVerify', 120: 'DOTA_UM_VoteStart', 64: 'DOTA_UM_AddUnitToSelection', 121: 'DOTA_UM_VoteUpdate', 87: 'DOTA_UM_TutorialTipInfo', 103: 'DOTA_UM_UpdateSharedContent', 106: 'DOTA_UM_GamerulesStateChanged', 122: 'DOTA_UM_VoteEnd', 94: 'DOTA_UM_ItemFound', 117: 'DOTA_UM_ClientLoadGridNav', 91: 'DOTA_UM_HudError', 111: 'DOTA_UM_TutorialFinish', 85: 'DOTA_UM_SharedCooldown', 115: 'DOTA_UM_CustomMsg', 123: 'DOTA_UM_BoosterState', 102: 'DOTA_UM_ReceivedXmasGift', 113: 'DOTA_UM_SendGenericToolTip', 92: 'DOTA_UM_ItemPurchased', 104: 'DOTA_UM_TutorialRequestExp', 127: 'DOTA_UM_AbilitySteal', 107: 'DOTA_UM_ShowSurvey', 114: 'DOTA_UM_SendFinalGold', 73: 'DOTA_UM_DodgeTrackingProjectiles', 68: 'DOTA_UM_CombatLogData', 108: 'DOTA_UM_TutorialFade', 76: 'DOTA_UM_InvalidCommand', 124: 'DOTA_UM_WillPurchaseAlert', 80: 'DOTA_UM_MinimapDebugPoint', 90: 'DOTA_UM_BotChat', 82: 'DOTA_UM_NevermoreRequiem', 86: 'DOTA_UM_SpectatorPlayerClick', 65: 'DOTA_UM_AIDebugLine', 89: 'DOTA_UM_ParticleManager', 97: 'DOTA_UM_WorldLine', 72: 'DOTA_UM_DestroyLinearProjectile', 112: 'DOTA_UM_SendRoshanPopup', 79: 'DOTA_UM_MiniKillCamInfo', 70: 'DOTA_UM_CombatLogShowDeath', 105: 'DOTA_UM_TutorialPingMinimap', 109: 'DOTA_UM_AddQuestLogEntry', 71: 'DOTA_UM_CreateLinearProjectile', 78: 'DOTA_UM_MapLine', 116: 'DOTA_UM_CoachHUDPing', 125: 'DOTA_UM_TutorialMinimapPosition', 101: 'DOTA_UM_ChatWheel', 74: 'DOTA_UM_GlobalLightColor', 75: 'DOTA_UM_GlobalLightDirection', 99: 'DOTA_UM_ItemAlert', 77: 'DOTA_UM_LocationPing', 81: 'DOTA_UM_MinimapEvent'}
+_EDotaUserMessages__map = {95: 'DOTA_UM_CharacterSpeakConcept', 128: 'DOTA_UM_CourierKilledAlert', 66: 'DOTA_UM_ChatEvent', 83: 'DOTA_UM_OverheadEvent', 67: 'DOTA_UM_CombatHeroPositions', 118: 'DOTA_UM_AbilityPing', 126: 'DOTA_UM_PlayerMMR', 93: 'DOTA_UM_Ping', 119: 'DOTA_UM_ShowGenericPopup', 88: 'DOTA_UM_UnitEvent', 110: 'DOTA_UM_SendStatPopup', 98: 'DOTA_UM_TournamentDrop', 84: 'DOTA_UM_SetNextAutobuyItem', 100: 'DOTA_UM_HalloweenDrops', 96: 'DOTA_UM_SwapVerify', 120: 'DOTA_UM_VoteStart', 64: 'DOTA_UM_AddUnitToSelection', 121: 'DOTA_UM_VoteUpdate', 87: 'DOTA_UM_TutorialTipInfo', 103: 'DOTA_UM_UpdateSharedContent', 106: 'DOTA_UM_GamerulesStateChanged', 122: 'DOTA_UM_VoteEnd', 94: 'DOTA_UM_ItemFound', 117: 'DOTA_UM_ClientLoadGridNav', 91: 'DOTA_UM_HudError', 111: 'DOTA_UM_TutorialFinish', 85: 'DOTA_UM_SharedCooldown', 115: 'DOTA_UM_CustomMsg', 123: 'DOTA_UM_BoosterState', 102: 'DOTA_UM_ReceivedXmasGift', 113: 'DOTA_UM_SendGenericToolTip', 92: 'DOTA_UM_ItemPurchased', 104: 'DOTA_UM_TutorialRequestExp', 127: 'DOTA_UM_AbilitySteal', 107: 'DOTA_UM_ShowSurvey', 114: 'DOTA_UM_SendFinalGold', 73: 'DOTA_UM_DodgeTrackingProjectiles', 68: 'DOTA_UM_CombatLogData', 108: 'DOTA_UM_TutorialFade', 76: 'DOTA_UM_InvalidCommand', 124: 'DOTA_UM_WillPurchaseAlert', 80: 'DOTA_UM_MinimapDebugPoint', 90: 'DOTA_UM_BotChat', 82: 'DOTA_UM_NevermoreRequiem', 86: 'DOTA_UM_SpectatorPlayerClick', 65: 'DOTA_UM_AIDebugLine', 89: 'DOTA_UM_ParticleManager', 97: 'DOTA_UM_WorldLine', 72: 'DOTA_UM_DestroyLinearProjectile', 112: 'DOTA_UM_SendRoshanPopup', 79: 'DOTA_UM_MiniKillCamInfo', 70: 'DOTA_UM_CombatLogShowDeath', 105: 'DOTA_UM_TutorialPingMinimap', 109: 'DOTA_UM_AddQuestLogEntry', 71: 'DOTA_UM_CreateLinearProjectile', 78: 'DOTA_UM_MapLine', 116: 'DOTA_UM_CoachHUDPing', 125: 'DOTA_UM_TutorialMinimapPosition', 101: 'DOTA_UM_ChatWheel', 74: 'DOTA_UM_GlobalLightColor', 75: 'DOTA_UM_GlobalLightDirection', 99: 'DOTA_UM_ItemAlert', 77: 'DOTA_UM_LocationPing', 81: 'DOTA_UM_MinimapEvent'}
 
 @classmethod
 def get_EDotaUserMessages_name(cls, v):
@@ -1814,9 +1816,13 @@ DOTA_COMBATLOG_MODIFIER_REMOVE = 3
 
 DOTA_COMBATLOG_DEATH = 4
 
+DOTA_COMBATLOG_ABILITY = 5
+
+DOTA_COMBATLOG_ITEM = 6
+
 TYPE_DOTA_COMBATLOG_TYPES = ProtoBase.TYPE_int32
 
-_DOTA_COMBATLOG_TYPES__map = {2: 'DOTA_COMBATLOG_MODIFIER_ADD', 4: 'DOTA_COMBATLOG_DEATH', 3: 'DOTA_COMBATLOG_MODIFIER_REMOVE', 1: 'DOTA_COMBATLOG_HEAL', 0: 'DOTA_COMBATLOG_DAMAGE'}
+_DOTA_COMBATLOG_TYPES__map = {6: 'DOTA_COMBATLOG_ITEM', 2: 'DOTA_COMBATLOG_MODIFIER_ADD', 4: 'DOTA_COMBATLOG_DEATH', 5: 'DOTA_COMBATLOG_ABILITY', 3: 'DOTA_COMBATLOG_MODIFIER_REMOVE', 1: 'DOTA_COMBATLOG_HEAL', 0: 'DOTA_COMBATLOG_DAMAGE'}
 
 @classmethod
 def get_DOTA_COMBATLOG_TYPES_name(cls, v):
@@ -2046,9 +2052,11 @@ svc_GetCvarValue = 31
 
 svc_PacketReliable = 32
 
+svc_FullFrameSplit = 33
+
 TYPE_SVC_Messages = ProtoBase.TYPE_int32
 
-_SVC_Messages__map = {18: 'svc_SetView', 24: 'svc_EntityMessage', 23: 'svc_UserMessage', 32: 'svc_PacketReliable', 16: 'svc_Print', 30: 'svc_GameEventList', 31: 'svc_GetCvarValue', 26: 'svc_PacketEntities', 11: 'svc_SetPause', 25: 'svc_GameEvent', 22: 'svc_SplitScreen', 14: 'svc_VoiceInit', 9: 'svc_SendTable', 10: 'svc_ClassInfo', 17: 'svc_Sounds', 28: 'svc_Prefetch', 8: 'svc_ServerInfo', 29: 'svc_Menu', 21: 'svc_BSPDecal', 15: 'svc_VoiceData', 12: 'svc_CreateStringTable', 13: 'svc_UpdateStringTable', 19: 'svc_FixAngle', 27: 'svc_TempEntities', 20: 'svc_CrosshairAngle'}
+_SVC_Messages__map = {18: 'svc_SetView', 24: 'svc_EntityMessage', 23: 'svc_UserMessage', 32: 'svc_PacketReliable', 16: 'svc_Print', 30: 'svc_GameEventList', 31: 'svc_GetCvarValue', 26: 'svc_PacketEntities', 11: 'svc_SetPause', 25: 'svc_GameEvent', 33: 'svc_FullFrameSplit', 22: 'svc_SplitScreen', 14: 'svc_VoiceInit', 9: 'svc_SendTable', 10: 'svc_ClassInfo', 17: 'svc_Sounds', 28: 'svc_Prefetch', 8: 'svc_ServerInfo', 29: 'svc_Menu', 21: 'svc_BSPDecal', 15: 'svc_VoiceData', 12: 'svc_CreateStringTable', 13: 'svc_UpdateStringTable', 19: 'svc_FixAngle', 27: 'svc_TempEntities', 20: 'svc_CrosshairAngle'}
 
 @classmethod
 def get_SVC_Messages_name(cls, v):
@@ -2260,11 +2268,13 @@ UM_VoiceSubtitle = 29
 
 UM_SendAudio = 30
 
+UM_CameraTransition = 31
+
 UM_MAX_BASE = 63
 
 TYPE_EBaseUserMessages = ProtoBase.TYPE_int32
 
-_EBaseUserMessages__map = {8: 'UM_Geiger', 18: 'UM_SayText2', 24: 'UM_TextMsg', 17: 'UM_SayText', 16: 'UM_Rumble', 27: 'UM_VGUIMenu', 19: 'UM_SayTextChannel', 28: 'UM_VoiceMask', 63: 'UM_MAX_BASE', 1: 'UM_AchievementEvent', 11: 'UM_HudText', 23: 'UM_StatsSkipState', 13: 'UM_MessageText', 9: 'UM_HintText', 29: 'UM_VoiceSubtitle', 2: 'UM_CloseCaption', 3: 'UM_CloseCaptionDirect', 4: 'UM_CurrentTimescale', 22: 'UM_StatsCrawlMsg', 20: 'UM_Shake', 7: 'UM_GameTitle', 10: 'UM_HudMsg', 25: 'UM_Tilt', 15: 'UM_ResetHUD', 5: 'UM_DesiredTimescale', 30: 'UM_SendAudio', 6: 'UM_Fade', 26: 'UM_Train', 12: 'UM_KeyHintText', 21: 'UM_ShakeDir', 14: 'UM_RequestState'}
+_EBaseUserMessages__map = {8: 'UM_Geiger', 18: 'UM_SayText2', 24: 'UM_TextMsg', 17: 'UM_SayText', 16: 'UM_Rumble', 27: 'UM_VGUIMenu', 19: 'UM_SayTextChannel', 28: 'UM_VoiceMask', 63: 'UM_MAX_BASE', 1: 'UM_AchievementEvent', 11: 'UM_HudText', 23: 'UM_StatsSkipState', 13: 'UM_MessageText', 9: 'UM_HintText', 29: 'UM_VoiceSubtitle', 2: 'UM_CloseCaption', 3: 'UM_CloseCaptionDirect', 4: 'UM_CurrentTimescale', 22: 'UM_StatsCrawlMsg', 20: 'UM_Shake', 7: 'UM_GameTitle', 10: 'UM_HudMsg', 25: 'UM_Tilt', 15: 'UM_ResetHUD', 5: 'UM_DesiredTimescale', 30: 'UM_SendAudio', 6: 'UM_Fade', 26: 'UM_Train', 12: 'UM_KeyHintText', 21: 'UM_ShakeDir', 14: 'UM_RequestState', 31: 'UM_CameraTransition'}
 
 @classmethod
 def get_EBaseUserMessages_name(cls, v):
@@ -14559,6 +14569,313 @@ class CDOTAUserMsg_WillPurchaseAlert(ProtoBase):
 TYPE_CDOTAUserMsg_WillPurchaseAlert = CDOTAUserMsg_WillPurchaseAlert
 _PB_finalizers.append('CDOTAUserMsg_WillPurchaseAlert')
 
+class CDOTAUserMsg_CourierKilledAlert(ProtoBase):
+    _required = []
+    _field_map = {'timestamp': 4, 'gold_value': 2, 'entity_handle': 3, 'team': 1}
+    
+    def __init__(self, _pbf_buf='', _pbf_parent_callback=None, **kw):
+        self._pbf_parent_callback = _pbf_parent_callback
+        self._cache = {}
+        self._pbf_establish_parent_callback = None
+        ProtoBase.__init__(self, _pbf_buf, **kw)
+
+    @classmethod
+    def _pbf_finalize(cls):
+        for c in cls._pbf_finalizers:
+            c(cls)
+        del cls._pbf_finalizers
+
+    @classmethod
+    def fields(cls):
+        return ['team', 'gold_value', 'entity_handle', 'timestamp']
+
+    def modified(self):
+        return self._evermod
+
+    def __contains__(self, item):
+        try:
+            return getattr(self, '%s__exists' % item)
+        except AttributeError:
+            return False
+
+    _pbf_strings = []
+    _pbf_finalizers = []
+
+    def __str__(self):
+        return '\n'.join('%s: %s' % (f, repr(getattr(self, '_get_%s' % f)())) for f in self.fields()
+                          if getattr(self, '%s__exists' % f))
+
+    def _get_team(self):
+        if 1 in self._cache:
+            r = self._cache[1]
+        else:
+            r = self._buf_get(1, ProtoBase.TYPE_uint32, 'team')
+            self._cache[1] = r
+        return r
+
+    def _establish_parentage_team(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_team), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_team
+                v._pbf_establish_parent_callback = self._establish_parentage_team
+
+    def _set_team(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_team(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field team"
+            raise ProtoValueError(list_assign_error)
+        self._cache[1] = v
+        self._mods[1] = ProtoBase.TYPE_uint32
+
+    def _mod_team(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[1] = ProtoBase.TYPE_uint32
+
+    def _del_team(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 1 in self._cache:
+            del self._cache[1]
+        if 1 in self._mods:
+            del self._mods[1]
+        self._buf_del(1)
+
+    _pb_field_name_1 = "team"
+
+    team = property(_get_team, _set_team, _del_team)
+
+    @property
+    def team__exists(self):
+        return 1 in self._mods or self._buf_exists(1)
+
+    @property
+    def team__type(self):
+        return ProtoBase.TYPE_uint32
+
+    def _finalize_team(cls):
+        if is_string(ProtoBase.TYPE_uint32):
+            cls._pbf_strings.append(1)
+        elif _PB_type(ProtoBase.TYPE_uint32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_uint32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_uint32.pb_subtype):
+                cls._pbf_strings.append(1)
+
+    _pbf_finalizers.append(_finalize_team)
+
+
+    def _get_gold_value(self):
+        if 2 in self._cache:
+            r = self._cache[2]
+        else:
+            r = self._buf_get(2, ProtoBase.TYPE_uint32, 'gold_value')
+            self._cache[2] = r
+        return r
+
+    def _establish_parentage_gold_value(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_gold_value), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_gold_value
+                v._pbf_establish_parent_callback = self._establish_parentage_gold_value
+
+    def _set_gold_value(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_gold_value(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field gold_value"
+            raise ProtoValueError(list_assign_error)
+        self._cache[2] = v
+        self._mods[2] = ProtoBase.TYPE_uint32
+
+    def _mod_gold_value(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[2] = ProtoBase.TYPE_uint32
+
+    def _del_gold_value(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 2 in self._cache:
+            del self._cache[2]
+        if 2 in self._mods:
+            del self._mods[2]
+        self._buf_del(2)
+
+    _pb_field_name_2 = "gold_value"
+
+    gold_value = property(_get_gold_value, _set_gold_value, _del_gold_value)
+
+    @property
+    def gold_value__exists(self):
+        return 2 in self._mods or self._buf_exists(2)
+
+    @property
+    def gold_value__type(self):
+        return ProtoBase.TYPE_uint32
+
+    def _finalize_gold_value(cls):
+        if is_string(ProtoBase.TYPE_uint32):
+            cls._pbf_strings.append(2)
+        elif _PB_type(ProtoBase.TYPE_uint32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_uint32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_uint32.pb_subtype):
+                cls._pbf_strings.append(2)
+
+    _pbf_finalizers.append(_finalize_gold_value)
+
+
+    def _get_entity_handle(self):
+        if 3 in self._cache:
+            r = self._cache[3]
+        else:
+            r = self._buf_get(3, ProtoBase.TYPE_int32, 'entity_handle')
+            self._cache[3] = r
+        return r
+
+    def _establish_parentage_entity_handle(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_entity_handle), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_entity_handle
+                v._pbf_establish_parent_callback = self._establish_parentage_entity_handle
+
+    def _set_entity_handle(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_entity_handle(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field entity_handle"
+            raise ProtoValueError(list_assign_error)
+        self._cache[3] = v
+        self._mods[3] = ProtoBase.TYPE_int32
+
+    def _mod_entity_handle(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[3] = ProtoBase.TYPE_int32
+
+    def _del_entity_handle(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 3 in self._cache:
+            del self._cache[3]
+        if 3 in self._mods:
+            del self._mods[3]
+        self._buf_del(3)
+
+    _pb_field_name_3 = "entity_handle"
+
+    entity_handle = property(_get_entity_handle, _set_entity_handle, _del_entity_handle)
+
+    @property
+    def entity_handle__exists(self):
+        return 3 in self._mods or self._buf_exists(3)
+
+    @property
+    def entity_handle__type(self):
+        return ProtoBase.TYPE_int32
+
+    def _finalize_entity_handle(cls):
+        if is_string(ProtoBase.TYPE_int32):
+            cls._pbf_strings.append(3)
+        elif _PB_type(ProtoBase.TYPE_int32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_int32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_int32.pb_subtype):
+                cls._pbf_strings.append(3)
+
+    _pbf_finalizers.append(_finalize_entity_handle)
+
+
+    def _get_timestamp(self):
+        if 4 in self._cache:
+            r = self._cache[4]
+        else:
+            r = self._buf_get(4, ProtoBase.TYPE_int32, 'timestamp')
+            self._cache[4] = r
+        return r
+
+    def _establish_parentage_timestamp(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_timestamp), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_timestamp
+                v._pbf_establish_parent_callback = self._establish_parentage_timestamp
+
+    def _set_timestamp(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_timestamp(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field timestamp"
+            raise ProtoValueError(list_assign_error)
+        self._cache[4] = v
+        self._mods[4] = ProtoBase.TYPE_int32
+
+    def _mod_timestamp(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[4] = ProtoBase.TYPE_int32
+
+    def _del_timestamp(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 4 in self._cache:
+            del self._cache[4]
+        if 4 in self._mods:
+            del self._mods[4]
+        self._buf_del(4)
+
+    _pb_field_name_4 = "timestamp"
+
+    timestamp = property(_get_timestamp, _set_timestamp, _del_timestamp)
+
+    @property
+    def timestamp__exists(self):
+        return 4 in self._mods or self._buf_exists(4)
+
+    @property
+    def timestamp__type(self):
+        return ProtoBase.TYPE_int32
+
+    def _finalize_timestamp(cls):
+        if is_string(ProtoBase.TYPE_int32):
+            cls._pbf_strings.append(4)
+        elif _PB_type(ProtoBase.TYPE_int32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_int32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_int32.pb_subtype):
+                cls._pbf_strings.append(4)
+
+    _pbf_finalizers.append(_finalize_timestamp)
+
+
+TYPE_CDOTAUserMsg_CourierKilledAlert = CDOTAUserMsg_CourierKilledAlert
+_PB_finalizers.append('CDOTAUserMsg_CourierKilledAlert')
+
 class CDOTAUserMsg_MinimapEvent(ProtoBase):
     _required = []
     _field_map = {'y': 4, 'x': 3, 'duration': 5, 'entity_handle': 2, 'event_type': 1}
@@ -24903,6 +25220,179 @@ class CDOTAUserMsg_TutorialMinimapPosition(ProtoBase):
 TYPE_CDOTAUserMsg_TutorialMinimapPosition = CDOTAUserMsg_TutorialMinimapPosition
 _PB_finalizers.append('CDOTAUserMsg_TutorialMinimapPosition')
 
+class CDOTAUserMsg_TournamentDrop(ProtoBase):
+    _required = []
+    _field_map = {'winner_name': 1, 'event_type': 2}
+    
+    def __init__(self, _pbf_buf='', _pbf_parent_callback=None, **kw):
+        self._pbf_parent_callback = _pbf_parent_callback
+        self._cache = {}
+        self._pbf_establish_parent_callback = None
+        ProtoBase.__init__(self, _pbf_buf, **kw)
+
+    @classmethod
+    def _pbf_finalize(cls):
+        for c in cls._pbf_finalizers:
+            c(cls)
+        del cls._pbf_finalizers
+
+    @classmethod
+    def fields(cls):
+        return ['winner_name', 'event_type']
+
+    def modified(self):
+        return self._evermod
+
+    def __contains__(self, item):
+        try:
+            return getattr(self, '%s__exists' % item)
+        except AttributeError:
+            return False
+
+    _pbf_strings = []
+    _pbf_finalizers = []
+
+    def __str__(self):
+        return '\n'.join('%s: %s' % (f, repr(getattr(self, '_get_%s' % f)())) for f in self.fields()
+                          if getattr(self, '%s__exists' % f))
+
+    def _get_winner_name(self):
+        if 1 in self._cache:
+            r = self._cache[1]
+        else:
+            r = self._buf_get(1, ProtoBase.TYPE_string, 'winner_name')
+            self._cache[1] = r
+        return r
+
+    def _establish_parentage_winner_name(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_winner_name), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_winner_name
+                v._pbf_establish_parent_callback = self._establish_parentage_winner_name
+
+    def _set_winner_name(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_winner_name(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field winner_name"
+            raise ProtoValueError(list_assign_error)
+        self._cache[1] = v
+        self._mods[1] = ProtoBase.TYPE_string
+
+    def _mod_winner_name(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[1] = ProtoBase.TYPE_string
+
+    def _del_winner_name(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 1 in self._cache:
+            del self._cache[1]
+        if 1 in self._mods:
+            del self._mods[1]
+        self._buf_del(1)
+
+    _pb_field_name_1 = "winner_name"
+
+    winner_name = property(_get_winner_name, _set_winner_name, _del_winner_name)
+
+    @property
+    def winner_name__exists(self):
+        return 1 in self._mods or self._buf_exists(1)
+
+    @property
+    def winner_name__type(self):
+        return ProtoBase.TYPE_string
+
+    def _finalize_winner_name(cls):
+        if is_string(ProtoBase.TYPE_string):
+            cls._pbf_strings.append(1)
+        elif _PB_type(ProtoBase.TYPE_string) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_string, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_string.pb_subtype):
+                cls._pbf_strings.append(1)
+
+    _pbf_finalizers.append(_finalize_winner_name)
+
+
+    def _get_event_type(self):
+        if 2 in self._cache:
+            r = self._cache[2]
+        else:
+            r = self._buf_get(2, ProtoBase.TYPE_int32, 'event_type')
+            self._cache[2] = r
+        return r
+
+    def _establish_parentage_event_type(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_event_type), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_event_type
+                v._pbf_establish_parent_callback = self._establish_parentage_event_type
+
+    def _set_event_type(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_event_type(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field event_type"
+            raise ProtoValueError(list_assign_error)
+        self._cache[2] = v
+        self._mods[2] = ProtoBase.TYPE_int32
+
+    def _mod_event_type(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[2] = ProtoBase.TYPE_int32
+
+    def _del_event_type(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 2 in self._cache:
+            del self._cache[2]
+        if 2 in self._mods:
+            del self._mods[2]
+        self._buf_del(2)
+
+    _pb_field_name_2 = "event_type"
+
+    event_type = property(_get_event_type, _set_event_type, _del_event_type)
+
+    @property
+    def event_type__exists(self):
+        return 2 in self._mods or self._buf_exists(2)
+
+    @property
+    def event_type__type(self):
+        return ProtoBase.TYPE_int32
+
+    def _finalize_event_type(cls):
+        if is_string(ProtoBase.TYPE_int32):
+            cls._pbf_strings.append(2)
+        elif _PB_type(ProtoBase.TYPE_int32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_int32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_int32.pb_subtype):
+                cls._pbf_strings.append(2)
+
+    _pbf_finalizers.append(_finalize_event_type)
+
+
+TYPE_CDOTAUserMsg_TournamentDrop = CDOTAUserMsg_TournamentDrop
+_PB_finalizers.append('CDOTAUserMsg_TournamentDrop')
+
 class CDOTAUserMsg_SendGenericToolTip(ProtoBase):
     _required = []
     _field_map = {'close': 4, 'text': 2, 'entindex': 3, 'title': 1}
@@ -25382,179 +25872,6 @@ class CDOTAUserMsg_WorldLine(ProtoBase):
 
 TYPE_CDOTAUserMsg_WorldLine = CDOTAUserMsg_WorldLine
 _PB_finalizers.append('CDOTAUserMsg_WorldLine')
-
-class CDOTAUserMsg_TournamentDrop(ProtoBase):
-    _required = []
-    _field_map = {'winner_name': 1, 'event_type': 2}
-    
-    def __init__(self, _pbf_buf='', _pbf_parent_callback=None, **kw):
-        self._pbf_parent_callback = _pbf_parent_callback
-        self._cache = {}
-        self._pbf_establish_parent_callback = None
-        ProtoBase.__init__(self, _pbf_buf, **kw)
-
-    @classmethod
-    def _pbf_finalize(cls):
-        for c in cls._pbf_finalizers:
-            c(cls)
-        del cls._pbf_finalizers
-
-    @classmethod
-    def fields(cls):
-        return ['winner_name', 'event_type']
-
-    def modified(self):
-        return self._evermod
-
-    def __contains__(self, item):
-        try:
-            return getattr(self, '%s__exists' % item)
-        except AttributeError:
-            return False
-
-    _pbf_strings = []
-    _pbf_finalizers = []
-
-    def __str__(self):
-        return '\n'.join('%s: %s' % (f, repr(getattr(self, '_get_%s' % f)())) for f in self.fields()
-                          if getattr(self, '%s__exists' % f))
-
-    def _get_winner_name(self):
-        if 1 in self._cache:
-            r = self._cache[1]
-        else:
-            r = self._buf_get(1, ProtoBase.TYPE_string, 'winner_name')
-            self._cache[1] = r
-        return r
-
-    def _establish_parentage_winner_name(self, v):
-        if isinstance(v, (ProtoBase, RepeatedSequence)):
-            if v._pbf_parent_callback:
-                assert (v._pbf_parent_callback == self._mod_winner_name), "subobjects can only have one parent--use copy()?"
-            else:
-                v._pbf_parent_callback = self._mod_winner_name
-                v._pbf_establish_parent_callback = self._establish_parentage_winner_name
-
-    def _set_winner_name(self, v, modifying=True):
-        self._evermod = modifying or self._evermod
-        if self._pbf_parent_callback:
-            self._pbf_parent_callback()
-        if isinstance(v, (ProtoBase, RepeatedSequence)):
-            self._establish_parentage_winner_name(v)
-        elif isinstance(v, list):
-            list_assign_error = "Can't assign list to repeated field winner_name"
-            raise ProtoValueError(list_assign_error)
-        self._cache[1] = v
-        self._mods[1] = ProtoBase.TYPE_string
-
-    def _mod_winner_name(self):
-        self._evermod = True
-        if self._pbf_parent_callback:
-            self._pbf_parent_callback()
-        self._mods[1] = ProtoBase.TYPE_string
-
-    def _del_winner_name(self):
-        self._evermod = True
-        if self._pbf_parent_callback:
-            self._pbf_parent_callback()
-        if 1 in self._cache:
-            del self._cache[1]
-        if 1 in self._mods:
-            del self._mods[1]
-        self._buf_del(1)
-
-    _pb_field_name_1 = "winner_name"
-
-    winner_name = property(_get_winner_name, _set_winner_name, _del_winner_name)
-
-    @property
-    def winner_name__exists(self):
-        return 1 in self._mods or self._buf_exists(1)
-
-    @property
-    def winner_name__type(self):
-        return ProtoBase.TYPE_string
-
-    def _finalize_winner_name(cls):
-        if is_string(ProtoBase.TYPE_string):
-            cls._pbf_strings.append(1)
-        elif _PB_type(ProtoBase.TYPE_string) is _PB_type:
-            assert issubclass(ProtoBase.TYPE_string, RepeatedSequence)
-            if is_string(ProtoBase.TYPE_string.pb_subtype):
-                cls._pbf_strings.append(1)
-
-    _pbf_finalizers.append(_finalize_winner_name)
-
-
-    def _get_event_type(self):
-        if 2 in self._cache:
-            r = self._cache[2]
-        else:
-            r = self._buf_get(2, ProtoBase.TYPE_int32, 'event_type')
-            self._cache[2] = r
-        return r
-
-    def _establish_parentage_event_type(self, v):
-        if isinstance(v, (ProtoBase, RepeatedSequence)):
-            if v._pbf_parent_callback:
-                assert (v._pbf_parent_callback == self._mod_event_type), "subobjects can only have one parent--use copy()?"
-            else:
-                v._pbf_parent_callback = self._mod_event_type
-                v._pbf_establish_parent_callback = self._establish_parentage_event_type
-
-    def _set_event_type(self, v, modifying=True):
-        self._evermod = modifying or self._evermod
-        if self._pbf_parent_callback:
-            self._pbf_parent_callback()
-        if isinstance(v, (ProtoBase, RepeatedSequence)):
-            self._establish_parentage_event_type(v)
-        elif isinstance(v, list):
-            list_assign_error = "Can't assign list to repeated field event_type"
-            raise ProtoValueError(list_assign_error)
-        self._cache[2] = v
-        self._mods[2] = ProtoBase.TYPE_int32
-
-    def _mod_event_type(self):
-        self._evermod = True
-        if self._pbf_parent_callback:
-            self._pbf_parent_callback()
-        self._mods[2] = ProtoBase.TYPE_int32
-
-    def _del_event_type(self):
-        self._evermod = True
-        if self._pbf_parent_callback:
-            self._pbf_parent_callback()
-        if 2 in self._cache:
-            del self._cache[2]
-        if 2 in self._mods:
-            del self._mods[2]
-        self._buf_del(2)
-
-    _pb_field_name_2 = "event_type"
-
-    event_type = property(_get_event_type, _set_event_type, _del_event_type)
-
-    @property
-    def event_type__exists(self):
-        return 2 in self._mods or self._buf_exists(2)
-
-    @property
-    def event_type__type(self):
-        return ProtoBase.TYPE_int32
-
-    def _finalize_event_type(cls):
-        if is_string(ProtoBase.TYPE_int32):
-            cls._pbf_strings.append(2)
-        elif _PB_type(ProtoBase.TYPE_int32) is _PB_type:
-            assert issubclass(ProtoBase.TYPE_int32, RepeatedSequence)
-            if is_string(ProtoBase.TYPE_int32.pb_subtype):
-                cls._pbf_strings.append(2)
-
-    _pbf_finalizers.append(_finalize_event_type)
-
-
-TYPE_CDOTAUserMsg_TournamentDrop = CDOTAUserMsg_TournamentDrop
-_PB_finalizers.append('CDOTAUserMsg_TournamentDrop')
 
 class CDOTAUserMsg_ChatWheel(ProtoBase):
     _required = []
@@ -26108,7 +26425,7 @@ _PB_finalizers.append('CDOTAUserMsg_ReceivedXmasGift')
 
 class CDOTAUserMsg_ShowSurvey(ProtoBase):
     _required = []
-    _field_map = {'response_style': 3, 'survey_id': 1, 'match_id': 2}
+    _field_map = {'response_style': 3, 'survey_id': 1, 'teammate_name': 5, 'match_id': 2, 'teammate_hero_id': 4}
     
     def __init__(self, _pbf_buf='', _pbf_parent_callback=None, **kw):
         self._pbf_parent_callback = _pbf_parent_callback
@@ -26124,7 +26441,7 @@ class CDOTAUserMsg_ShowSurvey(ProtoBase):
 
     @classmethod
     def fields(cls):
-        return ['survey_id', 'match_id', 'response_style']
+        return ['survey_id', 'match_id', 'response_style', 'teammate_hero_id', 'teammate_name']
 
     def modified(self):
         return self._evermod
@@ -26341,6 +26658,140 @@ class CDOTAUserMsg_ShowSurvey(ProtoBase):
                 cls._pbf_strings.append(3)
 
     _pbf_finalizers.append(_finalize_response_style)
+
+
+    def _get_teammate_hero_id(self):
+        if 4 in self._cache:
+            r = self._cache[4]
+        else:
+            r = self._buf_get(4, ProtoBase.TYPE_uint32, 'teammate_hero_id')
+            self._cache[4] = r
+        return r
+
+    def _establish_parentage_teammate_hero_id(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_teammate_hero_id), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_teammate_hero_id
+                v._pbf_establish_parent_callback = self._establish_parentage_teammate_hero_id
+
+    def _set_teammate_hero_id(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_teammate_hero_id(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field teammate_hero_id"
+            raise ProtoValueError(list_assign_error)
+        self._cache[4] = v
+        self._mods[4] = ProtoBase.TYPE_uint32
+
+    def _mod_teammate_hero_id(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[4] = ProtoBase.TYPE_uint32
+
+    def _del_teammate_hero_id(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 4 in self._cache:
+            del self._cache[4]
+        if 4 in self._mods:
+            del self._mods[4]
+        self._buf_del(4)
+
+    _pb_field_name_4 = "teammate_hero_id"
+
+    teammate_hero_id = property(_get_teammate_hero_id, _set_teammate_hero_id, _del_teammate_hero_id)
+
+    @property
+    def teammate_hero_id__exists(self):
+        return 4 in self._mods or self._buf_exists(4)
+
+    @property
+    def teammate_hero_id__type(self):
+        return ProtoBase.TYPE_uint32
+
+    def _finalize_teammate_hero_id(cls):
+        if is_string(ProtoBase.TYPE_uint32):
+            cls._pbf_strings.append(4)
+        elif _PB_type(ProtoBase.TYPE_uint32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_uint32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_uint32.pb_subtype):
+                cls._pbf_strings.append(4)
+
+    _pbf_finalizers.append(_finalize_teammate_hero_id)
+
+
+    def _get_teammate_name(self):
+        if 5 in self._cache:
+            r = self._cache[5]
+        else:
+            r = self._buf_get(5, ProtoBase.TYPE_string, 'teammate_name')
+            self._cache[5] = r
+        return r
+
+    def _establish_parentage_teammate_name(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_teammate_name), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_teammate_name
+                v._pbf_establish_parent_callback = self._establish_parentage_teammate_name
+
+    def _set_teammate_name(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_teammate_name(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field teammate_name"
+            raise ProtoValueError(list_assign_error)
+        self._cache[5] = v
+        self._mods[5] = ProtoBase.TYPE_string
+
+    def _mod_teammate_name(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[5] = ProtoBase.TYPE_string
+
+    def _del_teammate_name(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 5 in self._cache:
+            del self._cache[5]
+        if 5 in self._mods:
+            del self._mods[5]
+        self._buf_del(5)
+
+    _pb_field_name_5 = "teammate_name"
+
+    teammate_name = property(_get_teammate_name, _set_teammate_name, _del_teammate_name)
+
+    @property
+    def teammate_name__exists(self):
+        return 5 in self._mods or self._buf_exists(5)
+
+    @property
+    def teammate_name__type(self):
+        return ProtoBase.TYPE_string
+
+    def _finalize_teammate_name(cls):
+        if is_string(ProtoBase.TYPE_string):
+            cls._pbf_strings.append(5)
+        elif _PB_type(ProtoBase.TYPE_string) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_string, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_string.pb_subtype):
+                cls._pbf_strings.append(5)
+
+    _pbf_finalizers.append(_finalize_teammate_name)
 
 
 TYPE_CDOTAUserMsg_ShowSurvey = CDOTAUserMsg_ShowSurvey
@@ -41020,7 +41471,7 @@ _PB_finalizers.append('CSVCMsg_GameEventList')
 
 class CSVCMsg_PacketEntities(ProtoBase):
     _required = []
-    _field_map = {'baseline': 5, 'delta_from': 6, 'updated_entries': 2, 'max_entries': 1, 'is_delta': 3, 'entity_data': 7, 'update_baseline': 4}
+    _field_map = {'baseline': 5, 'delta_from': 6, 'updated_entries': 2, 'max_entries': 1, 'is_delta': 3, 'entity_data': 7, 'update_baseline': 4, 'pending_full_frame': 8}
     
     def __init__(self, _pbf_buf='', _pbf_parent_callback=None, **kw):
         self._pbf_parent_callback = _pbf_parent_callback
@@ -41036,7 +41487,7 @@ class CSVCMsg_PacketEntities(ProtoBase):
 
     @classmethod
     def fields(cls):
-        return ['max_entries', 'updated_entries', 'is_delta', 'update_baseline', 'baseline', 'delta_from', 'entity_data']
+        return ['max_entries', 'updated_entries', 'is_delta', 'update_baseline', 'baseline', 'delta_from', 'entity_data', 'pending_full_frame']
 
     def modified(self):
         return self._evermod
@@ -41521,6 +41972,73 @@ class CSVCMsg_PacketEntities(ProtoBase):
                 cls._pbf_strings.append(7)
 
     _pbf_finalizers.append(_finalize_entity_data)
+
+
+    def _get_pending_full_frame(self):
+        if 8 in self._cache:
+            r = self._cache[8]
+        else:
+            r = self._buf_get(8, ProtoBase.TYPE_bool, 'pending_full_frame')
+            self._cache[8] = r
+        return r
+
+    def _establish_parentage_pending_full_frame(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_pending_full_frame), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_pending_full_frame
+                v._pbf_establish_parent_callback = self._establish_parentage_pending_full_frame
+
+    def _set_pending_full_frame(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_pending_full_frame(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field pending_full_frame"
+            raise ProtoValueError(list_assign_error)
+        self._cache[8] = v
+        self._mods[8] = ProtoBase.TYPE_bool
+
+    def _mod_pending_full_frame(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[8] = ProtoBase.TYPE_bool
+
+    def _del_pending_full_frame(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 8 in self._cache:
+            del self._cache[8]
+        if 8 in self._mods:
+            del self._mods[8]
+        self._buf_del(8)
+
+    _pb_field_name_8 = "pending_full_frame"
+
+    pending_full_frame = property(_get_pending_full_frame, _set_pending_full_frame, _del_pending_full_frame)
+
+    @property
+    def pending_full_frame__exists(self):
+        return 8 in self._mods or self._buf_exists(8)
+
+    @property
+    def pending_full_frame__type(self):
+        return ProtoBase.TYPE_bool
+
+    def _finalize_pending_full_frame(cls):
+        if is_string(ProtoBase.TYPE_bool):
+            cls._pbf_strings.append(8)
+        elif _PB_type(ProtoBase.TYPE_bool) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_bool, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_bool.pb_subtype):
+                cls._pbf_strings.append(8)
+
+    _pbf_finalizers.append(_finalize_pending_full_frame)
 
 
 TYPE_CSVCMsg_PacketEntities = CSVCMsg_PacketEntities
@@ -43197,6 +43715,313 @@ class CSVCMsg_PacketReliable(ProtoBase):
 
 TYPE_CSVCMsg_PacketReliable = CSVCMsg_PacketReliable
 _PB_finalizers.append('CSVCMsg_PacketReliable')
+
+class CSVCMsg_FullFrameSplit(ProtoBase):
+    _required = []
+    _field_map = {'total': 3, 'section': 2, 'tick': 1, 'data': 4}
+    
+    def __init__(self, _pbf_buf='', _pbf_parent_callback=None, **kw):
+        self._pbf_parent_callback = _pbf_parent_callback
+        self._cache = {}
+        self._pbf_establish_parent_callback = None
+        ProtoBase.__init__(self, _pbf_buf, **kw)
+
+    @classmethod
+    def _pbf_finalize(cls):
+        for c in cls._pbf_finalizers:
+            c(cls)
+        del cls._pbf_finalizers
+
+    @classmethod
+    def fields(cls):
+        return ['tick', 'section', 'total', 'data']
+
+    def modified(self):
+        return self._evermod
+
+    def __contains__(self, item):
+        try:
+            return getattr(self, '%s__exists' % item)
+        except AttributeError:
+            return False
+
+    _pbf_strings = []
+    _pbf_finalizers = []
+
+    def __str__(self):
+        return '\n'.join('%s: %s' % (f, repr(getattr(self, '_get_%s' % f)())) for f in self.fields()
+                          if getattr(self, '%s__exists' % f))
+
+    def _get_tick(self):
+        if 1 in self._cache:
+            r = self._cache[1]
+        else:
+            r = self._buf_get(1, ProtoBase.TYPE_int32, 'tick')
+            self._cache[1] = r
+        return r
+
+    def _establish_parentage_tick(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_tick), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_tick
+                v._pbf_establish_parent_callback = self._establish_parentage_tick
+
+    def _set_tick(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_tick(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field tick"
+            raise ProtoValueError(list_assign_error)
+        self._cache[1] = v
+        self._mods[1] = ProtoBase.TYPE_int32
+
+    def _mod_tick(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[1] = ProtoBase.TYPE_int32
+
+    def _del_tick(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 1 in self._cache:
+            del self._cache[1]
+        if 1 in self._mods:
+            del self._mods[1]
+        self._buf_del(1)
+
+    _pb_field_name_1 = "tick"
+
+    tick = property(_get_tick, _set_tick, _del_tick)
+
+    @property
+    def tick__exists(self):
+        return 1 in self._mods or self._buf_exists(1)
+
+    @property
+    def tick__type(self):
+        return ProtoBase.TYPE_int32
+
+    def _finalize_tick(cls):
+        if is_string(ProtoBase.TYPE_int32):
+            cls._pbf_strings.append(1)
+        elif _PB_type(ProtoBase.TYPE_int32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_int32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_int32.pb_subtype):
+                cls._pbf_strings.append(1)
+
+    _pbf_finalizers.append(_finalize_tick)
+
+
+    def _get_section(self):
+        if 2 in self._cache:
+            r = self._cache[2]
+        else:
+            r = self._buf_get(2, ProtoBase.TYPE_int32, 'section')
+            self._cache[2] = r
+        return r
+
+    def _establish_parentage_section(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_section), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_section
+                v._pbf_establish_parent_callback = self._establish_parentage_section
+
+    def _set_section(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_section(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field section"
+            raise ProtoValueError(list_assign_error)
+        self._cache[2] = v
+        self._mods[2] = ProtoBase.TYPE_int32
+
+    def _mod_section(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[2] = ProtoBase.TYPE_int32
+
+    def _del_section(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 2 in self._cache:
+            del self._cache[2]
+        if 2 in self._mods:
+            del self._mods[2]
+        self._buf_del(2)
+
+    _pb_field_name_2 = "section"
+
+    section = property(_get_section, _set_section, _del_section)
+
+    @property
+    def section__exists(self):
+        return 2 in self._mods or self._buf_exists(2)
+
+    @property
+    def section__type(self):
+        return ProtoBase.TYPE_int32
+
+    def _finalize_section(cls):
+        if is_string(ProtoBase.TYPE_int32):
+            cls._pbf_strings.append(2)
+        elif _PB_type(ProtoBase.TYPE_int32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_int32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_int32.pb_subtype):
+                cls._pbf_strings.append(2)
+
+    _pbf_finalizers.append(_finalize_section)
+
+
+    def _get_total(self):
+        if 3 in self._cache:
+            r = self._cache[3]
+        else:
+            r = self._buf_get(3, ProtoBase.TYPE_int32, 'total')
+            self._cache[3] = r
+        return r
+
+    def _establish_parentage_total(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_total), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_total
+                v._pbf_establish_parent_callback = self._establish_parentage_total
+
+    def _set_total(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_total(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field total"
+            raise ProtoValueError(list_assign_error)
+        self._cache[3] = v
+        self._mods[3] = ProtoBase.TYPE_int32
+
+    def _mod_total(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[3] = ProtoBase.TYPE_int32
+
+    def _del_total(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 3 in self._cache:
+            del self._cache[3]
+        if 3 in self._mods:
+            del self._mods[3]
+        self._buf_del(3)
+
+    _pb_field_name_3 = "total"
+
+    total = property(_get_total, _set_total, _del_total)
+
+    @property
+    def total__exists(self):
+        return 3 in self._mods or self._buf_exists(3)
+
+    @property
+    def total__type(self):
+        return ProtoBase.TYPE_int32
+
+    def _finalize_total(cls):
+        if is_string(ProtoBase.TYPE_int32):
+            cls._pbf_strings.append(3)
+        elif _PB_type(ProtoBase.TYPE_int32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_int32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_int32.pb_subtype):
+                cls._pbf_strings.append(3)
+
+    _pbf_finalizers.append(_finalize_total)
+
+
+    def _get_data(self):
+        if 4 in self._cache:
+            r = self._cache[4]
+        else:
+            r = self._buf_get(4, ProtoBase.TYPE_bytes, 'data')
+            self._cache[4] = r
+        return r
+
+    def _establish_parentage_data(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_data), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_data
+                v._pbf_establish_parent_callback = self._establish_parentage_data
+
+    def _set_data(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_data(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field data"
+            raise ProtoValueError(list_assign_error)
+        self._cache[4] = v
+        self._mods[4] = ProtoBase.TYPE_bytes
+
+    def _mod_data(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[4] = ProtoBase.TYPE_bytes
+
+    def _del_data(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 4 in self._cache:
+            del self._cache[4]
+        if 4 in self._mods:
+            del self._mods[4]
+        self._buf_del(4)
+
+    _pb_field_name_4 = "data"
+
+    data = property(_get_data, _set_data, _del_data)
+
+    @property
+    def data__exists(self):
+        return 4 in self._mods or self._buf_exists(4)
+
+    @property
+    def data__type(self):
+        return ProtoBase.TYPE_bytes
+
+    def _finalize_data(cls):
+        if is_string(ProtoBase.TYPE_bytes):
+            cls._pbf_strings.append(4)
+        elif _PB_type(ProtoBase.TYPE_bytes) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_bytes, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_bytes.pb_subtype):
+                cls._pbf_strings.append(4)
+
+    _pbf_finalizers.append(_finalize_data)
+
+
+TYPE_CSVCMsg_FullFrameSplit = CSVCMsg_FullFrameSplit
+_PB_finalizers.append('CSVCMsg_FullFrameSplit')
 
 class CMsgVector(ProtoBase):
     _required = []
@@ -51650,6 +52475,421 @@ class CUserMsg_MessageText(ProtoBase):
 
 TYPE_CUserMsg_MessageText = CUserMsg_MessageText
 _PB_finalizers.append('CUserMsg_MessageText')
+
+class CUserMsg_CameraTransition(ProtoBase):
+    _required = []
+    _field_map = {'duration': 2, 'params_data_driven': 3, 'camera_type': 1}
+    
+    def __init__(self, _pbf_buf='', _pbf_parent_callback=None, **kw):
+        self._pbf_parent_callback = _pbf_parent_callback
+        self._cache = {}
+        self._pbf_establish_parent_callback = None
+        ProtoBase.__init__(self, _pbf_buf, **kw)
+
+    @classmethod
+    def _pbf_finalize(cls):
+        for c in cls._pbf_finalizers:
+            c(cls)
+        del cls._pbf_finalizers
+
+    @classmethod
+    def fields(cls):
+        return ['camera_type', 'duration', 'params_data_driven']
+
+    def modified(self):
+        return self._evermod
+
+    def __contains__(self, item):
+        try:
+            return getattr(self, '%s__exists' % item)
+        except AttributeError:
+            return False
+
+    _pbf_strings = []
+    _pbf_finalizers = []
+
+    def __str__(self):
+        return '\n'.join('%s: %s' % (f, repr(getattr(self, '_get_%s' % f)())) for f in self.fields()
+                          if getattr(self, '%s__exists' % f))
+    
+    class Transition_DataDriven(ProtoBase):
+        _required = []
+        _field_map = {'attach_ent_index': 2, 'filename': 1}
+        
+        def __init__(self, _pbf_buf='', _pbf_parent_callback=None, **kw):
+            self._pbf_parent_callback = _pbf_parent_callback
+            self._cache = {}
+            self._pbf_establish_parent_callback = None
+            ProtoBase.__init__(self, _pbf_buf, **kw)
+    
+        @classmethod
+        def _pbf_finalize(cls):
+            for c in cls._pbf_finalizers:
+                c(cls)
+            del cls._pbf_finalizers
+    
+        @classmethod
+        def fields(cls):
+            return ['filename', 'attach_ent_index']
+    
+        def modified(self):
+            return self._evermod
+    
+        def __contains__(self, item):
+            try:
+                return getattr(self, '%s__exists' % item)
+            except AttributeError:
+                return False
+    
+        _pbf_strings = []
+        _pbf_finalizers = []
+    
+        def __str__(self):
+            return '\n'.join('%s: %s' % (f, repr(getattr(self, '_get_%s' % f)())) for f in self.fields()
+                              if getattr(self, '%s__exists' % f))
+        
+        def _get_filename(self):
+            if 1 in self._cache:
+                r = self._cache[1]
+            else:
+                r = self._buf_get(1, ProtoBase.TYPE_string, 'filename')
+                self._cache[1] = r
+            return r
+    
+        def _establish_parentage_filename(self, v):
+            if isinstance(v, (ProtoBase, RepeatedSequence)):
+                if v._pbf_parent_callback:
+                    assert (v._pbf_parent_callback == self._mod_filename), "subobjects can only have one parent--use copy()?"
+                else:
+                    v._pbf_parent_callback = self._mod_filename
+                    v._pbf_establish_parent_callback = self._establish_parentage_filename
+    
+        def _set_filename(self, v, modifying=True):
+            self._evermod = modifying or self._evermod
+            if self._pbf_parent_callback:
+                self._pbf_parent_callback()
+            if isinstance(v, (ProtoBase, RepeatedSequence)):
+                self._establish_parentage_filename(v)
+            elif isinstance(v, list):
+                list_assign_error = "Can't assign list to repeated field filename"
+                raise ProtoValueError(list_assign_error)
+            self._cache[1] = v
+            self._mods[1] = ProtoBase.TYPE_string
+    
+        def _mod_filename(self):
+            self._evermod = True
+            if self._pbf_parent_callback:
+                self._pbf_parent_callback()
+            self._mods[1] = ProtoBase.TYPE_string
+    
+        def _del_filename(self):
+            self._evermod = True
+            if self._pbf_parent_callback:
+                self._pbf_parent_callback()
+            if 1 in self._cache:
+                del self._cache[1]
+            if 1 in self._mods:
+                del self._mods[1]
+            self._buf_del(1)
+    
+        _pb_field_name_1 = "filename"
+    
+        filename = property(_get_filename, _set_filename, _del_filename)
+    
+        @property
+        def filename__exists(self):
+            return 1 in self._mods or self._buf_exists(1)
+    
+        @property
+        def filename__type(self):
+            return ProtoBase.TYPE_string
+    
+        def _finalize_filename(cls):
+            if is_string(ProtoBase.TYPE_string):
+                cls._pbf_strings.append(1)
+            elif _PB_type(ProtoBase.TYPE_string) is _PB_type:
+                assert issubclass(ProtoBase.TYPE_string, RepeatedSequence)
+                if is_string(ProtoBase.TYPE_string.pb_subtype):
+                    cls._pbf_strings.append(1)
+    
+        _pbf_finalizers.append(_finalize_filename)
+    
+        
+        def _get_attach_ent_index(self):
+            if 2 in self._cache:
+                r = self._cache[2]
+            else:
+                r = self._buf_get(2, ProtoBase.TYPE_int32, 'attach_ent_index')
+                self._cache[2] = r
+            return r
+    
+        def _establish_parentage_attach_ent_index(self, v):
+            if isinstance(v, (ProtoBase, RepeatedSequence)):
+                if v._pbf_parent_callback:
+                    assert (v._pbf_parent_callback == self._mod_attach_ent_index), "subobjects can only have one parent--use copy()?"
+                else:
+                    v._pbf_parent_callback = self._mod_attach_ent_index
+                    v._pbf_establish_parent_callback = self._establish_parentage_attach_ent_index
+    
+        def _set_attach_ent_index(self, v, modifying=True):
+            self._evermod = modifying or self._evermod
+            if self._pbf_parent_callback:
+                self._pbf_parent_callback()
+            if isinstance(v, (ProtoBase, RepeatedSequence)):
+                self._establish_parentage_attach_ent_index(v)
+            elif isinstance(v, list):
+                list_assign_error = "Can't assign list to repeated field attach_ent_index"
+                raise ProtoValueError(list_assign_error)
+            self._cache[2] = v
+            self._mods[2] = ProtoBase.TYPE_int32
+    
+        def _mod_attach_ent_index(self):
+            self._evermod = True
+            if self._pbf_parent_callback:
+                self._pbf_parent_callback()
+            self._mods[2] = ProtoBase.TYPE_int32
+    
+        def _del_attach_ent_index(self):
+            self._evermod = True
+            if self._pbf_parent_callback:
+                self._pbf_parent_callback()
+            if 2 in self._cache:
+                del self._cache[2]
+            if 2 in self._mods:
+                del self._mods[2]
+            self._buf_del(2)
+    
+        _pb_field_name_2 = "attach_ent_index"
+    
+        attach_ent_index = property(_get_attach_ent_index, _set_attach_ent_index, _del_attach_ent_index)
+    
+        @property
+        def attach_ent_index__exists(self):
+            return 2 in self._mods or self._buf_exists(2)
+    
+        @property
+        def attach_ent_index__type(self):
+            return ProtoBase.TYPE_int32
+    
+        def _finalize_attach_ent_index(cls):
+            if is_string(ProtoBase.TYPE_int32):
+                cls._pbf_strings.append(2)
+            elif _PB_type(ProtoBase.TYPE_int32) is _PB_type:
+                assert issubclass(ProtoBase.TYPE_int32, RepeatedSequence)
+                if is_string(ProtoBase.TYPE_int32.pb_subtype):
+                    cls._pbf_strings.append(2)
+    
+        _pbf_finalizers.append(_finalize_attach_ent_index)
+    
+        
+    TYPE_Transition_DataDriven = Transition_DataDriven
+    _PB_finalizers.append('CUserMsg_CameraTransition.Transition_DataDriven')
+    
+    TYPE_Transition_DataDriven = Transition_DataDriven
+
+    def _get_camera_type(self):
+        if 1 in self._cache:
+            r = self._cache[1]
+        else:
+            r = self._buf_get(1, ProtoBase.TYPE_uint32, 'camera_type')
+            self._cache[1] = r
+        return r
+
+    def _establish_parentage_camera_type(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_camera_type), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_camera_type
+                v._pbf_establish_parent_callback = self._establish_parentage_camera_type
+
+    def _set_camera_type(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_camera_type(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field camera_type"
+            raise ProtoValueError(list_assign_error)
+        self._cache[1] = v
+        self._mods[1] = ProtoBase.TYPE_uint32
+
+    def _mod_camera_type(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[1] = ProtoBase.TYPE_uint32
+
+    def _del_camera_type(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 1 in self._cache:
+            del self._cache[1]
+        if 1 in self._mods:
+            del self._mods[1]
+        self._buf_del(1)
+
+    _pb_field_name_1 = "camera_type"
+
+    camera_type = property(_get_camera_type, _set_camera_type, _del_camera_type)
+
+    @property
+    def camera_type__exists(self):
+        return 1 in self._mods or self._buf_exists(1)
+
+    @property
+    def camera_type__type(self):
+        return ProtoBase.TYPE_uint32
+
+    def _finalize_camera_type(cls):
+        if is_string(ProtoBase.TYPE_uint32):
+            cls._pbf_strings.append(1)
+        elif _PB_type(ProtoBase.TYPE_uint32) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_uint32, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_uint32.pb_subtype):
+                cls._pbf_strings.append(1)
+
+    _pbf_finalizers.append(_finalize_camera_type)
+
+
+    def _get_duration(self):
+        if 2 in self._cache:
+            r = self._cache[2]
+        else:
+            r = self._buf_get(2, ProtoBase.TYPE_float, 'duration')
+            self._cache[2] = r
+        return r
+
+    def _establish_parentage_duration(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_duration), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_duration
+                v._pbf_establish_parent_callback = self._establish_parentage_duration
+
+    def _set_duration(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_duration(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field duration"
+            raise ProtoValueError(list_assign_error)
+        self._cache[2] = v
+        self._mods[2] = ProtoBase.TYPE_float
+
+    def _mod_duration(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[2] = ProtoBase.TYPE_float
+
+    def _del_duration(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 2 in self._cache:
+            del self._cache[2]
+        if 2 in self._mods:
+            del self._mods[2]
+        self._buf_del(2)
+
+    _pb_field_name_2 = "duration"
+
+    duration = property(_get_duration, _set_duration, _del_duration)
+
+    @property
+    def duration__exists(self):
+        return 2 in self._mods or self._buf_exists(2)
+
+    @property
+    def duration__type(self):
+        return ProtoBase.TYPE_float
+
+    def _finalize_duration(cls):
+        if is_string(ProtoBase.TYPE_float):
+            cls._pbf_strings.append(2)
+        elif _PB_type(ProtoBase.TYPE_float) is _PB_type:
+            assert issubclass(ProtoBase.TYPE_float, RepeatedSequence)
+            if is_string(ProtoBase.TYPE_float.pb_subtype):
+                cls._pbf_strings.append(2)
+
+    _pbf_finalizers.append(_finalize_duration)
+
+
+    def _get_params_data_driven(self):
+        if 3 in self._cache:
+            r = self._cache[3]
+        else:
+            r = self._buf_get(3, CUserMsg_CameraTransition.TYPE_Transition_DataDriven, 'params_data_driven')
+            self._cache[3] = r
+        return r
+
+    def _establish_parentage_params_data_driven(self, v):
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            if v._pbf_parent_callback:
+                assert (v._pbf_parent_callback == self._mod_params_data_driven), "subobjects can only have one parent--use copy()?"
+            else:
+                v._pbf_parent_callback = self._mod_params_data_driven
+                v._pbf_establish_parent_callback = self._establish_parentage_params_data_driven
+
+    def _set_params_data_driven(self, v, modifying=True):
+        self._evermod = modifying or self._evermod
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if isinstance(v, (ProtoBase, RepeatedSequence)):
+            self._establish_parentage_params_data_driven(v)
+        elif isinstance(v, list):
+            list_assign_error = "Can't assign list to repeated field params_data_driven"
+            raise ProtoValueError(list_assign_error)
+        self._cache[3] = v
+        self._mods[3] = CUserMsg_CameraTransition.TYPE_Transition_DataDriven
+
+    def _mod_params_data_driven(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        self._mods[3] = CUserMsg_CameraTransition.TYPE_Transition_DataDriven
+
+    def _del_params_data_driven(self):
+        self._evermod = True
+        if self._pbf_parent_callback:
+            self._pbf_parent_callback()
+        if 3 in self._cache:
+            del self._cache[3]
+        if 3 in self._mods:
+            del self._mods[3]
+        self._buf_del(3)
+
+    _pb_field_name_3 = "params_data_driven"
+
+    params_data_driven = property(_get_params_data_driven, _set_params_data_driven, _del_params_data_driven)
+
+    @property
+    def params_data_driven__exists(self):
+        return 3 in self._mods or self._buf_exists(3)
+
+    @property
+    def params_data_driven__type(self):
+        return CUserMsg_CameraTransition.TYPE_Transition_DataDriven
+
+    def _finalize_params_data_driven(cls):
+        if is_string(CUserMsg_CameraTransition.TYPE_Transition_DataDriven):
+            cls._pbf_strings.append(3)
+        elif _PB_type(CUserMsg_CameraTransition.TYPE_Transition_DataDriven) is _PB_type:
+            assert issubclass(CUserMsg_CameraTransition.TYPE_Transition_DataDriven, RepeatedSequence)
+            if is_string(CUserMsg_CameraTransition.TYPE_Transition_DataDriven.pb_subtype):
+                cls._pbf_strings.append(3)
+
+    _pbf_finalizers.append(_finalize_params_data_driven)
+
+
+TYPE_CUserMsg_CameraTransition = CUserMsg_CameraTransition
+_PB_finalizers.append('CUserMsg_CameraTransition')
 
 
 for cname in _PB_finalizers:

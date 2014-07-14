@@ -24,6 +24,7 @@ cdef dict USER_MESSAGE_BY_KIND = {
    25: 'Tilt',                     26: 'Train',
    27: 'VGUIMenu',                 28: 'VoiceMask',
    29: 'VoiceSubtitle',            30: 'SendAudio',
+   31: 'CameraTransition',
    63: 'MAX_BASE',                 64: 'AddUnitToSelection',
    65: 'AIDebugLine',              66: 'ChatEvent',
    67: 'CombatHeroPositions',      68: 'CombatLogData',
@@ -56,6 +57,7 @@ cdef dict USER_MESSAGE_BY_KIND = {
   122: 'VoteEnd',                 123: 'BoosterState',
   124: 'WillPurchaseAlert',       125: 'TutorialMinimapPosition',
   126: 'PlayerMMR',               127: 'AbilitySteal',
+  128: 'CourierKilledAlert'
 }
 
 
